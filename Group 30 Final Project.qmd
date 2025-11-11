@@ -2,10 +2,22 @@
 title: "Group 30 Final Project"
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Packages
 
 ```{r}
-1 + 1
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+raw_data <- read_csv("SAA_Biospecimen_Analysis_results_01nov2025.csv")
+```
+
+```{r}
+head(raw_data)
+```
+
+```{r}
+
 ```
