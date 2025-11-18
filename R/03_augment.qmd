@@ -8,6 +8,7 @@ library(tidyverse)
 library(readr)
 library(dplyr)
 library(stringr)
+library(lubridate)
 ```
 
 ## Load Clean Data
@@ -18,42 +19,47 @@ saa_data_tidy <- read_tsv("../data/02_dat_clean.tsv")
 
 ## Augment Data
 
-First we calculate means from the three datapoints of both the 24h & 150h measurements. To do this we first create a function for calculating replicate means:
+First we calculate means from the three datapoints of both the 24h & 150h measurements.
 
 ```{r}
-# Computes rowwise mean for a group of 3 replicate columns
-replicate_mean <- function(df, prefix) {
-  reps <- paste0(prefix, "_Rep", 1:3)
+# Compute means per subject and duration
+means <- saa_data_tidy %>%
+  group_by(patient_number, project, duration) %>%
+  summarise(
+    fmax_mean = mean(fmax, na.rm = TRUE),
+    ttt_mean  = mean(ttt,  na.rm = TRUE),
+    auc_mean  = mean(auc,  na.rm = TRUE),
+    .groups = "drop"
+  )
 
-  df %>%
-    mutate(across(all_of(reps), as.numeric)) %>%
-    mutate("{prefix}_mean" := rowMeans(across(all_of(reps)), na.rm = TRUE))
-}
-
+# Join means back to long dataset
+dat_aug <- saa_data_tidy %>%
+  left_join(means,
+            by = c("patient_number", "project", "duration"))
 ```
 
-\
-Then we use the function:
+prepare replicate vectors for SAA rule
 
 ```{r}
-saa_data_aug <- saa_data_tidy %>%
-  replicate_mean("Fmax_24h") %>%
-  replicate_mean("TTT_24h") %>%
-  replicate_mean("AUC_24h") %>%
-  replicate_mean("TSmax_24h") %>%
-  replicate_mean("SLOPEMax_24h") %>%
-  replicate_mean("Fmax_150h") %>%
-  replicate_mean("TTT_150h") %>%
-  replicate_mean("AUC_150h") %>%
-  replicate_mean("T50_150h") %>%
-  replicate_mean("SLOPE_150h")
+reps <- saa_data_tidy %>%
+  group_by(patient_number, project, duration) %>%
+  summarise(
+    fmax_reps = list(fmax),
+    .groups = "drop"
+  )
+
+dat_aug <- dat_aug %>%
+  left_join(reps,
+            by = c("patient_number", "project", "duration"))
 ```
 
-We calculate the status from the fmax values by first creating two functions with the rules:\
+We prepare to calculate the status from the fmax values by first creating two functions with the rules:\
 
 ```{r}
-saa_rule_155 <- function(Fmax_reps) {
-  n_pos <- sum(Fmax_reps >= 5000, na.rm = TRUE)
+# ---- Project 155 ----
+saa_rule_155 <- function(x) {
+  x <- unlist(x)
+  n_pos <- sum(x >= 5000, na.rm = TRUE)
 
   case_when(
     n_pos == 3 ~ "Positive",
@@ -63,72 +69,60 @@ saa_rule_155 <- function(Fmax_reps) {
   )
 }
 
+# ---- Project 237 ----
+saa_rule_237 <- function(x) {
+  x <- unlist(x)
 
-saa_rule_237 <- function(Fmax_reps) {
+  n_ge_45000 <- sum(x >= 45000, na.rm = TRUE)
+  n_ge_3000  <- sum(x >= 3000,  na.rm = TRUE)
+  n_between  <- sum(x >= 3000 & x < 45000, na.rm = TRUE)
+  n_lt_3000  <- sum(x < 3000, na.rm = TRUE)
 
-  n_ge_45000 <- sum(Fmax_reps >= 45000, na.rm = TRUE)
-  n_ge_3000  <- sum(Fmax_reps >= 3000,  na.rm = TRUE)
-  n_between  <- sum(Fmax_reps >= 3000 & Fmax_reps < 45000, na.rm = TRUE)
-  n_lt_3000  <- sum(Fmax_reps < 3000, na.rm = TRUE)
+  # Positive
+  if (n_ge_45000 == 3) return("Positive")
+  if (n_ge_3000 >= 2 & n_ge_45000 <= 1) return("Positive")
+  if (n_ge_45000 == 2 & n_between == 1) return("Positive")
 
-  # Positive conditions
-  if (n_ge_45000 == 3) {
-    return("Positive")
-  }
-  if (n_ge_3000 >= 2 & n_ge_45000 <= 1) {
-    return("Positive")
-  }
-  if (n_ge_45000 == 2 & n_between == 1) {
-    return("Positive")
-  }
+  # Negative
+  if (n_ge_3000 <= 1) return("Negative")
 
-  # Negative condition
-  if (n_ge_3000 <= 1) {
-    return("Negative")
-  }
+  # Inconclusive
+  if (n_ge_45000 == 2 & n_lt_3000 == 1) return("Inconclusive")
+  if (n_ge_45000 == 1 & n_between == 1 & n_lt_3000 == 1) return("Inconclusive")
 
-  # Inconclusive conditions
-  if (n_ge_45000 == 2 & n_lt_3000 == 1) {
-    return("Inconclusive")
-  }
-  if (n_ge_45000 == 1 & n_between == 1 & n_lt_3000 == 1) {
-    return("Inconclusive")
-  }
-
-  return(NA_character_)
+  NA_character_
 }
+
 
 ```
 
 \
+Applying the functions:
 
 ```{r}
-saa_data_aug <- saa_data_aug %>%
+dat_aug <- dat_aug %>%
   rowwise() %>%
   mutate(
-    SAA_status_custom =
-      if (PROJECTID == 155) {
-        saa_rule_155(c_across(starts_with("Fmax_24h_Rep")))
-      } else if (PROJECTID == 237) {
-        saa_rule_237(c_across(starts_with("Fmax_24h_Rep")))
-      } else {
-        NA_character_
-      }
+    saa_custom = case_when(
+      project == "155" ~ saa_rule_155(fmax_reps),
+      project == "237" ~ saa_rule_237(fmax_reps),
+      TRUE ~ NA_character_
+    )
   ) %>%
   ungroup()
+
 ```
 
 lastly we calculate the days from baseline
 
 ```{r}
-saa_data_aug <- saa_data_aug %>%
-  mutate(RUNDATE = as.Date(RUNDATE)) %>%
-  group_by(PATNO) %>%
-  mutate(
-    baseline_date = min(RUNDATE, na.rm = TRUE),
-    days_from_baseline = as.numeric(RUNDATE - baseline_date)
-  ) %>%
+dat_aug <- dat_aug %>%
+  mutate(rundate = as.Date(rundate)) %>%
+  group_by(patient_number) %>%
+  mutate(days_from_baseline = as.numeric(rundate - min(rundate, na.rm = TRUE))) %>%
   ungroup()
+
+saa_data_aug <- dat_aug %>% select(-fmax_reps)
 ```
 
 \

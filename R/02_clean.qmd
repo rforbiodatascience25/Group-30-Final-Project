@@ -11,9 +11,7 @@ library(dplyr)
 
 # Loading the raw data
 
-```{r}C}
-raw_data <- read_tsv("../data/01_dat_load.tsv")
-```
+`{r}C} raw_data <- read_tsv("../data/01_dat_load.tsv")`
 
 # Clean the data
 
@@ -41,9 +39,8 @@ tidy_data <- raw_data |>
 
 ## titel ift at data skrives længere
 
-we want the fmax ttt and auc to have three columns instead of having 6 columns.
+#we want the fmax ttt and auc to have three columns instead of having 6 columns.
 
-```{r}
 tidy_data <- tidy_data |> 
   pivot_longer(
     cols = matches("Fmax|TTT|AUC"), 
