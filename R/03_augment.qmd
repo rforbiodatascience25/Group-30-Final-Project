@@ -19,10 +19,9 @@ saa_data_tidy <- read_tsv("../data/02_dat_clean.tsv")
 
 ## Augment Data
 
-First we calculate means from the three datapoints of both the 24h & 150h measurements.
+First we calculate means from the three data points of both the 24h & 150h measurements.
 
 ```{r}
-# Compute means per subject and duration
 means <- saa_data_tidy %>%
   group_by(patient_number, project, duration) %>%
   summarise(
@@ -32,13 +31,12 @@ means <- saa_data_tidy %>%
     .groups = "drop"
   )
 
-# Join means back to long dataset
 dat_aug <- saa_data_tidy %>%
   left_join(means,
             by = c("patient_number", "project", "duration"))
 ```
 
-prepare replicate vectors for SAA rule
+Prepare replicate vectors for SAA rule
 
 ```{r}
 reps <- saa_data_tidy %>%
@@ -53,10 +51,9 @@ dat_aug <- dat_aug %>%
             by = c("patient_number", "project", "duration"))
 ```
 
-We prepare to calculate the status from the fmax values by first creating two functions with the rules:\
+We prepare to calculate the status from the fmax values by first creating two functions with the rules:
 
 ```{r}
-# ---- Project 155 ----
 saa_rule_155 <- function(x) {
   x <- unlist(x)
   n_pos <- sum(x >= 5000, na.rm = TRUE)
@@ -69,7 +66,6 @@ saa_rule_155 <- function(x) {
   )
 }
 
-# ---- Project 237 ----
 saa_rule_237 <- function(x) {
   x <- unlist(x)
 
@@ -80,7 +76,7 @@ saa_rule_237 <- function(x) {
 
   # Positive
   if (n_ge_45000 == 3) return("Positive")
-  if (n_ge_3000 >= 2 & n_ge_45000 <= 1) return("Positive")
+  if (n_between == 2 | n_between == 3) return("Positive")
   if (n_ge_45000 == 2 & n_between == 1) return("Positive")
 
   # Negative
@@ -113,7 +109,7 @@ dat_aug <- dat_aug %>%
 
 ```
 
-lastly we calculate the days from baseline
+lastly we calculate the days from baseline and remove the generated vector column before saving
 
 ```{r}
 dat_aug <- dat_aug %>%

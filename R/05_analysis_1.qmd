@@ -1,0 +1,55 @@
+---
+title: "05_analysis_1"
+format: html
+---
+
+Load libraries
+
+```{r}
+library(tidyverse)
+library(readr)
+```
+
+load the augmented data from file:
+
+```{r}
+saa_data_aug <- read_tsv("../data/03_dat_aug.tsv")
+
+```
+
+```{r}
+# Create a summary table comparing the two status columns
+
+status_comparison <- saa_data_aug %>%
+  group_by(project, patient_number) %>%
+    summarise(
+    given_status = first(saa_result),
+    calculated_status = first(saa_custom),
+    match = given_status == calculated_status,
+    .groups = "drop"
+    )
+
+# Show mismatches only
+
+status_mismatches <- status_comparison %>%
+  filter(!match)
+
+status_comparison
+status_mismatches
+
+```
+
+```{r}
+# Simple bar plot of agreement
+
+status_comparison %>%
+  mutate(match = ifelse(match, "Match", "Mismatch")) %>%
+    ggplot(aes(x = match, fill = match)) +
+    geom_bar() +
+    facet_wrap(~ project) +
+    theme_minimal() +
+    labs(title = "Agreement between Given and Calculated SAA Status",
+    x = "Status Agreement",
+    y = "Number of Patients")
+
+```
