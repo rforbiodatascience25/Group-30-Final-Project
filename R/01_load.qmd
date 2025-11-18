@@ -9,7 +9,7 @@ library(dplyr)
 ```
 
 ```{r}
-raw_data <- read_csv("../_raw/SAA_Biospecimen_Analysis_Results_01Nov2025.csv")
+raw_data <- read_csv("../data/_raw/SAA_Biospecimen_Analysis_Results_01Nov2025.csv")
 ```
 
 ```{r}

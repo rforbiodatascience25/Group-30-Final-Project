@@ -11,7 +11,7 @@ library(ggplot2)
 ```
 
 ```{r}
-raw_data <- read_csv("SAA_Biospecimen_Analysis_results_01nov2025.csv")
+raw_data <- read_csv("_raw/SAA_Biospecimen_Analysis_results_01nov2025.csv")
 ```
 
 ```{r}
