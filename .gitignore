@@ -5,3 +5,5 @@
 ._raw
 .data
 *.Rproj
+
+/.quarto/
