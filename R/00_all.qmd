@@ -1,5 +1,9 @@
 ---
 title: "00_all"
 format: html
+render:
+  - 01_load.qmd
+  - 02_clean.qmd
+  - 03_augment.qmd
+  - 04_describe.qmd
 ---
-
