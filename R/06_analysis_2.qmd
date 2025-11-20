@@ -8,16 +8,21 @@ library(tidyverse)
 ```
 
 ```{r}
-my_cols <- c("#3C3C68","#627634","#545E75","#C03221", "#94BFBE", "#7A1F15",
+my_cols <- c("#3C3C68","#627634","#C03221","#545E75", "#94BFBE", "#7A1F15",
              "#da9283" , "#474B24")
 
 theme_custom <- theme_minimal(base_size = 14) +
   theme(
-    plot.title = element_text(face = "bold", size = 13),
-    plot.subtitle = element_text(size = 10),
-    plot.caption = element_text(size = 8),
-    axis.title = element_text(size = 10),
-    axis.text = element_text(size = 10),
+    plot.title = element_text(face = "bold", size = 13, margin = margin(b = 7)),
+    plot.subtitle = element_text(size = 10, margin = margin(b = 12)),
+    plot.caption = element_text(size = 8, margin = margin(t = 20)),
+      
+    axis.title.x = element_text(size = 10, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 10, margin = margin(r = 10)),
+
+    axis.text.x = element_text(size = 10, margin = margin(t = 5)),
+    axis.text.y = element_text(size = 10, margin = margin(r = 5)),
+    
     legend.position = "none",
     )
 ```
@@ -231,7 +236,7 @@ p_sd_by_instrument <- sd_saa_data |>
   )) +
   
   geom_boxplot(alpha = 0.7) +
-  facet_wrap(~ project, scales = "free_y") +
+  facet_wrap(~ project, scales = "free_x") +
   
   scale_color_manual(values = my_cols) +
   scale_fill_manual(values = my_cols) +
@@ -239,12 +244,13 @@ p_sd_by_instrument <- sd_saa_data |>
   labs(
     title = "Instrument-Specific Variability in Fmax",
     subtitle = "Comparison across three fluorescence readers",
-    x = "Instrument",
-    y = "SD of Fmax [RFU]",
+    x = "SD of Fmax [RFU]",
+    y = "Instrument",
     caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"
   ) +
   
-  theme_custom
+  theme_custom +
+  scale_x_continuous(labels = scales::label_comma())
 
 ```
 
@@ -290,8 +296,8 @@ p_fmax_raw_rep_inst <- saa_data_aug |>
   filter(instrument %in% c(2,4,6)) |> 
   
   ggplot(aes(
-      x = factor(rep), 
-      y = fmax, 
+      x = fmax, 
+      y = factor(rep), 
       color = factor(instrument),
       fill = factor(instrument)
   )) +
@@ -304,12 +310,13 @@ p_fmax_raw_rep_inst <- saa_data_aug |>
   
   labs(
     title = "Raw Fmax Across Instruments and Replicates",
-    x = "Replicate Number",
-    y = "Fmax [RFU]",
+    x = "Fmax [RFU]",
+    y = "Replicate Number",
     caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"
   ) +
   
-  theme_custom
+  theme_custom +
+    scale_x_continuous(labels = scales::label_comma())
 ```
 
 ```{r}
