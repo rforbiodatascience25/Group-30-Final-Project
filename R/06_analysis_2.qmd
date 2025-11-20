@@ -1,0 +1,27 @@
+---
+title: "06_analysis_2"
+format: html
+---
+
+## Load packages
+
+```{r}
+library(tidyverse)
+```
+
+## Load Augmented Data
+
+```{r}
+saa_data_aug <- read_tsv("../data/03_dat_aug.tsv")
+```
+
+```{r}
+saa_data_aug
+```
+
+## Plot
+
+```{r}
+ggplot(saa_data_aug, aes(project, fmax_mean)) +
+  geom_violin() + geom_boxplot(width = 0.1)
+```

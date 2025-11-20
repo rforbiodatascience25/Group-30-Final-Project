@@ -121,7 +121,16 @@ dat_aug <- dat_aug %>%
 saa_data_aug <- dat_aug %>% select(-fmax_reps)
 ```
 
-\
+```{r}
+saa_data_aug <- saa_data_aug |> 
+  mutate(across(c(project, 
+                  duration, 
+                  rep, 
+                  instrument), 
+                
+                as.character))
+```
+
 \
 save the augmented data
 
