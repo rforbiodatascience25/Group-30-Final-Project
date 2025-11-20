@@ -1,0 +1,73 @@
+---
+title: "malaika_waste_dokument"
+format: html
+---
+
+## Load packages
+
+```{r}
+library(tidyverse)
+```
+
+## Plotter means ift positive negative og inconclusive
+
+```{r}
+ggplot(saa_data_aug, aes(factor(project), fmax_mean, fill = factor(project))) +
+  geom_boxplot() +
+  facet_wrap(~ saa_result) +
+  labs(x = "Project", y = "Fmax mean")
+
+```
+
+```{r}
+ggplot(saa_data_aug, aes(x = factor(project), y = fmax_mean, color = saa_result)) +
+  geom_jitter(width = 0.2, alpha = 0.6) +
+  labs(x = "Project", y = "Fmax mean")
+```
+
+```{r}
+saa_data_aug |>
+  ggplot(aes(x = factor(project), y = fmax_mean)) +
+  geom_violin(aes(fill = factor(project)), alpha = 0.5) +
+  geom_boxplot(width = 0.12) +
+  facet_wrap(~ saa_result) +
+  labs(x = "Project", y = "Fmax mean")
+
+
+```
+
+## Plotter kun means
+
+```{r}
+saa_data_aug |> 
+  ggplot(aes(project, fmax_mean)) + 
+  geom_violin() + 
+  geom_boxplot(width = 0.1)
+```
+
+## Instruments
+
+```{r}
+saa_data_aug |> 
+  filter(project == 155) |> 
+  ggplot(aes(x = factor(rep), y = fmax, color = factor(instrument))) +
+  geom_boxplot() +
+  facet_wrap(~ instrument) +
+  labs(x = "Repeat", y = "Fmax")
+```
+
+```{r}
+saa_data_aug |> 
+  filter(project == 237) |> 
+  ggplot(aes(x = factor(rep), y = fmax, color = factor(instrument))) +
+  geom_boxplot() +
+  facet_wrap(~ instrument) +
+  labs(x = "Repeat", y = "Fmax")
+```
+
+```{r}
+ggplot(sd_saa_data, aes(x = instrument, y = fmax_sd, color = factor(project))) +
+  geom_jitter(width = 0.2, alpha = 0.6) +
+  geom_smooth(se = FALSE, method = "loess") +
+  labs(x = "Instrument", y = "Fmax SD")
+```

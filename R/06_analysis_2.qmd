@@ -9,34 +9,23 @@ format: html
 library(tidyverse)
 ```
 
-## Plotter means ift positive negative og inconclusive
+## Fmax_mean in the two projects
 
-```{r}
-ggplot(saa_data_aug, aes(factor(project), fmax_mean, fill = factor(project))) +
-  geom_boxplot() +
-  facet_wrap(~ saa_result) +
-  labs(x = "Project", y = "Fmax mean")
+Selvom vi kun kigger på **means**, så er der allerede en tydelig forskel:
 
-```
+-   **Projekt 237** har *generelt meget højere Fmax_mean* end projekt 155.
 
-```{r}
-ggplot(saa_data_aug, aes(x = factor(project), y = fmax_mean, color = saa_result)) +
-  geom_jitter(width = 0.2, alpha = 0.6) +
-  labs(x = "Project", y = "Fmax mean")
-```
+**Hvorfor giver det mening?**
 
-```{r}
-saa_data_aug |>
-  ggplot(aes(x = factor(project), y = fmax_mean)) +
-  geom_violin(aes(fill = factor(project)), alpha = 0.5) +
-  geom_boxplot(width = 0.12) +
-  facet_wrap(~ saa_result) +
-  labs(x = "Project", y = "Fmax mean")
+-   Projekt 237 bruger et **24-timers assay**
 
+-   Projekt 155 bruger et **150-timers assay**
 
-```
+-   *Assays med forskellig varighed og cykluslængde har forskellig fluorescensdynamik.*
 
-## Plotter kun means
+-   Derfor er Fmax ikke direkte sammenlignelig mellem projekter uden normalisering, og rå-niveauerne forventes at være højere i 24h assayet.
+
+**means alene er ikke nok til at sammenligne projekter, men de viser en klar protokol-afhængig forskel.**
 
 ```{r}
 saa_data_aug |> 
@@ -45,7 +34,9 @@ saa_data_aug |>
   geom_boxplot(width = 0.1)
 ```
 
-# repeats ift projekter
+# **Repeats: Is the assayet consistent?**
+
+Er målingerne i samme assay (rep 1–3) konsistente?
 
 ```{r}
 ggplot(saa_data_aug, aes(x = factor(rep), y = fmax, color = project)) +
@@ -55,75 +46,209 @@ ggplot(saa_data_aug, aes(x = factor(rep), y = fmax, color = project)) +
 
 ```
 
-## instruments
+Boxplottet viser:
+
+-   I projekt 155 er rep 1 → rep 3 generelt faldende
+
+-   I projekt 237 er rep 1 og rep 3 ofte lidt højere end rep 2
+
+Det tyder på:
+
+-   Replicates er *ikke identiske*, men ofte har et karakteristisk mønster.
+
+-   Mønsteret afhænger af projektet og dermed *af assay-protokollen*.
 
 ```{r}
-saa_data_aug |> 
-  filter(project == 155) |> 
-  ggplot(aes(x = factor(rep), y = fmax, color = factor(instrument))) +
-  geom_boxplot() +
-  facet_wrap(~ instrument) +
-  labs(x = "Repeat", y = "Fmax")
+repeats_stat <- saa_data_aug |> 
+  ungroup() |> 
+  summarize(mean=mean(fmax), 
+            median=median(fmax),
+            IQR = quantile(fmax,.75)- quantile(fmax,.25),
+            .by = c(project, rep))
 ```
 
-```{r}
-saa_data_aug |> 
-  filter(project == 237) |> 
-  ggplot(aes(x = factor(rep), y = fmax, color = factor(instrument))) +
-  geom_boxplot() +
-  facet_wrap(~ instrument) +
-  labs(x = "Repeat", y = "Fmax")
-```
+|                  | 155   | 237    |
+|------------------|-------|--------|
+| rep 1 **median** | 72926 | 142138 |
+| rep 2 **median** | 70262 | 135570 |
+| rep 3 **median** | 69721 | 137200 |
+| varians          | 3205  | 6568   |
+
+i projekt 155 → Et stabilt og konsistent fald rep for rep.
+
+i projekt 237 → Mere variation, men stadig inden for et snævert interval.
+
+|               | 155      | 237      |
+|---------------|----------|----------|
+| rep 1 **IQR** | 69735.50 | 59529.75 |
+| rep 2 IQR     | 69404.25 | 63909.50 |
+| rep 3 **IQR** | 82973.25 | 63178.50 |
+| varians       | 13569    | 4379.75  |
+
+-   Projekt 155: IQR ca. 69–82k (større variation)
+
+-   Projekt 237: IQR ca. 59–64k (mindre variation)\
+
+**Projekt 237 er mere konsistent mellem replicates end projekt 155.**
+
+## Standard deviation mellem replicates
+
+Standard deviation viser, hvor stabile replicates er inden for samme måling.
 
 ```{r}
-saa_data_aug |> 
-  filter(instrument == 2 | instrument == 4 | instrument == 6) |> 
-  ggplot(aes(x = factor(rep), y = fmax, color = factor(instrument))) +
-  facet_grid(instrument ~ project) +
-  geom_boxplot() +
-  labs(x = "Repeat", y = "Fmax")
-
-```
-
-## standard deviations i repeats
-
-```{r}
-sd_df <- saa_data_aug |> 
+sd_saa_data <- saa_data_aug |> 
   group_by(patient_number, rundate) |> 
   mutate(fmax_sd = sd(fmax))
 ```
 
 ```{r}
-sd_df |> 
+sd_saa_data |> 
+  filter(instrument == 2 | instrument == 4 | instrument == 6) |> 
+  ggplot(aes(x = project, y = fmax_sd)) +
+  geom_boxplot() +
+  labs(x = "project", y = "sd fmax")
+```
+
+```{r}
+sd_saa_data |>
+  ungroup() |> 
+  filter(rep == 1) |> 
+  summarize(min = min(fmax_sd), 
+            mean=mean(fmax_sd), 
+            median=median(fmax_sd), 
+            max=max(fmax_sd),
+            IQR = quantile(fmax_sd,.75)- quantile(fmax_sd,.25),
+             .by = project)
+```
+
+|        | 155       | 237      |
+|--------|-----------|----------|
+| mean   | 24065.55  | 10386.01 |
+| median | 22198.389 | 5662.369 |
+| IQR    | 26131.171 | 6469.984 |
+
+her er der kæmpe forskel. Projekt 155 har 2–4x større variation mellem replicates end projekt 237.
+
+Dette er et centralt kvalitetsresultat.
+
+The 150-hour protocol produces substantially higher variability between replicates, indicating reduced measurement precision compared to the 24-hour assay.
+
+## Instrumenter: Forskelle i SD for hvert instrument
+
+vi kan mpske også specifikt kigge på instrumenterne og deres standard deviation.
+
+```{r}
+sd_saa_data |> 
   filter(instrument == 2 | instrument == 4 | instrument == 6) |> 
   ggplot(aes(x = instrument, y = fmax_sd, color = instrument)) +
   facet_wrap( ~ project) +
   geom_boxplot() +
-  labs(x = "instrument", y = "sd fmax")
+  labs(x = "instrument", y = "sd fmax") 
 ```
 
 ```{r}
-ggplot(sd_df, aes(x = instrument, y = fmax_sd, color = factor(project))) +
-  geom_jitter(width = 0.2, alpha = 0.6) +
-  geom_smooth(se = FALSE, method = "loess") +
-  labs(x = "Instrument", y = "Fmax SD")
-
+sd_instruments_stats <- sd_saa_data |> 
+  ungroup() |> 
+  filter(rep == 1) |> 
+  summarize(mean=mean(fmax_sd), 
+            median=median(fmax_sd), 
+            IQR = quantile(fmax_sd,.75)- quantile(fmax_sd,.25),
+             .by = c(project, instrument))
 ```
 
+|     | **instrument** | **mean**  | **median** | **IQR**   |
+|:----|:---------------|:----------|:-----------|:----------|
+| 155 | 2              | 30015.228 | 28998.572  | 30174.425 |
+| 155 | 4              | 21468.795 | 20742.746  | 21745.751 |
+| 155 | 6              | 20189.626 | 17562.292  | 24950.167 |
+| 237 | 6              | 13107.043 | 8356.858   | 6809.040  |
+| 237 | 2              | 8384.049  | 4482.218   | 4952.750  |
+| 237 | 4              | 8788.222  | 4594.309   | 5483.490  |
+
+### Projekt 155 (SD)
+
+-   Instrument 2 → **højeste SD**
+
+-   Instrument 6 → **laveste SD**
+
+### Projekt 237 (SD)
+
+-   Instrument 6 → **højeste SD**
+
+-   Instrument 2 → **laveste SD**
+
+**Fortolkning:**
+
+-   Der er *ingen global instrument-trend* på tværs af projekter.
+
+-   Det viser, at **variation ikke skyldes instrumentet som alene faktor**, men afhænger af **kombinationen af instrument + projekt (assay)**.
+
+Og **vigtigere**:
+
+Selv når det “værste” instrument bruges i projekt 237, er SD stadig meget lavere end i projekt 155.
+
+→ Det betyder, at **projekt‐protokollen** er den dominerende kilde til forskellen.
+
+## Instrumenter: Rå Fmax (ikke SD)
+
 ```{r}
-mean_sd_df <- saa_data_aug %>%
+saa_data_aug |> 
   filter(instrument == 2 | instrument == 4 | instrument == 6) |> 
-  group_by(patient_number, rundate, instrument, project) %>%
-  summarise(
-    fmax_mean = mean(fmax, na.rm = TRUE),
-    fmax_sd   = sd(fmax, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-ggplot(mean_sd_df, aes(fmax_mean, fmax_sd, color = factor(instrument))) +
-  geom_point(alpha = 0.7) +
-  geom_smooth(se = FALSE, color = "black") +
+  ggplot(aes(x = factor(rep), y = fmax, color = factor(instrument))) +
   facet_grid(instrument ~ project) +
-  labs(x = "Fmax mean", y = "Fmax SD")
+  geom_boxplot() +
+  labs(x = "Repeat", y = "Fmax")
 
 ```
+
+```{r}
+stats_instruments_project <- saa_data_aug |>
+  ungroup() |> 
+  filter(instrument == 2 | instrument == 4 | instrument == 6) |> 
+  summarize(min = min(fmax), 
+            mean=mean(fmax), 
+            median=median(fmax), 
+            max=max(fmax),
+             .by = c(project, rep, instrument))
+
+stats_instruments_project
+```
+
+instrument 2
+
+|                 | 155     | 237      |
+|-----------------|---------|----------|
+| Median (rep 1)  | 93781.0 | 137402.5 |
+| Median (rep 2)  | 86402.0 | 133614.0 |
+| Median (rep 3)  | 81850.0 | 134146.0 |
+
+instrument 4
+
+|                 | 155     | 237      |
+|-----------------|---------|----------|
+| Median (rep 1)  | 66598.0 | 132876.0 |
+| Median (rep 2)  | 65894.5 | 130309.5 |
+| Median (rep 3)  | 66471.0 | 132749.0 |
+
+instrument 6
+
+|                 | 155     | 237      |
+|-----------------|---------|----------|
+| Median (rep 1)  | 63126.0 | 158205.0 |
+| Median (rep 2)  | 56437.0 | 143678.0 |
+| Median (rep 3)  | 63862.0 | 141988.0 |
+
+-   For begge projekter har enten rep 1 eller rep 3 typisk den højeste Fmax.
+
+-   Rep 2 er ofte lavere.
+
+Dette er faktisk meget typisk i real-time aggregation assays:\
+**det første rep “fylder systemet” i cuvetten**, og rep 3 får en mere stabil målekurve.
+
+Dette understøtter igen:
+
+> **Replicates har interne tekniske mønstre, som er ret stabile inden for samme projekt og instrument.**
+
+# **Så hvad kan du sige samlet i din analyse?**
+
+> Across all analyses (means, replicate structure, standard deviation, and instrument comparisons), project 237 consistently displays higher Fmax values and significantly lower replicate variability. Project 155, which uses a 150-hour assay with lower measurement frequency, shows 2–4× higher replicate standard deviation compared to the 24-hour assay used in project 237. This demonstrates that the assay protocol—not the instrument—is the dominant source of variability. Within each project, repeats follow a reproducible structure, typically with higher values in either the first or third replicate, but the overall stability is markedly better in project 237.
