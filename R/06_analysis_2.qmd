@@ -9,23 +9,7 @@ format: html
 library(tidyverse)
 ```
 
-## Load Augmented Data
-
-```{r}
-saa_data_aug
-```
-
-## Plot
-
-```         
-```
-
-```{r}
-ggplot(saa_data_aug, aes(x = factor(project), y = fmax_mean, color = saa_result)) +
-  geom_jitter(width = 0.2, alpha = 0.6) +
-  labs(x = "Project", y = "Fmax mean")
-
-```
+## Plotter means ift positive negative og inconclusive
 
 ```{r}
 ggplot(saa_data_aug, aes(factor(project), fmax_mean, fill = factor(project))) +
@@ -35,10 +19,36 @@ ggplot(saa_data_aug, aes(factor(project), fmax_mean, fill = factor(project))) +
 
 ```
 
+```{r}
+ggplot(saa_data_aug, aes(x = factor(project), y = fmax_mean, color = saa_result)) +
+  geom_jitter(width = 0.2, alpha = 0.6) +
+  labs(x = "Project", y = "Fmax mean")
+```
+
+```{r}
+saa_data_aug |>
+  ggplot(aes(x = factor(project), y = fmax_mean)) +
+  geom_violin(aes(fill = factor(project)), alpha = 0.5) +
+  geom_boxplot(width = 0.12) +
+  facet_wrap(~ saa_result) +
+  labs(x = "Project", y = "Fmax mean")
+
+
+```
+
+## Plotter kun means
+
+```{r}
+saa_data_aug |> 
+  ggplot(aes(project, fmax_mean)) + 
+  geom_violin() + 
+  geom_boxplot(width = 0.1)
+```
+
 # repeats ift projekter
 
 ```{r}
-ggplot(saa_data_aug, aes(x = factor(rep), y = fmax, color = factor(project))) +
+ggplot(saa_data_aug, aes(x = factor(rep), y = fmax, color = project)) +
   geom_boxplot() +
   facet_wrap(~ project) +
   labs(x = "Repeat", y = "Fmax")
@@ -67,9 +77,53 @@ saa_data_aug |>
 
 ```{r}
 saa_data_aug |> 
-  filter(instrument %in% 2 %in%  4 %in% 6) |> 
-  ggplot(aes(x = factor(rep), y = fmax)) +
+  filter(instrument == 2 | instrument == 4 | instrument == 6) |> 
+  ggplot(aes(x = factor(rep), y = fmax, color = factor(instrument))) +
+  facet_grid(instrument ~ project) +
   geom_boxplot() +
   labs(x = "Repeat", y = "Fmax")
+
+```
+
+## standard deviations i repeats
+
+```{r}
+sd_df <- saa_data_aug |> 
+  group_by(patient_number, rundate) |> 
+  mutate(fmax_sd = sd(fmax))
+```
+
+```{r}
+sd_df |> 
+  filter(instrument == 2 | instrument == 4 | instrument == 6) |> 
+  ggplot(aes(x = instrument, y = fmax_sd, color = instrument)) +
+  facet_wrap( ~ project) +
+  geom_boxplot() +
+  labs(x = "instrument", y = "sd fmax")
+```
+
+```{r}
+ggplot(sd_df, aes(x = instrument, y = fmax_sd, color = factor(project))) +
+  geom_jitter(width = 0.2, alpha = 0.6) +
+  geom_smooth(se = FALSE, method = "loess") +
+  labs(x = "Instrument", y = "Fmax SD")
+
+```
+
+```{r}
+mean_sd_df <- saa_data_aug %>%
+  filter(instrument == 2 | instrument == 4 | instrument == 6) |> 
+  group_by(patient_number, rundate, instrument, project) %>%
+  summarise(
+    fmax_mean = mean(fmax, na.rm = TRUE),
+    fmax_sd   = sd(fmax, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+ggplot(mean_sd_df, aes(fmax_mean, fmax_sd, color = factor(instrument))) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(se = FALSE, color = "black") +
+  facet_grid(instrument ~ project) +
+  labs(x = "Fmax mean", y = "Fmax SD")
 
 ```
