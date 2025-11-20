@@ -4,8 +4,7 @@ format: html
 ---
 
 ```{r}
-library(readr)
-library(dplyr)
+library("tidyverse")
 ```
 
 ```{r}

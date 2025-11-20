@@ -5,8 +5,6 @@ format: html
 
 ```{r}
 library(tidyverse)
-library(readr)
-library(dplyr)
 ```
 
 # Loading the raw data
@@ -19,11 +17,15 @@ raw_data <- read_tsv("../data/01_dat_load.tsv")
 
 ## Deleting columns
 
-There is some columns that aren't relevant for us, such as the name of the institution and *PI?* . Some of the columns have the same value through the whole dataset, such as TYPE (rygmarvsprøve) and SAAMethod.
+Some columns in the data-set are not part of the chosen analytic points. The columns chosen to omit are either:
 
-There is also some columns that are only measured in one of the projects, and not both. We also want to delete those. SAA_Type, TSmax, T50.
+-   Irrelevant to the analysis such as the name of the institution or the responsible practitioner.
 
-Also there are some columns that almost has no measurements, that is the sample volume.
+-   Contain the same value for all observation such as the TYPE (which is always a cerebrospinal fluid sample) and SAAMethod (results always made on the basis of a SAA).
+
+-   Only have a value in observed in one of the projects: SAA_Type, TSmax, T50.
+
+-   Lack meassurements for most observations like SampleVolume.
 
 ```{r}
 tidy_data <- raw_data |>
