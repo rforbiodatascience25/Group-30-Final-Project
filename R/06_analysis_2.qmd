@@ -18,7 +18,8 @@ saa_data_aug
 ## Plot
 
 ```{r}
-ggplot(saa_data_aug, aes(project, fmax_mean)) +
+saa_data_aug |> 
+  ggplot(aes(project, fmax_mean)) +
   geom_violin() + geom_boxplot(width = 0.1)
 ```
 
