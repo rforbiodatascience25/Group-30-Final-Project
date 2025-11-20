@@ -131,6 +131,10 @@ saa_data_aug <- saa_data_aug |>
                 as.character))
 ```
 
+```{r}
+saa_data_aug
+```
+
 \
 save the augmented data
 

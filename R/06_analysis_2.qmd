@@ -12,10 +12,6 @@ library(tidyverse)
 ## Load Augmented Data
 
 ```{r}
-saa_data_aug <- read_tsv("../data/03_dat_aug.tsv")
-```
-
-```{r}
 saa_data_aug
 ```
 
@@ -24,4 +20,8 @@ saa_data_aug
 ```{r}
 ggplot(saa_data_aug, aes(project, fmax_mean)) +
   geom_violin() + geom_boxplot(width = 0.1)
+```
+
+```{r}
+names(saa_data_aug)
 ```
