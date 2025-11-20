@@ -338,11 +338,11 @@ Instrument-specific medians confirm these patterns and align with earlier SD/IQR
 
 ### Instrument 2
 
-|                 | 155     | 237      |
-|-----------------|---------|----------|
-| Median (rep 1)  | 93781.0 | 137402.5 |
-| Median (rep 2)  | 86402.0 | 133614.0 |
-| Median (rep 3)  | 81850.0 | 134146.0 |
+|                | 155     | 237      |
+|----------------|---------|----------|
+| Median (rep 1) | 93781.0 | 137402.5 |
+| Median (rep 2) | 86402.0 | 133614.0 |
+| Median (rep 3) | 81850.0 | 134146.0 |
 
 ### Instrument 4
 

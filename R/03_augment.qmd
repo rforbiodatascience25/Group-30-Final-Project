@@ -45,37 +45,34 @@ When PPMI performed their study, they choose a criteria the Fmax value must meet
 
 As the two projects differ in method, they used different requirements for each. The requirements used can be seen in the table below:
 
-+---------------+------------------------------------------------------+
-| **Result**    | **Project 155 - Criteria of Fmax**                   |
-+---------------+------------------------------------------------------+
-| Positive      | All 3 replicates have Fmax ≥ 5,000 RFU               |
-+---------------+------------------------------------------------------+
-| Negative      | 0 or 1 replicate has Fmax ≥ 5,000 RFU                |
-+---------------+------------------------------------------------------+
-| Inconclusive  | Exactly 2 replicates have Fmax ≥ 5,000 RFU           |
-+---------------+------------------------------------------------------+
+|              |                                            |
+|--------------|--------------------------------------------|
+| **Result**   | **Project 155 - Criteria of Fmax**         |
+| Positive     | All 3 replicates have Fmax ≥ 5,000 RFU     |
+| Negative     | 0 or 1 replicate has Fmax ≥ 5,000 RFU      |
+| Inconclusive | Exactly 2 replicates have Fmax ≥ 5,000 RFU |
 
-+---------------+--------------------------------------------------------------------------------------------------------------------------------------+
-| Result        | **Project 237 - Criteria of Fmax**                                                                                                   |
-+===============+======================================================================================================================================+
-| Positive      | -   All 3 replicates have Fmax ≥ 45,000 RFU                                                                                          |
-|               |                                                                                                                                      |
-|               |     or                                                                                                                               |
-|               |                                                                                                                                      |
-|               | -   Exactly 2 or 3 replicates have Fmax ≥ 3,000 RFU & \< 45,000 RFU                                                                  |
-|               |                                                                                                                                      |
-|               |     or                                                                                                                               |
-|               |                                                                                                                                      |
-|               | -   Exactly 2 replicates have Fmax ≥ 45,000 RFU & 1 replicate has Fmax ≥ 3,000 RFU & \< 45,000 RFU                                   |
-+---------------+--------------------------------------------------------------------------------------------------------------------------------------+
-| Negative      | -   0 or 1 replicate has Fmax ≥ 3,000 RFU                                                                                            |
-+---------------+--------------------------------------------------------------------------------------------------------------------------------------+
-| Inconclusive  | -   Exactly 2 replicates have Fmax ≥ 45,000 RFU & 1 replicate has Fmax \< 3,000 RFU                                                  |
-|               |                                                                                                                                      |
-|               |     or                                                                                                                               |
-|               |                                                                                                                                      |
-|               | -   Exactly 1 replicate has Fmax ≥ 45,000 RFU & 1 replicate has Fmax ≥ 3,000 RFU & \< 45,000 RFU & 1 replicate has Fmax \< 3,000 RFU |
-+---------------+--------------------------------------------------------------------------------------------------------------------------------------+
++--------------+--------------------------------------------------------------------------------------------------------------------------------------+
+| Result       | **Project 237 - Criteria of Fmax**                                                                                                   |
++==============+======================================================================================================================================+
+| Positive     | -   All 3 replicates have Fmax ≥ 45,000 RFU                                                                                          |
+|              |                                                                                                                                      |
+|              |     or                                                                                                                               |
+|              |                                                                                                                                      |
+|              | -   Exactly 2 or 3 replicates have Fmax ≥ 3,000 RFU & \< 45,000 RFU                                                                  |
+|              |                                                                                                                                      |
+|              |     or                                                                                                                               |
+|              |                                                                                                                                      |
+|              | -   Exactly 2 replicates have Fmax ≥ 45,000 RFU & 1 replicate has Fmax ≥ 3,000 RFU & \< 45,000 RFU                                   |
++--------------+--------------------------------------------------------------------------------------------------------------------------------------+
+| Negative     | -   0 or 1 replicate has Fmax ≥ 3,000 RFU                                                                                            |
++--------------+--------------------------------------------------------------------------------------------------------------------------------------+
+| Inconclusive | -   Exactly 2 replicates have Fmax ≥ 45,000 RFU & 1 replicate has Fmax \< 3,000 RFU                                                  |
+|              |                                                                                                                                      |
+|              |     or                                                                                                                               |
+|              |                                                                                                                                      |
+|              | -   Exactly 1 replicate has Fmax ≥ 45,000 RFU & 1 replicate has Fmax ≥ 3,000 RFU & \< 45,000 RFU & 1 replicate has Fmax \< 3,000 RFU |
++--------------+--------------------------------------------------------------------------------------------------------------------------------------+
 
 Prepare replicate vectors for SAA rule
 
