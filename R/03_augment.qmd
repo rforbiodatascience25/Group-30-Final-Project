@@ -5,25 +5,26 @@ format: html
 
 ```{r}
 library(tidyverse)
-library(readr)
-library(dplyr)
-library(stringr)
-library(lubridate)
 ```
 
-## Load Clean Data
+# Loading the clean data
 
 ```{r}
 saa_data_tidy <- read_tsv("../data/02_dat_clean.tsv")
 ```
 
-## Augment Data
+# Augment Data
 
-First we calculate means from the three data points of both the 24h & 150h measurements.
+## Calculating means of Fmax, ttt and auc
+
+Instead of working with three replicates of a single observation, moving forward the mean of the variable will be used to represent the observation.
+
+The means are calculated of Fmax, ttt and auc from a single patient (patient_number) per visit (clinical_event).
 
 ```{r}
-means <- saa_data_tidy %>%
-  group_by(patient_number, project, duration) %>%
+# Calculting the means:
+means <- saa_data_tidy |>
+  group_by(patient_number, clinical_event) |>
   summarise(
     fmax_mean = mean(fmax, na.rm = TRUE),
     ttt_mean  = mean(ttt,  na.rm = TRUE),
@@ -31,16 +32,56 @@ means <- saa_data_tidy %>%
     .groups = "drop"
   )
 
-dat_aug <- saa_data_tidy %>%
+# Adding the means to the dataset:
+dat_aug <- saa_data_tidy |>
   left_join(means,
-            by = c("patient_number", "project", "duration"))
+            by = c("patient_number", "clinical_event"))
+
 ```
+
+## Performing a quality check
+
+When PPMI performed their study, they choose a criteria the Fmax value must meet, for the SAA-result to indicate PD. The indication of PD is stored in the saa_result column as either positive, negative or inconclusive. To ensure they correctly assigned the saa_results to the observations, a quality check is made.
+
+As the two projects differ in method, they used different requirements for each. The requirements used can be seen in the table below:
+
++---------------+------------------------------------------------------+
+| **Result**    | **Project 155 - Criteria of Fmax**                   |
++---------------+------------------------------------------------------+
+| Positive      | All 3 replicates have Fmax ≥ 5,000 RFU               |
++---------------+------------------------------------------------------+
+| Negative      | 0 or 1 replicate has Fmax ≥ 5,000 RFU                |
++---------------+------------------------------------------------------+
+| Inconclusive  | Exactly 2 replicates have Fmax ≥ 5,000 RFU           |
++---------------+------------------------------------------------------+
+
++---------------+--------------------------------------------------------------------------------------------------------------------------------------+
+| Result        | **Project 237 - Criteria of Fmax**                                                                                                   |
++===============+======================================================================================================================================+
+| Positive      | -   All 3 replicates have Fmax ≥ 45,000 RFU                                                                                          |
+|               |                                                                                                                                      |
+|               |     or                                                                                                                               |
+|               |                                                                                                                                      |
+|               | -   Exactly 2 or 3 replicates have Fmax ≥ 3,000 RFU & \< 45,000 RFU                                                                  |
+|               |                                                                                                                                      |
+|               |     or                                                                                                                               |
+|               |                                                                                                                                      |
+|               | -   Exactly 2 replicates have Fmax ≥ 45,000 RFU & 1 replicate has Fmax ≥ 3,000 RFU & \< 45,000 RFU                                   |
++---------------+--------------------------------------------------------------------------------------------------------------------------------------+
+| Negative      | -   0 or 1 replicate has Fmax ≥ 3,000 RFU                                                                                            |
++---------------+--------------------------------------------------------------------------------------------------------------------------------------+
+| Inconclusive  | -   Exactly 2 replicates have Fmax ≥ 45,000 RFU & 1 replicate has Fmax \< 3,000 RFU                                                  |
+|               |                                                                                                                                      |
+|               |     or                                                                                                                               |
+|               |                                                                                                                                      |
+|               | -   Exactly 1 replicate has Fmax ≥ 45,000 RFU & 1 replicate has Fmax ≥ 3,000 RFU & \< 45,000 RFU & 1 replicate has Fmax \< 3,000 RFU |
++---------------+--------------------------------------------------------------------------------------------------------------------------------------+
 
 Prepare replicate vectors for SAA rule
 
 ```{r}
-reps <- saa_data_tidy %>%
-  group_by(patient_number, project, duration) %>%
+reps <- saa_data_tidy |>
+  group_by(patient_number, project, duration, clinical_event) %>%
   summarise(
     fmax_reps = list(fmax),
     .groups = "drop"
@@ -48,7 +89,8 @@ reps <- saa_data_tidy %>%
 
 dat_aug <- dat_aug %>%
   left_join(reps,
-            by = c("patient_number", "project", "duration"))
+            by = c("patient_number", "project", "duration","clinical_event"))
+View(reps)
 ```
 
 We prepare to calculate the status from the fmax values by first creating two functions with the rules:
