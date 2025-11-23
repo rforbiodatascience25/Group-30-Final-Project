@@ -3,3 +3,91 @@ title: "04_describe"
 format: html
 ---
 
+```{r}
+library(tidyverse)
+```
+
+# Loading the augmented data
+
+```{r}
+saa_aug_data <- read_tsv("../data/03_aug_data.tsv")
+```
+
+# Describing the data
+
+To get a better understanding of the data being worked with, some simple descriptive plots will be made.
+
+A general theme has been made:
+
+```{r}
+  theme_custom <- theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 13, margin = margin(b = 7)),
+    plot.subtitle = element_text(size = 10, margin = margin(b = 12)),
+    plot.caption = element_text(size = 8, margin = margin(t = 20)),
+      
+    axis.title.x = element_text(size = 10, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 10, margin = margin(r = 10)),
+
+    axis.text.x = element_text(size = 10, margin = margin(t = 5)),
+    axis.text.y = element_text(size = 10, margin = margin(r = 5)),
+    
+    legend.position = "none",
+    )
+```
+
+A plot describing the distribution across the two projects.
+
+```{r}
+project_distribution <- saa_aug_data |>
+  mutate(project = as.character(project)) |>
+  ggplot(mapping = aes(x = project)) + 
+  geom_bar(mapping = aes(fill = sex)) + 
+  scale_fill_manual(values = c("#da9283","#3C3C68"),
+                    name = "Sex") +
+  theme_custom + 
+  theme(legend.position = "bottom") + 
+  labs(title = "Project Distribution",
+       subtitle = "The distribution of observations and gender across project 155 and 237",
+       x = "Project",
+       y = "Observations")
+project_distribution
+```
+
+The amount of different patients enrolled in the experiment was 1364:
+
+```{r}
+patients_participants <- saa_aug_data |>
+  distinct(patient_number) |>
+  summarize(Participants = n())
+patients_participants
+
+```
+
+The distribution of each patient's latest experiment:
+
+```{r}
+multiple_experiments <- saa_aug_data |>
+  arrange(desc(days_from_baseline)) |>
+  distinct(patient_number, .keep_all = TRUE) |>
+  filter(clinical_event != "BL" & clinical_event != "U01") |>
+  ggplot(mapping = aes(x = clinical_event)) + 
+  geom_bar() + 
+  theme_custom + 
+  theme(legend.position = "bottom") + 
+  labs(title = "Latest observation",
+       subtitle = "The latest observation of each patient",
+       x = "Latest Observation",
+       y = "Participants")
+multiple_experiments
+```
+
+```{r}
+my_cols <- c("#3C3C68","#627634","#545E75","#C03221", "#94BFBE", "#7A1F15",
+             "#da9283" , "#474B24")
+```
+
+```{r}
+saa_aug_data |>
+  count()
+```
