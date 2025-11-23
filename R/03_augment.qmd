@@ -47,7 +47,7 @@ means <- tidy_data |>
   )
 
 # Adding the means to the dataset
-dat_aug <- tidy_data |>
+aug_data <- tidy_data |>
   left_join(means,
             by = c("patient_number", 
                    "clinical_event", 
@@ -100,7 +100,7 @@ reps <- tidy_data |>
     .groups = "drop"
   )
 
-dat_aug <- dat_aug |> 
+aug_data <- aug_data |> 
   left_join(reps,
             by = c("patient_number", 
                    "project", 
@@ -151,7 +151,7 @@ saa_rule_237 <- function(x) {
 Applying the functions and subsequently removing the generated fmax_reps column.
 
 ```{r}
-dat_aug <- dat_aug |> 
+aug_data <- aug_data |> 
   rowwise() |> 
   mutate(
     saa_custom = case_when(
@@ -162,15 +162,29 @@ dat_aug <- dat_aug |>
   ) |> 
   ungroup()
 
-dat_aug <- dat_aug |>  
+aug_data <- aug_data |>  
   select(-fmax_reps)
 
+```
+
+```{r}
+aug_data |>
+  count(saa_custom)
+```
+
+```{r}
+aug_data |>
+  count(saa_result)
+```
+
+```{r}
+all(aug_data$saa_result == aug_data$saa_custom)
 ```
 
 Declaring datatype in some columns
 
 ```{r}
-dat_aug <- dat_aug |> 
+aug_data <- aug_data |> 
   mutate(across(c(project, 
                   duration, 
                   rep, 
@@ -182,5 +196,5 @@ dat_aug <- dat_aug |>
 ## Save the augmented data
 
 ```{r}
-write_tsv(dat_aug, "../data/03_dat_aug.tsv")
+write_tsv(aug_data, "../data/03_dat_aug.tsv")
 ```
