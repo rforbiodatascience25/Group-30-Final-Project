@@ -2,11 +2,7 @@
 title: "06_analysis_2"
 format: 
   html:
-      self-contained: false
-  
-execute:
-  fig-format: png
-  fig-path: "../results/"
+      output-dir: ../results
 ---
 
 ```{r}
@@ -45,6 +41,14 @@ theme_custom <- theme_minimal(base_size = 14) +
     )
 ```
 
+```{r}
+knitr::opts_chunk$set(
+  fig.path = "../results/",
+  fig.format = "png",
+  echo = TRUE
+)
+```
+
 # Analysis of Fmax
 
 Seed Amplification Assays (SAA) detect α-synuclein aggregates in cerebrospinal fluid (CSF) and monitors fluorescence intensity over time. The point at which fluorescence reaches its maximum (Fmax) reflects the level of α-synuclein aggregation and is therefore a potential diagnostic indicator for Parkinson’s disease (PD).
@@ -64,6 +68,7 @@ The goal of this analysis is therefore to evaluate the precision, consistency, a
 ***Project 237 consistently shows higher mean Fmax values than Project 155. This difference is expected: shorter assays accumulate fluorescence more rapidly, while longer assays distribute aggregation over many more cycles, resulting in lower peak values.***
 
 ```{r}
+
 p_fmax_mean_dist <- aug_data |> 
   ggplot(
     aes(
@@ -98,8 +103,7 @@ p_fmax_mean_dist <- aug_data |>
 
 ```
 
-```{r}
-#| fig:
+```{r 06_key_plot_1}
 p_fmax_mean_dist
 ```
 
@@ -140,7 +144,7 @@ p_fmax_by_rep <- ggplot(aug_data, aes(
 
 ```
 
-```{r}
+```{r 06_key_plot_2}
 p_fmax_by_rep
 ```
 
@@ -192,6 +196,7 @@ sd_saa_data <- aug_data |>
 ```
 
 ```{r}
+
 p_sd_by_project <- sd_saa_data |> 
   filter(instrument %in% c(2, 4, 6)) |> 
   ggplot(aes(x = fmax_sd, 
@@ -215,7 +220,7 @@ p_sd_by_project <- sd_saa_data |>
   scale_x_continuous(labels = scales::label_comma())
 ```
 
-```{r}
+```{r 06_key_plot_3}
 p_sd_by_project
 ```
 
@@ -244,6 +249,7 @@ The 150-hour assay (155) has 2–4 times higher replicate variability than the 2
 We next examined whether any fluorescence reader (instruments 2, 4, 6) contributed disproportionately to the SD.
 
 ```{r}
+
 p_sd_by_instrument <- sd_saa_data |> 
   filter(instrument %in% c(2,4,6)) |> 
   
@@ -273,7 +279,7 @@ p_sd_by_instrument <- sd_saa_data |>
 
 ```
 
-```{r}
+```{r 06_key_plot_4}
 p_sd_by_instrument
 ```
 
@@ -311,6 +317,7 @@ Instrument-level statistics:
 To visualize replicate patterns across instruments:
 
 ```{r}
+
 p_fmax_raw_rep_inst <- aug_data |> 
   filter(instrument %in% c(2,4,6)) |> 
   
@@ -338,7 +345,7 @@ p_fmax_raw_rep_inst <- aug_data |>
     scale_x_continuous(labels = scales::label_comma())
 ```
 
-```{r}
+```{r 06_key_plot_5}
 p_fmax_raw_rep_inst
 ```
 
