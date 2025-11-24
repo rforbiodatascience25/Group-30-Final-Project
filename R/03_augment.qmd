@@ -140,6 +140,7 @@ saa_rule_237 <- function(x) {
   if (n_ge_3000 <= 1) return("Negative")
 
   # Inconclusive
+  if (length(x<3)) return("Inconclusive")
   if (n_ge_45000 == 2 & n_lt_3000 == 1) return("Inconclusive")
   if (n_ge_45000 == 1 & n_between == 1 & n_lt_3000 == 1) return("Inconclusive")
 
@@ -165,6 +166,10 @@ aug_data <- aug_data |>
 aug_data <- aug_data |>  
   select(-fmax_reps)
 
+```
+
+```{r}
+which(is.na(aug_data$saa_custom))
 ```
 
 ```{r}

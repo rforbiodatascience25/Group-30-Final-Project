@@ -43,12 +43,15 @@ tidy_data <- raw_data |>
          -starts_with("T50"),
          -starts_with("Sample"))
 
+```
 
-## titel ift at data skrives længere
+## Missing value interpretation
 
-#we want the fmax ttt and auc to have three columns instead of having 6 columns.
+One person (patient_number = 41184) has the value "U01" in the clinical event column. As no information is found explaining the value, the patient is removed from the data.
 
-
+```{r}
+tidy_data <- tidy_data |>
+  filter(CLINICAL_EVENT != "U01")
 ```
 
 ## Elongating the data
