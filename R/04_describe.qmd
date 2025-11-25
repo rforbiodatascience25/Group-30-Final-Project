@@ -149,4 +149,46 @@ instruments_used
 
 ## High and low ranges of key values
 
-To get a better understanding of the ranges of key values (fmax, auc, ttt) we look at a few examples at each end of the range.
+To get a better understanding of the ranges of key values (fmax, auc, ttt) we look at a few examples at each end of the spectrum.
+
+```{r}
+low_range <- function(df, column) {
+  df2 <- df |> 
+    filter(project == 155) |>
+    arrange({{column}}) |>
+    pull({{column}})
+  mean_low_155 <- mean(df2[1:10], na.rm = TRUE)
+  
+  df3 <- df |>
+    filter(project == 237) |>
+    arrange({{column}}) |>
+    pull({{column}})
+  mean_low_237 <- mean(df3[1:10], na.rm = TRUE)
+  return(list(mean_low_155, mean_low_237))
+}
+
+low_range(saa_aug_data, fmax)
+low_range(saa_aug_data, auc)
+low_range(saa_aug_data, ttt)
+```
+
+```{r}
+high_range <- function(df, column) {
+  df2 <- df |> 
+    filter(project == 155) |>
+    arrange(desc({{column}})) |>
+    pull({{column}})
+  mean_high_155 <- mean(df2[1:10], na.rm = TRUE)
+  
+  df3 <- df |>
+    filter(project == 237) |>
+    arrange(desc({{column}})) |>
+    pull({{column}})
+  mean_high_237 <- mean(df3[1:10], na.rm = TRUE)
+  return(list(mean_high_155, mean_high_237))
+}
+
+high_range(saa_aug_data, fmax)
+high_range(saa_aug_data, auc)
+high_range(saa_aug_data, ttt)
+```
