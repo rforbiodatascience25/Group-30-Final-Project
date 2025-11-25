@@ -10,6 +10,8 @@
 
 # **Link to presentation**
 
+[See presentation](doc/presentation.html)
+
 # **Data retrieval**
 
 To access and download the biospecimen data used in this project, follow the steps below.
@@ -32,8 +34,6 @@ To access and download the biospecimen data used in this project, follow the ste
     2.  In the left-hand panel, navigate to **Biospecimen → Biospecimen Analysis**.
 
     3.  Click on "**Current Biospecimen Analysis Results**" to download the raw data file (CSV format).
-
-<!-- -->
 
 4.  **Store the Data**\
     Place the downloaded `.csv` file into the `_raw` directory.
