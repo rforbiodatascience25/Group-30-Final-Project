@@ -40,13 +40,3 @@ library(fs)
 
 ```{r, child="06_analysis_2.qmd"}
 ```
-
-Render it:
-
-```{r}
-old_dir <- here("R", "00_all.html")
-new_dir <- here("results", "00_all.html")
-if (file_exists(old_dir)) {
-file_move(old_dir, new_dir)
-}
-```

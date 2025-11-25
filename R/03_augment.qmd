@@ -209,13 +209,3 @@ aug_data <- aug_data |>
 ```{r}
 write_tsv(aug_data, "../data/03_aug_data.tsv")
 ```
-
-## Moving html files in the right place
-
-```{r}
-old_dir <- here("R", "02_augment.html")
-new_dir <- here("results", "02_augment.html")
-if (file_exists(old_dir)) {
-file_move(old_dir, new_dir)
-}
-```
