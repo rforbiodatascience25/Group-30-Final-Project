@@ -3,12 +3,12 @@ title: "06_analysis_2"
 format: html
 ---
 
+## Loading libraries and loading the data
+
 ```{r}
 #| message: false
 
 library(tidyverse)
-library(here)
-library(fs)
 
 aug_data <- read_tsv("../data/03_aug_data.tsv")
 
@@ -20,6 +20,8 @@ aug_data <- aug_data |>
                 
                 as.character))
 ```
+
+## Defining colors and theme
 
 ```{r}
 my_cols <- c("#3C3C68","#627634","#C03221","#545E75", "#94BFBE", "#7A1F15",
@@ -40,6 +42,8 @@ theme_custom <- theme_minimal(base_size = 14) +
     legend.position = "none",
     )
 ```
+
+## Figures in the right place
 
 ```{r}
 knitr::opts_chunk$set(
@@ -431,12 +435,4 @@ Across all analyses, mean Fmax, replicate medians, IQR, SD, and instrument compa
 
 -   Overall poorer measurement precision
 
-## Moving html files in the right place
-
-```{r}
-old_dir <- here("R", "06_analysis_2.html")
-new_dir <- here("results", "06_analysis_2.html")
-if (file_exists(old_dir)) {
-file_move(old_dir, new_dir)
-}
-```
+-   

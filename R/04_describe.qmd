@@ -7,8 +7,6 @@ format: html
 #| message: false
 
 library(tidyverse)
-library(here)
-library(fs)
 ```
 
 # Loading the augmented data
@@ -198,14 +196,3 @@ library(patchwork)
   theme(legend.position = "bottom")
 
 ```
-
-## Moving html files in the right place
-
-```{r}
-old_dir <- here("R", "04_describe.html")
-new_dir <- here("results", "04_describe.html")
-if (file_exists(old_dir)) {
-file_move(old_dir, new_dir)
-}
-```
-

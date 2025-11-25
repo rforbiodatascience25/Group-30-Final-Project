@@ -9,8 +9,6 @@ execute:
 #| message: false
 
 library("tidyverse")
-library(here)
-library(fs)
 ```
 
 ```{r}
@@ -22,14 +20,4 @@ raw_data <- read_csv("../data/_raw/SAA_Biospecimen_Analysis_Results_01Nov2025.cs
 
 ```{r}
 write_tsv(raw_data, "../data/01_dat_load.tsv")
-```
-
-## Moving html files in the right place
-
-```{r}
-old_dir <- here("R", "01_load.html")
-new_dir <- here("results", "01_load.html")
-if (file_exists(old_dir)) {
-file_move(old_dir, new_dir)
-}
 ```

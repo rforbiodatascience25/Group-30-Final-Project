@@ -7,8 +7,6 @@ format: html
 #| message: false
 
 library(tidyverse)
-library(here)
-library(fs)
 ```
 
 # Loading the raw data
@@ -165,14 +163,4 @@ tidy_data <- tidy_data |>
 
 ```{r}
 write_tsv(tidy_data, "../data/02_dat_clean.tsv")
-```
-
-## Moving html files in the right place
-
-```{r}
-old_dir <- here("R", "02_clean.html")
-new_dir <- here("results", "02_clean.html")
-if (file_exists(old_dir)) {
-file_move(old_dir, new_dir)
-}
 ```
