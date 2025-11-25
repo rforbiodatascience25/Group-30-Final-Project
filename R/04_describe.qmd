@@ -99,16 +99,6 @@ multiple_experiments <- saa_aug_data |>
 multiple_experiments
 ```
 
-```{r}
-my_cols <- c("#3C3C68","#627634","#545E75","#C03221", "#94BFBE", "#7A1F15",
-             "#da9283" , "#474B24")
-```
-
-```{r}
-saa_aug_data |>
-  count()
-```
-
 ## Result of the SAA
 
 All patients enrolled was diagnosed with PD previously to SAA analysis. The result of the SAA does not follow the PD diagnosis completely. 1363 individual patients are part of augmented data, but only 1160 were determined positive by SAA at their most recent observation.
@@ -191,4 +181,17 @@ high_range <- function(df, column) {
 high_range(saa_aug_data, fmax)
 high_range(saa_aug_data, auc)
 high_range(saa_aug_data, ttt)
+```
+
+```{r}
+#| fig.height: 15
+#| fig.width: 15
+
+library(patchwork)
+
+((instruments_used + project_distribution) / multiple_experiments) +
+  plot_layout(guides = "collect",
+              heights = c(5,5,7)) &
+  theme(legend.position = "bottom")
+
 ```
