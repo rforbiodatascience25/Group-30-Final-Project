@@ -1,0 +1,39 @@
+---
+title: "08_analysis_3"
+output-dir: "Group-30-Final-Project/results"
+---
+
+# Analysis
+
+```{r}
+#| message: false
+
+library(tidyverse)
+```
+
+## Loading the augmented data
+
+```{r}
+#| message: false
+
+saa_aug_data <- read_tsv("../data/03_aug_data.tsv")
+```
+
+## Use of SAA to diagnose PD
+
+```{r}
+fmax_evolution <- saa_aug_data |>
+  select(project:sex,
+         saa_result,
+         fmax,
+         days_from_baseline,
+         fmax_mean)
+```
+
+```{r}
+fmax_evolution |>
+  distinct(patient_number,
+           days_from_baseline,
+           .keep_all = TRUE) |>
+  group_by(patient_number)
+```

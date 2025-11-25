@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>07_analysis_3</title>
+<title>08_analysis_3</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3084,7 +3084,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">07_analysis_3</h1>
+<h1 class="title">08_analysis_3</h1>
 </div>
 
 
@@ -3101,26 +3101,52 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
-<p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
+<section id="analysis" class="level1">
+<h1>Analysis</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="loading-the-augmented-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-augmented-data">Loading the augmented data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>saa_aug_data <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;../data/03_aug_data.tsv&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="running-code" class="level2">
-<h2 class="anchored" data-anchor-id="running-code">Running Code</h2>
-<p>When you click the <strong>Render</strong> button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
+<section id="use-of-saa-to-diagnose-pd" class="level2">
+<h2 class="anchored" data-anchor-id="use-of-saa-to-diagnose-pd">Use of SAA to diagnose PD</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fmax_evolution <span class="ot">&lt;-</span> saa_aug_data <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(project<span class="sc">:</span>sex,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>         saa_result,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>         fmax,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         days_from_baseline,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>         fmax_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>You can add options to executable code like this</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fmax_evolution <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(patient_number,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           days_from_baseline,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">.keep_all =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(patient_number)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
+<pre><code># A tibble: 2,165 × 7
+# Groups:   patient_number [1,363]
+   project patient_number sex    saa_result   fmax days_from_baseline fmax_mean
+     &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;              &lt;dbl&gt;     &lt;dbl&gt;
+ 1     155           3001 Male   Positive    54569                  0    76363 
+ 2     237           3001 Male   Positive   152757                999   148624.
+ 3     155           3002 Female Positive   143181                  0   126311.
+ 4     237           3002 Female Positive   180885                949   170382.
+ 5     155           3003 Female Positive   147698                  0   105057 
+ 6     237           3003 Female Positive   186597                971   182199 
+ 7     155           3006 Female Positive   126144                  0    74863 
+ 8     237           3006 Female Positive   194612                971   189291.
+ 9     155           3010 Male   Positive   147377                  0   122533.
+10     237           3010 Male   Positive   140638                641   136360 
+# ℹ 2,155 more rows</code></pre>
 </div>
 </div>
-<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
+</section>
 </section>
 
 </main>
