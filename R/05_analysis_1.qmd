@@ -3,7 +3,7 @@ title: "05_analysis_1"
 format: html
 ---
 
-Load libraries
+## Load libraries
 
 ```{r}
 #| message: false
@@ -11,14 +11,33 @@ Load libraries
 library(tidyverse)
 ```
 
-load the augmented data from file:
+## Load the augmented data from file:
 
 ```{r}
 aug_data <- read_tsv("../data/03_aug_data.tsv")
 
 ```
 
-To estimate
+```{r}
+  theme_custom <- theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 13, margin = margin(b = 7)),
+    plot.subtitle = element_text(size = 10, margin = margin(b = 12)),
+    plot.caption = element_text(size = 8, margin = margin(t = 20)),
+      
+    axis.title.x = element_text(size = 10, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 10, margin = margin(r = 10)),
+
+    axis.text.x = element_text(size = 10, margin = margin(t = 5)),
+    axis.text.y = element_text(size = 10, margin = margin(r = 5)),
+    
+    legend.position = "none",
+    )
+```
+
+## Performing the quality check of saa_result
+
+During the augmentation a new column was made using the same criteria published by PPMI used to create their saa_result column. We check for any variations between their positive/negative/inconclusive results and the new column.
 
 ```{r}
 aug_data |>
@@ -38,17 +57,30 @@ aug_data |>
 
 ```
 
-```{r}
-# Simple bar plot of agreement
+As seen above 9 patients have a negative saa_result, whereas when the column were recreated the results were inconclusive. When looking at the criteria given from PPMI the result should have been inconclusive we found.
 
-status_comparison %>%
-  mutate(match = ifelse(match, "Match", "Mismatch")) %>%
-    ggplot(aes(x = match, fill = match)) +
-    geom_bar() +
-    facet_wrap(~ project) +
-    theme_minimal() +
-    labs(title = "Agreement between Given and Calculated SAA Status",
-    x = "Status Agreement",
-    y = "Number of Patients")
+|              |                                            |
+|--------------|--------------------------------------------|
+| **Result**   | **Project 155 - Criteria of Fmax**         |
+| Positive     | All 3 replicates have Fmax ≥ 5,000 RFU     |
+| Negative     | 0 or 1 replicate has Fmax ≥ 5,000 RFU      |
+| Inconclusive | Exactly 2 replicates have Fmax ≥ 5,000 RFU |
+
+In most cases it looks like they decided to assign the negative value if one of the fmax repetition had a much lower value even if 2 replicates have fmax above 5000 RFU.
+
+A visualization can be seen below:
+
+```{r}
+aug_data |>
+  mutate(match = saa_result == saa_custom) |>
+  ggplot(aes(x = match, fill = match)) +
+  geom_bar() +
+  scale_fill_manual(values = c("#da9283","#3C3C68")) +
+  facet_wrap(~ project) +
+  theme_custom + 
+  labs(title = "Match versus mismacth",
+       subtitle = "Comparison between PPMI's saa_result and custom made results column",
+       x = "Match",
+       y = "Count")
 
 ```
