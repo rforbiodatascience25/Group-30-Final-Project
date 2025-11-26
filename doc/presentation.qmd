@@ -1,26 +1,144 @@
 ---
-title: "Presentation"
+title: "a-Synuclein Aggregates in Parkinson’s Disease"
+
+subtitle: "SAA Analysis from PPMI Projects 155 & 237"
+
+author: 
+  - name: "Malaika Khiljee"
+  - name: "Karolina Nordkamp"
+  - name: "Isabella Christoffersen"
+  - name: "Andreas Nielsen"
+
+date: "2 December 2025"
+
 format:
   revealjs: 
-    theme: white
+    theme: simple
     slide-number: true
     center: false
     scrollable: true
+    transition: fade
+    transition-speed: fast
 ---
+
+```{=html}
+<style>
+
+/* Forside: mindre tekst, bedre spacing */
+.reveal .slides section:first-of-type h1 {
+  font-size: 3em !important;
+}
+
+.reveal .slides section:first-of-type h2 {
+  font-size: 2em !important;
+}
+
+.reveal .slides section:first-of-type p,
+.reveal .slides section:first-of-type strong {
+  font-size: 1.2em !important;
+  line-height: 1.5em;
+}
+
+
+
+/* tekststørrelsen på teksten i slides */
+.reveal, .reveal .slides {
+  font-size: 1.40rem !important;   
+}
+
+/* Gør kode-font større */
+.reveal pre code {
+  font-size: 1.1rem !important;
+  line-height: 1.2 !important;
+}
+
+
+/* --- Base table styling --- */
+.reveal .slides section table {
+  width: 100% !important;             /* fyld hele sliden */
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 1px solid #999 !important;  /* kant rundt om hele tabellen */
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+
+/* Tabellers skriftstørrelser */
+
+.reveal table {
+  font-size: 1.6rem;  
+}
+
+.reveal table th {
+  font-size: 1.5rem;
+}
+
+/*afstand mellem tabeller */
+.reveal .slides section table + table {
+  margin-top: 2rem !important;   /* justér som du vil */
+}
+
+/* venstrejusteret Tabeller i Reveal.js */
+.reveal .slides section table {
+  margin-left: 0 !important;     
+  margin-right: auto !important;
+  display: table !important;
+  text-align: left !important;  
+}
+
+/* --- Tabel header --- */
+.reveal .slides section table th {
+  background: #b6b6cf !important;
+  font-weight: 700 !important;
+  padding: 10px 12px !important;
+  border-bottom: 1px solid #bbb !important;
+  text-align: left !important;
+}
+
+/* --- Tabel celler --- */
+.reveal .slides section table td {
+  padding: 8px 12px !important;       /* mere luft */
+  border-bottom: 1px solid #ddd !important;
+  text-align: left !important;
+}
+
+
+.pf-box {
+  font-size: 1.4em;
+  font-style: italic;
+  line-height: 1.4;
+  margin: 30px auto;
+  padding: 25px 35px;
+  max-width: 900px;
+  background: #f5f7fa;
+  border-left: 6px solid #1f4e79;
+  border-radius: 8px;
+  text-align: left;
+}
+
+</style>
+```
 
 ## Introduction
 
--   Intro, hvad er det her forsøg osv
+Intro, hvad er det her forsøg osv
 
--   Technical focus (problemformulering, hvad vil vi gøre?)
+**Technical focus:**
 
-## Methods - Tidying
+::: pf-box
+Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s disease? We compare fluorescence data from two PPMI projects to assess diagnostic potential.
+:::
+
+## Methods: Tidying
 
 -   pivot longer og wider
 
 -   Renaming (snake_case), column types, deleting
 
-## Methods - Augmenting
+## Methods: Augmenting
 
 -   join
 
@@ -36,8 +154,6 @@ format:
 
 # Results
 
-Billeder ind ved "../results/PLOTNAVN-1.png"
-
 ## SAA quality check
 
 -   her
@@ -46,21 +162,74 @@ Billeder ind ved "../results/PLOTNAVN-1.png"
 
 (high/low range af instrumenter og plot af instrumenter antal)
 
-## Inconsistencies in the two projects
+## Inconsistencies in the two projects: Replications
 
-**Replications**
+::: {.panel-tabset style="color: black"}
+### Variation
 
-![](../results/06_fmax_by_rep.png)
+![](../results/06_fmax_by_rep.png){width="2200"}
 
-![](../results/06_sd_by_project.png)
+### Standard deviation
 
-## Inconsistencies in the two projects
+![](../results/06_sd_by_project.png){width="2200"}
 
-**Instruments and replications**
+### Stats
 
-![](../results/06_fmax_raw_rep_inst.png)
+```{r eval = FALSE, echo = TRUE}
+repeats_fmax_stats <- aug_data |> 
+  ungroup() |> 
+  summarize(mean=mean(fmax), 
+            median=median(fmax),
+            IQR = quantile(fmax,.75)- quantile(fmax,.25),
+            .by = c(project, rep))
+```
 
-![](../results/06_sd_by_instrument.png)
+Summary statistics:
+
+| Project | Rep 1 - Median | Rep 2 - Median | Rep 3 - Median | Variation |
+|---------|----------------|----------------|----------------|-----------|
+| **155** | 72,926         | 70,262         | 69,721         | 3,205     |
+| **237** | 142,138        | 135,570        | 137,200        | 6,568     |
+
+| Project | Rep 1 - IQR | Rep 2 - IQR | Rep 3 - IQR | Variation |
+|---------|-------------|-------------|-------------|-----------|
+| **155** | 69,736      | 69,404      | 82,973      | 13,569    |
+| **237** | 59,530      | 63,910      | 63,179      | 4,380     |
+:::
+
+## Inconsistencies in the two projects: Instruments
+
+::: {.panel-tabset style="color: black"}
+### Variation
+
+![](../results/06_fmax_raw_rep_inst.png){width="3200"}
+
+### Standard deviation
+
+![](../results/06_sd_by_instrument.png){width="3200"}
+
+### Stats
+
+```{r eval = FALSE, echo = TRUE}
+sd_instruments_stats <- sd_saa_data |> 
+  ungroup() |> 
+  summarize(mean=mean(fmax_sd), 
+            median=median(fmax_sd), 
+            IQR = quantile(fmax_sd,.75)- quantile(fmax_sd,.25),
+             .by = c(project, instrument))
+```
+
+Instrument-level statistics:
+
+| Project | Instr. | Mean SD | Median SD | IQR    |
+|---------|--------|---------|-----------|--------|
+| **155** | 2      | 30,015  | 28,999    | 30,174 |
+| **237** | 2      | 8,384   | 4,482     | 4,953  |
+| **155** | 4      | 21,469  | 20,743    | 21,746 |
+| **237** | 4      | 8,788   | 4,594     | 5,483  |
+| **155** | 6      | 20,190  | 17,562    | 24,950 |
+| **237** | 6      | 13,107  | 8,357     | 6,809  |
+:::
 
 ## Over tid patienter
 
