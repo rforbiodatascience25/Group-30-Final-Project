@@ -2,19 +2,57 @@
 title: "Presentation"
 format:
   revealjs: 
-    theme: sky
+    theme: dark
 ---
 
-# Introduction
+## Introduction
 
-Bam
+-   Intro, hvad er det her forsøg osv
 
-# Methods and materials
+-   Technical focus (problemformulering, hvad vil vi gøre?)
 
-Other stuff
+## Methods - Tidying
+
+-   pivot longer og wider
+
+-   Renaming (snake_case), column types, deleting
+
+## Methods - Augmenting
+
+-   join
+
+-   days from baseline
+
+-   means
+
+## Descriptive
+
+-   function
+
+-   counts af forskellige ting (meget kort, som en overgang)
 
 # Results
 
-## Analysis 1
+Billeder ind ved "../results/PLOTNAVN-1.png"
+
+## SAA quality check
+
+-   her
+
+## Inconsistencies in the two projects
+
+(high/low range af instrumenter og plot af instrumenter antal)
+
+![](../results/06_key_plot_1-1.png){width="70%"}
+
+## Over tid patienter
+
+-   her
 
 # Discussion
+
+-   what project is best
+
+# Last notes
+
+-   healthy patients

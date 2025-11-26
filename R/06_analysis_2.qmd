@@ -43,16 +43,6 @@ theme_custom <- theme_minimal(base_size = 14) +
     )
 ```
 
-## Figures in the right place
-
-```{r}
-knitr::opts_chunk$set(
-  fig.path = "../results/",
-  fig.format = "png",
-  echo = TRUE
-)
-```
-
 # Analysis of Fmax
 
 Seed Amplification Assays (SAA) detect α-synuclein aggregates in cerebrospinal fluid (CSF) and monitors fluorescence intensity over time. The point at which fluorescence reaches its maximum (Fmax) reflects the level of α-synuclein aggregation and is therefore a potential diagnostic indicator for Parkinson’s disease (PD).
@@ -72,7 +62,6 @@ The goal of this analysis is therefore to evaluate the precision, consistency, a
 ***sig noget om det***
 
 ```{r}
-
 p_fmax_mean_dist <- aug_data |> 
   ggplot(
     aes(
@@ -108,6 +97,7 @@ p_fmax_mean_dist <- aug_data |>
 ```
 
 ```{r 06_key_plot_1}
+ggsave(filename = "../results/06_fmax_mean_dist.png")
 p_fmax_mean_dist
 ```
 
@@ -149,6 +139,7 @@ p_fmax_by_rep <- ggplot(aug_data, aes(
 ```
 
 ```{r 06_key_plot_2}
+ggsave(filename = "../results/06_fmax_by_rep.png")
 p_fmax_by_rep
 ```
 
@@ -200,7 +191,6 @@ sd_saa_data <- aug_data |>
 ```
 
 ```{r}
-
 p_sd_by_project <- sd_saa_data |> 
   filter(instrument %in% c(2, 4, 6)) |> 
   ggplot(aes(x = fmax_sd, 
@@ -225,6 +215,7 @@ p_sd_by_project <- sd_saa_data |>
 ```
 
 ```{r 06_key_plot_3}
+ggsave(filename = "../results/06_sd_by_project.png")
 p_sd_by_project
 ```
 
@@ -284,6 +275,7 @@ p_sd_by_instrument <- sd_saa_data |>
 ```
 
 ```{r 06_key_plot_4}
+ggsave(filename = "../results/06_sd_by_instrument.png")
 p_sd_by_instrument
 ```
 
@@ -350,6 +342,7 @@ p_fmax_raw_rep_inst <- aug_data |>
 ```
 
 ```{r 06_key_plot_5}
+ggsave(filename = "../results/06_fmax_raw_rep_inst.png")
 p_fmax_raw_rep_inst
 ```
 
