@@ -228,53 +228,34 @@ Andreas Nielsen
 <section class="slide level2">
 
 <style>
-
-/* Forside: mindre tekst, bedre spacing */
-.reveal .slides section:first-of-type h1 {
-  font-size: 3em !important;
-}
-
-.reveal .slides section:first-of-type h2 {
-  font-size: 2em !important;
-}
-
-.reveal .slides section:first-of-type p,
-.reveal .slides section:first-of-type strong {
-  font-size: 1.2em !important;
-  line-height: 1.5em;
-}
-
-
-
 /* tekststørrelsen på teksten i slides */
 .reveal, .reveal .slides {
   font-size: 1.40rem !important;   
 }
 
-/* Gør kode-font større */
+/* kode-font større */
 .reveal pre code {
   font-size: 1.1rem !important;
   line-height: 1.2 !important;
 }
 
 
-/* --- Base table styling --- */
+/* TIL TABELLER! */   
+
 .reveal .slides section table {
-  width: 100% !important;             /* fyld hele sliden */
+  width: 100% !important;                   /* gør så at tabellen fylder hele slidet */
   border-collapse: separate !important;
   border-spacing: 0 !important;
-  border: 1px solid #999 !important;  /* kant rundt om hele tabellen */
+  border: 1px solid #999 !important;         /* gør så at der er kant om tabel */
   border-radius: 6px !important;
   overflow: hidden !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
 
-
-/* Tabellers skriftstørrelser */
-
+ /* skriftstørrelse på tabellerne */
 .reveal table {
-  font-size: 1.6rem;  
+  font-size: 1.6rem;
 }
 
 .reveal table th {
@@ -286,7 +267,7 @@ Andreas Nielsen
   margin-top: 2rem !important;   /* justér som du vil */
 }
 
-/* venstrejusteret Tabeller i Reveal.js */
+/* venstrejusteret tabel */
 .reveal .slides section table {
   margin-left: 0 !important;     
   margin-right: auto !important;
@@ -294,7 +275,7 @@ Andreas Nielsen
   text-align: left !important;  
 }
 
-/* --- Tabel header --- */
+/*ændrer i tabel header*/
 .reveal .slides section table th {
   background: #b6b6cf !important;
   font-weight: 700 !important;
@@ -303,14 +284,15 @@ Andreas Nielsen
   text-align: left !important;
 }
 
-/* --- Tabel celler --- */
+/*ændrer i tabel celler*/
 .reveal .slides section table td {
-  padding: 8px 12px !important;       /* mere luft */
+  padding: 8px 12px !important; 
   border-bottom: 1px solid #ddd !important;
   text-align: left !important;
 }
 
 
+/*til at quote ting*/
 .pf-box {
   font-size: 1.4em;
   font-style: italic;
@@ -329,6 +311,7 @@ Andreas Nielsen
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
 <p>Intro, hvad er det her forsøg osv</p>
+<p><br></p>
 <p><strong>Technical focus:</strong></p>
 <div class="pf-box">
 <p>Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s disease? We compare fluorescence data from two PPMI projects to assess diagnostic potential.</p>

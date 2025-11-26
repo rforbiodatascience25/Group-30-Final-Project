@@ -250,6 +250,26 @@ The 150-hour assay (155) has 2–4 times higher replicate variability than the 2
 
 ## Instrument-Specific Variability
 
+```{r}
+instruments_used <- aug_data |>
+  filter(instrument %in% c(2, 4, 6)) |> 
+  ggplot(mapping = aes(x = project)) + 
+  geom_bar(mapping = aes(fill = instrument),
+           position = "fill") + 
+  scale_fill_manual(breaks = c("2","4","5","6","9","10"),
+                    values = c("#da9283","#3C3C68","#C03221","#627634","#7A1F15","#94BFBE"),
+                    name = "Instrument",
+                    guide = guide_legend(nrow = 1)) +
+  theme_custom + 
+  theme(legend.position = "bottom") + 
+  labs(title = "Ratio used instruments 2 4 and 6 ",
+       subtitle = "The instrument used to analyze each observation",
+       x = "Project",
+       y = "Ratio")
+
+instruments_used
+```
+
 We next examined whether any fluorescence reader (instruments 2, 4, 6) contributed disproportionately to the SD.
 
 ```{r}
