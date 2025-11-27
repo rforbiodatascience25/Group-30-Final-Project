@@ -353,22 +353,19 @@ Andreas Nielsen
 <section id="inconsistencies-in-the-two-projects" class="slide level2">
 <h2>Inconsistencies in the two projects</h2>
 <ul>
-<li><p>evt intro til hvad end jeg vil snak om?</p></li>
-<li><p>plottet som karolina har laver som viser ratio af instruments?</p></li>
+<li>Evaluate the precision, consistency, and overall stability of the two assays</li>
+<li>Including whether instrument differences contribute to variability.</li>
 </ul>
 </section>
 <section id="inconsistencies-in-the-two-projects-replications" class="slide level2">
 <h2>Inconsistencies in the two projects: Replications</h2>
 <div class="panel-tabset" style="color: black">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Variation</a></li><li><a href="#tabset-1-2">Standard deviation</a></li><li><a href="#tabset-1-3">Stats</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Variation</a></li><li><a href="#tabset-1-2">Stats</a></li><li><a href="#tabset-1-3">Standard deviation</a></li><li><a href="#tabset-1-4">Stats</a></li></ul>
 <div class="tab-content" style="color: black">
 <div id="tabset-1-1">
 <p><img data-src="../results/06_fmax_by_rep.png" width="2200"></p>
 </div>
 <div id="tabset-1-2">
-<p><img data-src="../results/06_sd_by_project.png" width="2200"></p>
-</div>
-<div id="tabset-1-3">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>repeats_fmax_stats <span class="ot">&lt;-</span> aug_data <span class="sc">|&gt;</span> </span>
 <span id="cb1-2"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
@@ -440,6 +437,46 @@ Andreas Nielsen
 </tbody>
 </table>
 </div>
+<div id="tabset-1-3">
+<p><img data-src="../results/06_sd_by_project.png" width="2200"></p>
+</div>
+<div id="tabset-1-4">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>sd_saa_stats <span class="ot">&lt;-</span> sd_saa_data <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">min =</span> <span class="fu">min</span>(fmax_sd), </span>
+<span id="cb2-4"><a href=""></a>            <span class="at">mean=</span><span class="fu">mean</span>(fmax_sd), </span>
+<span id="cb2-5"><a href=""></a>            <span class="at">median=</span><span class="fu">median</span>(fmax_sd), </span>
+<span id="cb2-6"><a href=""></a>            <span class="at">max=</span><span class="fu">max</span>(fmax_sd),</span>
+<span id="cb2-7"><a href=""></a>            <span class="at">IQR =</span> <span class="fu">quantile</span>(fmax_sd,.<span class="dv">75</span>)<span class="sc">-</span> <span class="fu">quantile</span>(fmax_sd,.<span class="dv">25</span>),</span>
+<span id="cb2-8"><a href=""></a>             <span class="at">.by =</span> project)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Summary statistics:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Project</th>
+<th>Mean SD</th>
+<th>Median SD</th>
+<th>IQR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>155</strong></td>
+<td>24,066</td>
+<td>22,198</td>
+<td>26,131</td>
+</tr>
+<tr class="even">
+<td><strong>237</strong></td>
+<td>10,386</td>
+<td>5,662</td>
+<td>6,470</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </section>
@@ -456,12 +493,12 @@ Andreas Nielsen
 </div>
 <div id="tabset-2-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>sd_instruments_stats <span class="ot">&lt;-</span> sd_saa_data <span class="sc">|&gt;</span> </span>
-<span id="cb2-2"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">mean=</span><span class="fu">mean</span>(fmax_sd), </span>
-<span id="cb2-4"><a href=""></a>            <span class="at">median=</span><span class="fu">median</span>(fmax_sd), </span>
-<span id="cb2-5"><a href=""></a>            <span class="at">IQR =</span> <span class="fu">quantile</span>(fmax_sd,.<span class="dv">75</span>)<span class="sc">-</span> <span class="fu">quantile</span>(fmax_sd,.<span class="dv">25</span>),</span>
-<span id="cb2-6"><a href=""></a>             <span class="at">.by =</span> <span class="fu">c</span>(project, instrument))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>sd_instruments_stats <span class="ot">&lt;-</span> sd_saa_data <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">mean=</span><span class="fu">mean</span>(fmax_sd), </span>
+<span id="cb3-4"><a href=""></a>            <span class="at">median=</span><span class="fu">median</span>(fmax_sd), </span>
+<span id="cb3-5"><a href=""></a>            <span class="at">IQR =</span> <span class="fu">quantile</span>(fmax_sd,.<span class="dv">75</span>)<span class="sc">-</span> <span class="fu">quantile</span>(fmax_sd,.<span class="dv">25</span>),</span>
+<span id="cb3-6"><a href=""></a>             <span class="at">.by =</span> <span class="fu">c</span>(project, instrument))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Instrument-level statistics:</p>
 <table class="caption-top">

@@ -115,7 +115,7 @@ Means alone can't be used to compare the consistency of the two assays. To do th
 ```{r}
 p_fmax_by_rep <- ggplot(aug_data, aes(
     x = fmax, 
-    y = factor(rep), 
+    y = rep, 
     color = project, 
     fill = project
   )) +
@@ -463,5 +463,3 @@ Across all analyses, mean Fmax, replicate medians, IQR, SD, and instrument compa
 -   Greater instrument-dependent variation
 
 -   Overall poorer measurement precision
-
--   
