@@ -7,18 +7,14 @@ format: html
 
 ```{r}
 #| message: false
-
 library(tidyverse)
 
 aug_data <- read_tsv("../data/03_aug_data.tsv")
 
-aug_data <- aug_data |> 
-  mutate(across(c(project, 
-                  duration, 
-                  rep, 
-                  instrument), 
-                
-                as.character))
+#making sure that the columns is the right type
+
+source("08_proj_func.R")
+aug_data <- char_type_col(aug_data)
 ```
 
 ## Defining colors and theme
@@ -28,22 +24,42 @@ my_cols <- c("#3C3C68","#627634","#C03221","#545E75", "#94BFBE", "#7A1F15",
              "#da9283" , "#474B24")
 
 theme_custom <- theme_minimal(base_size = 14) +
+  
   theme(
-    plot.title = element_text(face = "bold", size = 13, margin = margin(b = 7)),
-    plot.subtitle = element_text(size = 10, margin = margin(b = 12)),
-    plot.caption = element_text(size = 8, margin = margin(t = 20)),
+    plot.title = element_text(face = "bold", 
+                              size = 13, 
+                              margin = margin(b = 7)
+                              ),
+    
+    plot.subtitle = element_text(size = 10, 
+                                 margin = margin(b = 12)
+                                 ),
+    
+    plot.caption = element_text(size = 8, 
+                                margin = margin(t = 20)
+                                ),
       
-    axis.title.x = element_text(size = 10, margin = margin(t = 10)),
-    axis.title.y = element_text(size = 10, margin = margin(r = 10)),
+    axis.title.x = element_text(size = 10, 
+                                margin = margin(t = 10)
+                                ),
+    
+    axis.title.y = element_text(size = 10, 
+                                margin = margin(r = 10)
+                                ),
 
-    axis.text.x = element_text(size = 10, margin = margin(t = 5)),
-    axis.text.y = element_text(size = 10, margin = margin(r = 5)),
+    axis.text.x = element_text(size = 10, 
+                               margin = margin(t = 5)
+                               ),
+    
+    axis.text.y = element_text(size = 10, 
+                               margin = margin(r = 5)
+                               ),
     
     legend.position = "none",
     )
 ```
 
-# Analysis of Fmax
+## Analysis of Fmax
 
 Seed Amplification Assays (SAA) detect α-synuclein aggregates in cerebrospinal fluid (CSF) and monitors fluorescence intensity over time. The point at which fluorescence reaches its maximum (Fmax) reflects the level of α-synuclein aggregation and is therefore a potential diagnostic indicator for Parkinson’s disease (PD).
 
@@ -57,7 +73,7 @@ Variations in assay duration, cycle length, and reaction mixture composition mea
 
 The goal of this analysis is therefore to evaluate the precision, consistency, and overall stability of the two assays, including whether instrument differences contribute to variability.
 
-## Comparison of Overall Fmax Levels
+### Comparison of Overall Fmax Levels
 
 ***sig noget om det***
 
@@ -86,33 +102,38 @@ p_fmax_mean_dist <- aug_data |>
   
   labs(
     title = "Distribution of Mean Fmax Across SAA Projects",
-    subtitle = "Comparison between 24-hour (Project 237) and 150-hour (Project 155) α-synuclein SAA assays",
+    subtitle = "Comparison between 24-hour (Project 237) and 
+    150-hour (Project 155) α-synuclein SAA assays",
     x = "Mean Fmax [RFU]",
     y = "Project",
     caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"
   ) + 
+  
   theme_custom +
   scale_x_continuous(labels = scales::label_comma())
 
 ```
 
 ```{r 06_key_plot_1}
-ggsave(filename = "../results/06_fmax_mean_dist.png")
+ggsave(filename = "../results/06_fmax_mean_dist.png",
+       width = 10,  
+       height = 5)  
+
 p_fmax_mean_dist
 ```
 
 Although absolute values differ, the focus of this analysis is not the magnitude of Fmax but the reproducibility of replicate measurements within each project.
 
-## Consistency of Technical Replicates
+### Consistency of Technical Replicates
 
-### Distribution of Replicate Fmax Values
+#### Distribution of Replicate Fmax Values
 
 Means alone can't be used to compare the consistency of the two assays. To do this, we will compare Fmax across replicates 1–3 for each project.
 
 ```{r}
 p_fmax_by_rep <- ggplot(aug_data, aes(
     x = fmax, 
-    y = factor(rep), 
+    y = rep, 
     color = project, 
     fill = project
   )) +
@@ -139,7 +160,10 @@ p_fmax_by_rep <- ggplot(aug_data, aes(
 ```
 
 ```{r 06_key_plot_2}
-ggsave(filename = "../results/06_fmax_by_rep.png")
+ggsave(filename = "../results/06_fmax_by_rep.png",
+       width = 10,  
+       height = 5)   
+
 p_fmax_by_rep
 ```
 
@@ -167,7 +191,7 @@ Summary statistics:
 
 These patterns are consistent and most likely reflect behavior that is specific for protocol.
 
-### Replicate Variability (IQR)
+#### Replicate Variability (IQR)
 
 | Project | Rep 1 IQR | Rep 2 IQR | Rep 3 IQR | Variation |
 |---------|-----------|-----------|-----------|-----------|
@@ -180,7 +204,7 @@ These patterns are consistent and most likely reflect behavior that is specific 
 
 -   **Project 155:** shows larger and less stable variability, especially in replicate 3.
 
-## Replicate Standard Deviation (SD)
+### Replicate Standard Deviation (SD)
 
 Standard deviation (SD) of Fmax across replicates measures stability of the assays.
 
@@ -215,7 +239,10 @@ p_sd_by_project <- sd_saa_data |>
 ```
 
 ```{r 06_key_plot_3}
-ggsave(filename = "../results/06_sd_by_project.png")
+ggsave(filename = "../results/06_sd_by_project.png",
+       width = 12,  
+       height = 4.7)
+
 p_sd_by_project
 ```
 
@@ -239,7 +266,30 @@ Summary statistics:
 
 The 150-hour assay (155) has 2–4 times higher replicate variability than the 24-hour assay (237). This is one of the most important quality results in the entire analysis.
 
-## Instrument-Specific Variability
+### Instrument-Specific Variability
+
+```{r}
+instruments_used <- aug_data |>
+  
+  filter(instrument %in% c(2, 4, 6)) |> 
+  ggplot(mapping = aes(x = project)) + 
+  
+  geom_bar(mapping = aes(fill = instrument),
+           position = "fill") + 
+  
+  scale_fill_manual(breaks = c("2","4","5","6","9","10"),
+                    values = c("#da9283","#3C3C68","#C03221","#627634","#7A1F15","#94BFBE"),
+                    name = "Instrument",
+                    guide = guide_legend(nrow = 1)) +
+  theme_custom + 
+  theme(legend.position = "bottom") + 
+  labs(title = "Ratio used instruments 2 4 and 6 ",
+       subtitle = "The instrument used to analyze each observation",
+       x = "Project",
+       y = "Ratio")
+
+instruments_used
+```
 
 We next examined whether any fluorescence reader (instruments 2, 4, 6) contributed disproportionately to the SD.
 
@@ -275,7 +325,10 @@ p_sd_by_instrument <- sd_saa_data |>
 ```
 
 ```{r 06_key_plot_4}
-ggsave(filename = "../results/06_sd_by_instrument.png")
+ggsave(filename = "../results/06_sd_by_instrument.png",
+       width = 11,  
+       height = 7)
+
 p_sd_by_instrument
 ```
 
@@ -308,7 +361,7 @@ Instrument-level statistics:
 -   Critically, **even the highest SD in Project 237 is lower than the lowest SD in Project 155**.\
     This confirms that protocol (not instrument) is the dominant source of variability.
 
-## Raw Fmax by Instruments and Replicates
+### Raw Fmax by Instruments and Replicates
 
 To visualize replicate patterns across instruments:
 
@@ -342,7 +395,11 @@ p_fmax_raw_rep_inst <- aug_data |>
 ```
 
 ```{r 06_key_plot_5}
-ggsave(filename = "../results/06_fmax_raw_rep_inst.png")
+ggsave(filename = "../results/06_fmax_raw_rep_inst.png",
+       width = 10,  
+       height = 5)   
+
+
 p_fmax_raw_rep_inst
 ```
 
@@ -366,7 +423,7 @@ This aligns with known SAA behavior:
 
 Instrument-specific medians confirm these patterns and align with earlier SD/IQR findings.
 
-### Instrument 2
+#### Instrument 2
 
 |                | 155     | 237      |
 |----------------|---------|----------|
@@ -374,7 +431,7 @@ Instrument-specific medians confirm these patterns and align with earlier SD/IQR
 | Median (rep 2) | 86402.0 | 133614.0 |
 | Median (rep 3) | 81850.0 | 134146.0 |
 
-### Instrument 4
+#### Instrument 4
 
 |                | 155     | 237      |
 |----------------|---------|----------|
@@ -382,7 +439,7 @@ Instrument-specific medians confirm these patterns and align with earlier SD/IQR
 | Median (rep 2) | 65894.5 | 130309.5 |
 | Median (rep 3) | 66471.0 | 132749.0 |
 
-### instrument 6
+#### instrument 6
 
 |                | 155     | 237      |
 |----------------|---------|----------|
@@ -394,7 +451,7 @@ Instrument-specific medians confirm these patterns and align with earlier SD/IQR
 
 Across all analyses, mean Fmax, replicate medians, IQR, SD, and instrument comparisons, Project 237 shows more precision and replicate reproducibility.
 
-### Key conclusions:
+## Key conclusions:
 
 -   **Fmax magnitude**: Differs between projects due to protocol differences; not directly comparable without normalization.
 
@@ -427,5 +484,3 @@ Across all analyses, mean Fmax, replicate medians, IQR, SD, and instrument compa
 -   Greater instrument-dependent variation
 
 -   Overall poorer measurement precision
-
--   

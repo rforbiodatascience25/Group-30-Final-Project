@@ -9,19 +9,26 @@ format: html
 library(tidyverse)
 ```
 
-# Loading the raw data
+## Loading the raw data
 
 ```{r}
 #| message: false
 
 raw_data <- read_tsv("../data/01_dat_load.tsv")
-raw_data |> 
-  slice_sample(n = 10)
 ```
 
-# Clean the data
+## Clean the data
 
-## Deleting columns
+### Selecting only PD patients:
+
+SWEDD is an outdated ID, mentioned in the PPMI data guide, and we will not be using the data from these patients.
+
+```{r}
+tidy_data <- raw_data |>
+  filter(COHORT != "SWEDD")
+```
+
+### Deleting columns
 
 Some columns in the data-set are not part of the chosen analytic points. The columns chosen to omit is at the cause are either:
 
@@ -35,7 +42,7 @@ Some columns in the data-set are not part of the chosen analytic points. The col
 
 ```{r}
 # Neglecting the unused columns:
-tidy_data <- raw_data |>
+tidy_data <- tidy_data |>
   select(-"COHORT",
          -"PI_NAME",
          -"PI_INSTITUTION",
@@ -49,7 +56,7 @@ tidy_data <- raw_data |>
 
 ```
 
-## Missing value interpretation
+### Missing value interpretation
 
 One person (patient_number = 41184) has the value "U01" in the clinical event column. As no information is found explaining the value, the patient is removed from the data.
 
@@ -58,7 +65,7 @@ tidy_data <- tidy_data |>
   filter(CLINICAL_EVENT != "U01")
 ```
 
-## Elongating the data
+### Elongating the data
 
 Originally all repetitions of Fmax, TTT and AUC had its own column. To make the data more comprehensible all repetitions are stored in one column for each measurement. The data will then contain only one column of each measurement (Fmax/AUC/TTT), a column with the duration (either 24 or 150 hours) and a column defining the repetition number (1-3) of the measurement.
 
@@ -71,20 +78,21 @@ tidy_data <- tidy_data |>
     values_to = "value",
     values_drop_na = TRUE
   ) |> 
+  
   pivot_wider(
     names_from = measurement,
     values_from = value
   )
-tidy_data |> 
-  slice_sample(n = 10)
 ```
 
-## Reducing the "Instrument" columns
+### Reducing the "Instrument" columns
 
 When looking at the data it seemed that the instrument used for one observation for all three repetitions was the same. We found that it was the case for all observations when checking:
 
 ```{r}
-all(tidy_data$InstrumentRep1 == tidy_data$InstrumentRep2 & tidy_data$InstrumentRep2 == tidy_data$InstrumentRep3)
+all(
+  tidy_data$InstrumentRep1 == tidy_data$InstrumentRep2 & tidy_data$InstrumentRep2 == tidy_data$InstrumentRep3
+  )
 
 ```
 
@@ -96,9 +104,7 @@ tidy_data <- tidy_data |>
   rename(instrument = InstrumentRep1)
 ```
 
-## Renaming
-
-To get a more clear overview of the data-set some of the names were edited and the naming convention was changed.
+### Renaming the columns to preferred naming convention
 
 ```{r}
 tidy_data <- tidy_data |>
@@ -116,24 +122,14 @@ tidy_data |>
   slice_sample(n = 10)
 ```
 
-## Changing the column-types
-
-For further analysis the column-type was changed to ensure correct plotting.
+### Changing the column-types
 
 ```{r}
-tidy_data <- tidy_data |>
-  mutate(across(c(project, 
-                  duration, 
-                  rep, 
-                  instrument), 
-                
-                as.character))
-tidy_data |> 
-  slice_sample(n = 10)
-
+source("08_proj_func.R")
+tidy_data <- char_type_col(tidy_data)
 ```
 
-## Relocating columns
+### Relocating columns
 
 The columns containing important information about an observation was moved to the front.
 
@@ -143,23 +139,18 @@ tidy_data <- tidy_data |>
 
 tidy_data <- tidy_data |>
 	relocate(duration:auc, .after = saa_result)
-
-tidy_data |> 
-  slice_sample(n = 10)
-
 ```
 
-## Cluster the patients' observations
+### Cluster the patients' observations
 
 Some patients have multiple observations and uses the patient_number as an identifier. One patients observations are all gathered together by arranging the patient_number and individually put in order depending on their visit.
 
 ```{r}
 tidy_data <- tidy_data |>
   arrange(patient_number, rundate)
-
 ```
 
-# Save the cleaned data
+## Save the cleaned data
 
 ```{r}
 write_tsv(tidy_data, "../data/02_dat_clean.tsv")
