@@ -106,7 +106,11 @@ format:
 
 ## Introduction
 
-Intro, hvad er det her forsøg osv
+-   Presynaptic neuronal protein alpha-Synuclein overproduction and misfolding leads to aggregation between nerve cells.
+
+-   This inhibits the transmission excessively, causing signals in the brain to become disrupted like in PD.
+
+-   Clinical trials are trying to find a correlation between -Synuclein aggregates and PD-diagnosis by SAA (α-synuclein seed amplification assays) and cerebrospinal fluid.
 
 <br>
 
@@ -118,16 +122,30 @@ Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s d
 
 ## Materials and Methods
 
--   Materials: What data did you use and where did you get it from?
+**Materials:**
 
--   Methods: Which modelling did you use? Think of the methods section as a recipe for how to go from raw to results =\> Flow chart?
+-   PPMI (Parkinson's Progression Markers Initiative) database
+
+-   SAA (α-synuclein seed amplification assays) and cerebrospinal fluid.
+
+-   The assay amplifies the protein and monitors the aggregation by measuring fluorescence intensity.
+
+-   Aggregates of the protein form a beta-sheet structure that binds to a dye, and an observed increase in fluorescence marks formation of alpha-Synuclein-aggregates. A higher fluorescence will indicate more aggregates and at a certain threshold also possible PD.
+
+<br>
+
+**Methods:**
+
+-   Tidyverse to visualize the data
+
+-   Tools:
+
+-   Quality check
 
 ## Methods: Tidying
 
-:::: {.columns}
-
+::::: columns
 ::: {.column width="60%"}
-
 -   Tidy data makes it much easier to handle
 
 -   Requirements for tidy data
@@ -136,24 +154,17 @@ Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s d
 
     -   Each row is one observation
 
-    -   Each cell is one value
+    -   Each cell is one value <br> <br> <br>
 
-![](images/pivot_example.png){fig-align="center" width="450"}
-
+![](images/pivotlonger_example.png){fig-align="left" width="650"}
 :::
 
 ::: {.column width="40%"}
-![](images/data_tidy_flow.png)
-
+![](images/tidy_data_flow.png){fig-align="right" width="300"}
 :::
-
-::::
+:::::
 
 ## Methods: Augmenting
-
--   meget kort og præcis og kun for at give et overordnet billede
-
--   join
 
 -   days from baseline
 
@@ -171,18 +182,15 @@ Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s d
 
 -   her
 
-# Inconsistencies in the two projects
+## SAA results
 
-Evaluate difference in precision and consistencies: Replicates
+-   ratio
 
-## Inconsistencies in the two projects: Replicates
+## Overlap ting
 
-::: {.panel-tabset style="color: black"}
-### Variation
+-   
 
-![](../results/06_fmax_by_rep.png){width="2200"}
-
-### Standard deviation
+## Inconsistencies in the two projects (replicates)
 
 ![](../results/06_sd_by_project.png){width="2000"}
 
@@ -190,20 +198,11 @@ Evaluate difference in precision and consistencies: Replicates
 |---------|---------|-----------|--------|
 | **155** | 24,066  | 22,198    | 26,131 |
 | **237** | 10,386  | 5,662     | 6,470  |
-:::
-
-## Inconsistencies in the two projects: Instruments
-
-![](../results/06_sd_by_instrument.png){width="3200"}
 
 ## Patients over time
 
 -   her
 
-# Discussion
-
--   what project is best
-
-# Last notes
+# Last notes/conclusions
 
 -   healthy patients
