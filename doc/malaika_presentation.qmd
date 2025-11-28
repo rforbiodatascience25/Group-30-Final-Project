@@ -50,11 +50,11 @@ format:
 
  /* skriftstørrelse på tabellerne */
 .reveal table {
-  font-size: 1.6rem;
+  font-size: 1.2rem;
 }
 
 .reveal table th {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 
 /*afstand mellem tabeller */
@@ -106,7 +106,11 @@ format:
 
 ## Introduction
 
-Intro, hvad er det her forsøg osv
+-   Presynaptic neuronal protein alpha-Synuclein overproduction and misfolding leads to aggregation between nerve cells.
+
+-   This inhibits the transmission excessively, causing signals in the brain to become disrupted like in PD.
+
+-   Clinical trials are trying to find a correlation between -Synuclein aggregates and PD-diagnosis by SAA (α-synuclein seed amplification assays) and cerebrospinal fluid.
 
 <br>
 
@@ -116,15 +120,51 @@ Intro, hvad er det her forsøg osv
 Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s disease? We compare fluorescence data from two PPMI projects to assess diagnostic potential.
 :::
 
+## Materials and Methods
+
+**Materials:**
+
+-   PPMI (Parkinson's Progression Markers Initiative) database
+
+-   SAA (α-synuclein seed amplification assays) and cerebrospinal fluid.
+
+-   The assay amplifies the protein and monitors the aggregation by measuring fluorescence intensity.
+
+-   Aggregates of the protein form a beta-sheet structure that binds to a dye, and an observed increase in fluorescence marks formation of alpha-Synuclein-aggregates. A higher fluorescence will indicate more aggregates and at a certain threshold also possible PD.
+
+<br>
+
+**Methods:**
+
+-   Tidyverse to visualize the data
+
+-   Tools:
+
+-   Quality check
+
 ## Methods: Tidying
 
--   pivot longer og wider
+::::: columns
+::: {.column width="60%"}
+-   Tidy data makes it much easier to handle
 
--   Renaming (snake_case), column types, deleting
+-   Requirements for tidy data
+
+    -   Each column is one variable (Not the case initially)
+
+    -   Each row is one observation
+
+    -   Each cell is one value <br> <br> <br>
+
+![](images/pivotlonger_example.png){fig-align="left" width="650"}
+:::
+
+::: {.column width="40%"}
+![](images/tidy_data_flow.png){fig-align="right" width="300"}
+:::
+:::::
 
 ## Methods: Augmenting
-
--   join
 
 -   days from baseline
 
@@ -140,91 +180,64 @@ Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s d
 
 ## SAA quality check
 
--   her
+:::::::: rows
+:::::: row
+::::: columns
+::: {.column width="50%"}
+-   SAA result and SAA custom quality check
 
-## Inconsistencies in the two projects
+-   A non-mentioned criteria?
 
--   evt intro til hvad end jeg vil snak om?
+-   Low fmax (200–600 RFU) or huge, moderate, low
 
--   plottet som karolina har laver som viser ratio af instruments?
-
-## Inconsistencies in the two projects: Replications
-
-::: {.panel-tabset style="color: black"}
-### Variation
-
-![](../results/06_fmax_by_rep.png){width="2200"}
-
-### Standard deviation
-
-![](../results/06_sd_by_project.png){width="2200"}
-
-### Stats
-
-```{r eval = FALSE, echo = TRUE}
-repeats_fmax_stats <- aug_data |> 
-  ungroup() |> 
-  summarize(mean=mean(fmax), 
-            median=median(fmax),
-            IQR = quantile(fmax,.75)- quantile(fmax,.25),
-            .by = c(project, rep))
-```
-
-Summary statistics:
-
-| Project | Rep 1 - Median | Rep 2 - Median | Rep 3 - Median | Variation |
-|---------|----------------|----------------|----------------|-----------|
-| **155** | 72,926         | 70,262         | 69,721         | 3,205     |
-| **237** | 142,138        | 135,570        | 137,200        | 6,568     |
-
-| Project | Rep 1 - IQR | Rep 2 - IQR | Rep 3 - IQR | Variation |
-|---------|-------------|-------------|-------------|-----------|
-| **155** | 69,736      | 69,404      | 82,973      | 13,569    |
-| **237** | 59,530      | 63,910      | 63,179      | 4,380     |
+-   The MEDIAN!
 :::
 
-## Inconsistencies in the two projects: Instruments
-
-::: {.panel-tabset style="color: black"}
-### Variation
-
-![](../results/06_fmax_raw_rep_inst.png){width="3200"}
-
-### Standard deviation
-
-![](../results/06_sd_by_instrument.png){width="3200"}
-
-### Stats
-
-```{r eval = FALSE, echo = TRUE}
-sd_instruments_stats <- sd_saa_data |> 
-  ungroup() |> 
-  summarize(mean=mean(fmax_sd), 
-            median=median(fmax_sd), 
-            IQR = quantile(fmax_sd,.75)- quantile(fmax_sd,.25),
-             .by = c(project, instrument))
-```
-
-Instrument-level statistics:
-
-| Project | Instr. | Mean SD | Median SD | IQR    |
-|---------|--------|---------|-----------|--------|
-| **155** | 2      | 30,015  | 28,999    | 30,174 |
-| **237** | 2      | 8,384   | 4,482     | 4,953  |
-| **155** | 4      | 21,469  | 20,743    | 21,746 |
-| **237** | 4      | 8,788   | 4,594     | 5,483  |
-| **155** | 6      | 20,190  | 17,562    | 24,950 |
-| **237** | 6      | 13,107  | 8,357     | 6,809  |
+::: {.column width="50%"}
+|              |                                   |
+|--------------|-----------------------------------|
+| **Result**   | **Project 155**                   |
+| Positive     | All replicates Fmax ≥ 5,000 RFU   |
+| Negative     | 0 or 1 replicate Fmax ≥ 5,000 RFU |
+| Inconclusive | 2 replicates Fmax ≥ 5,000 RFU     |
 :::
+:::::
+::::::
+
+::: row
+![](../results/05_mismatched_saa_plot.png){width="3000"}
+:::
+::::::::
+
+<!-- -->
+
+## SAA results
+
+-   ratio
+
+## Overlap ting
+
+-   
+
+## Inconsistencies in the two projects (replicates)
+
+-   Can standard deviations in replicates say something about whether one project is better than the other?
+
+![](../results/06_sd_by_project.png){width="2000"}
+
+| Project | Mean SD | Median SD | IQR    |
+|---------|---------|-----------|--------|
+| **155** | 24,066  | 22,198    | 26,131 |
+| **237** | 10,386  | 5,662     | 6,470  |
 
 ## Patients over time
 
 -   her
 
-# Discussion
+# Last notes/conclusions
 
--   what project is best
+-   
 
-# Last notes
+<!-- -->
 
 -   healthy patients
