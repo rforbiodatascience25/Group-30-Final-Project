@@ -36,4 +36,4 @@ To access and download the biospecimen data used in this project, follow the ste
     3.  Click on "**Current Biospecimen Analysis Results**" to download the raw data file (CSV format).
 
 4.  **Store the Data**\
-    Place the downloaded `.csv` file into the `_raw` directory.
+    Make sure there is a folder called `_raw` in the folder `data`. Place the downloaded `.csv` file into the `_raw` directory.

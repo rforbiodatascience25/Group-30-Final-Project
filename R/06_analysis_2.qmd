@@ -7,11 +7,11 @@ format: html
 
 ```{r}
 #| message: false
-
 library(tidyverse)
 
 aug_data <- read_tsv("../data/03_aug_data.tsv")
 
+#making sure that the columns is the right type
 aug_data <- aug_data |> 
   mutate(across(c(project, 
                   duration, 
@@ -28,16 +28,36 @@ my_cols <- c("#3C3C68","#627634","#C03221","#545E75", "#94BFBE", "#7A1F15",
              "#da9283" , "#474B24")
 
 theme_custom <- theme_minimal(base_size = 14) +
+  
   theme(
-    plot.title = element_text(face = "bold", size = 13, margin = margin(b = 7)),
-    plot.subtitle = element_text(size = 10, margin = margin(b = 12)),
-    plot.caption = element_text(size = 8, margin = margin(t = 20)),
+    plot.title = element_text(face = "bold", 
+                              size = 13, 
+                              margin = margin(b = 7)
+                              ),
+    
+    plot.subtitle = element_text(size = 10, 
+                                 margin = margin(b = 12)
+                                 ),
+    
+    plot.caption = element_text(size = 8, 
+                                margin = margin(t = 20)
+                                ),
       
-    axis.title.x = element_text(size = 10, margin = margin(t = 10)),
-    axis.title.y = element_text(size = 10, margin = margin(r = 10)),
+    axis.title.x = element_text(size = 10, 
+                                margin = margin(t = 10)
+                                ),
+    
+    axis.title.y = element_text(size = 10, 
+                                margin = margin(r = 10)
+                                ),
 
-    axis.text.x = element_text(size = 10, margin = margin(t = 5)),
-    axis.text.y = element_text(size = 10, margin = margin(r = 5)),
+    axis.text.x = element_text(size = 10, 
+                               margin = margin(t = 5)
+                               ),
+    
+    axis.text.y = element_text(size = 10, 
+                               margin = margin(r = 5)
+                               ),
     
     legend.position = "none",
     )
@@ -86,11 +106,13 @@ p_fmax_mean_dist <- aug_data |>
   
   labs(
     title = "Distribution of Mean Fmax Across SAA Projects",
-    subtitle = "Comparison between 24-hour (Project 237) and 150-hour (Project 155) α-synuclein SAA assays",
+    subtitle = "Comparison between 24-hour (Project 237) and 
+    150-hour (Project 155) α-synuclein SAA assays",
     x = "Mean Fmax [RFU]",
     y = "Project",
     caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"
   ) + 
+  
   theme_custom +
   scale_x_continuous(labels = scales::label_comma())
 
@@ -252,10 +274,13 @@ The 150-hour assay (155) has 2–4 times higher replicate variability than the 2
 
 ```{r}
 instruments_used <- aug_data |>
+  
   filter(instrument %in% c(2, 4, 6)) |> 
   ggplot(mapping = aes(x = project)) + 
+  
   geom_bar(mapping = aes(fill = instrument),
            position = "fill") + 
+  
   scale_fill_manual(breaks = c("2","4","5","6","9","10"),
                     values = c("#da9283","#3C3C68","#C03221","#627634","#7A1F15","#94BFBE"),
                     name = "Instrument",
