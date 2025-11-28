@@ -6,52 +6,58 @@ format: html
 # Load libraries and data
 
 ```{r}
+#| warning: false
 library(tidyverse)
 library(readr)
 ```
 
 ```{r}
-saa_data_aug <- read_tsv("../data/03_dat_aug.tsv")
-```
-
-```{r}
-my_cols <- c("#3C3C68","#627634","#C03221","#545E75", "#94BFBE", "#7A1F15",
-             "#da9283" , "#474B24")
-
-theme_custom <- theme_minimal(base_size = 14) +
-  theme(
-    plot.title = element_text(face = "bold", size = 13, margin = margin(b = 7)),
-    plot.subtitle = element_text(size = 10, margin = margin(b = 12)),
-    plot.caption = element_text(size = 8, margin = margin(t = 20)),
-      
-    axis.title.x = element_text(size = 10, margin = margin(t = 10)),
-    axis.title.y = element_text(size = 10, margin = margin(r = 10)),
-
-    axis.text.x = element_text(size = 10, margin = margin(t = 5)),
-    axis.text.y = element_text(size = 10, margin = margin(r = 5)),
-    
-    legend.position = "none",
-    )
+#| message: false
+aug_data <- read_tsv("../data/03_dat_aug.tsv")
 ```
 
 # Analysis
 
 ```{r}
-top_10 <- saa_data_aug |> 
+top_12 <- aug_data |> 
   count(patient_number, sort = TRUE) |> 
-  head(10)
+  head(12)
 ```
 
-```{r}
+```{r fmax_over_time}
+#| label: fmax_over_time
 
- saa_data_aug |> 
-  filter(patient_number %in% top_10$patient_number) |> 
+aug_data |> 
+  filter(patient_number %in% top_12$patient_number) |> 
     ggplot(aes(x = days_from_baseline, 
                y = fmax_mean)) +
   geom_point(aes(color = saa_custom,
                  shape = as.factor(project))) +
-  geom_line() +
-  facet_wrap(~ patient_number, scales = "free_y") +
-  labs(color = "saa_custom")
+  geom_line(color = "gray") +
+  facet_wrap(~ patient_number) +
+  theme_minimal() +
+  scale_x_continuous(n.breaks = 3) +
+  labs(title = "Mean fmax over time for the 12 patients with the most visits",
+       x = "Days from baseline",
+       y = "Mean fmax (RFU)",
+       shape = "Project",
+       color = "SAA status")
+ggsave(filename = "../results/07_fmax_over_time.png")
+
   
 ```
+
+```{r}
+aug_data |> 
+    ggplot(aes(x = days_from_baseline, 
+               y = fmax_mean)) +
+  geom_point(aes(color = saa_custom,
+                 shape = as.factor(project))) +
+  labs(title = "Mean fmax over time",
+       x = "Days from baseline",
+       y = "Mean fmax (RFU)",
+       shape = "Project",
+       color = "SAA status") +
+  theme_minimal() 
+```
+
