@@ -6,32 +6,14 @@ format: html
 # Load libraries and data
 
 ```{r}
+#| warning: false
 library(tidyverse)
 library(readr)
 ```
 
 ```{r}
+#| message: false
 aug_data <- read_tsv("../data/03_dat_aug.tsv")
-```
-
-```{r}
-my_cols <- c("#3C3C68","#627634","#C03221","#545E75", "#94BFBE", "#7A1F15",
-             "#da9283" , "#474B24")
-
-theme_custom <- theme_minimal(base_size = 14) +
-  theme(
-    plot.title = element_text(face = "bold", size = 13, margin = margin(b = 7)),
-    plot.subtitle = element_text(size = 10, margin = margin(b = 12)),
-    plot.caption = element_text(size = 8, margin = margin(t = 20)),
-      
-    axis.title.x = element_text(size = 10, margin = margin(t = 10)),
-    axis.title.y = element_text(size = 10, margin = margin(r = 10)),
-
-    axis.text.x = element_text(size = 10, margin = margin(t = 5)),
-    axis.text.y = element_text(size = 10, margin = margin(r = 5)),
-    
-    legend.position = "none",
-    )
 ```
 
 # Analysis
@@ -51,7 +33,7 @@ aug_data |>
                y = fmax_mean)) +
   geom_point(aes(color = saa_custom,
                  shape = as.factor(project))) +
-  geom_line() +
+  geom_line(color = "gray") +
   facet_wrap(~ patient_number) +
   theme_minimal() +
   scale_x_continuous(n.breaks = 3) +
