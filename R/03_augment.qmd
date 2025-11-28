@@ -29,7 +29,10 @@ It should be noted that for 2 patients (40771 and 40754) the rundate appears to 
 tidy_data <- tidy_data |> 
   mutate(rundate = as.Date(rundate)) |> 
   group_by(patient_number) |> 
-  mutate(days_from_baseline = as.numeric(rundate - min(rundate, na.rm = TRUE))) |> 
+  mutate(days_from_baseline = as.numeric(rundate - min(rundate, 
+                                                       na.rm = TRUE)
+                                         )) |> 
+
   ungroup()
 ```
 
@@ -42,10 +45,17 @@ The means are calculated of Fmax, ttt and auc from a single patient (patient_num
 ```{r}
 means <- tidy_data |>
   group_by(patient_number, clinical_event, days_from_baseline) |>
+  
   summarise(
-    fmax_mean = mean(fmax, na.rm = TRUE),
-    ttt_mean  = mean(ttt,  na.rm = TRUE),
-    auc_mean  = mean(auc,  na.rm = TRUE),
+    fmax_mean = mean(fmax, 
+                     na.rm = TRUE),
+    
+    ttt_mean  = mean(ttt,  
+                     na.rm = TRUE),
+    
+    auc_mean  = mean(auc,  
+                     na.rm = TRUE),
+    
     .groups = "drop"
   )
 
@@ -100,6 +110,7 @@ source("08_proj_func.R")
 
 reps <- tidy_data |>
   group_by(patient_number, project, clinical_event, days_from_baseline) |> 
+  
   summarise(
     fmax_reps = list(fmax),
     .groups = "drop"
@@ -122,6 +133,7 @@ source("08_proj_func.R")
 
 aug_data <- aug_data |> 
   rowwise() |> 
+  
   mutate(
     saa_custom = case_when(
       project == "155" ~ saa_rule_155(fmax_reps),
@@ -129,6 +141,7 @@ aug_data <- aug_data |>
       TRUE ~ NA_character_
     )
   ) |> 
+  
   ungroup()
 
 aug_data <- aug_data |>  
@@ -141,3 +154,4 @@ aug_data <- aug_data |>
 ```{r}
 write_tsv(aug_data, "../data/03_aug_data.tsv")
 ```
+
