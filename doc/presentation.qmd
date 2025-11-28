@@ -134,7 +134,9 @@ Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s d
 
 -   pivot longer og wider
 
--   Renaming (snake_case), column types, deleting (argumenter for tingene hvorfor vi vælger at slette specifikke)
+-   Renaming (snake_case), deleting (argumenter for tingene hvorfor vi vælger at slette specifikke)
+
+-   funktion til at lave til character
 
 ## Methods: Augmenting
 
