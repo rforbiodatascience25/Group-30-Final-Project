@@ -60,4 +60,3 @@ aug_data |>
        color = "SAA status") +
   theme_minimal() 
 ```
-

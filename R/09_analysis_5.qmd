@@ -1,0 +1,83 @@
+---
+title: "09_analysis_5"
+format: html
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+
+aug_data <- read_tsv("../data/03_aug_data.tsv")
+
+#making sure that the columns is the right type
+
+source("08_proj_func.R")
+aug_data <- char_type_col(aug_data)
+```
+
+```{r}
+my_cols <- c("#3C3C68","#627634","#C03221","#545E75", "#94BFBE", "#7A1F15",
+             "#da9283" , "#474B24")
+
+theme_custom <- theme_minimal(base_size = 14) +
+  
+  theme(
+    plot.title = element_text(face = "bold", 
+                              size = 13, 
+                              margin = margin(b = 7)
+                              ),
+    
+    plot.subtitle = element_text(size = 10, 
+                                 margin = margin(b = 12)
+                                 ),
+    
+    plot.caption = element_text(size = 8, 
+                                margin = margin(t = 20)
+                                ),
+      
+    axis.title.x = element_text(size = 10, 
+                                margin = margin(t = 10)
+                                ),
+    
+    axis.title.y = element_text(size = 10, 
+                                margin = margin(r = 10)
+                                ),
+
+    axis.text.x = element_text(size = 10, 
+                               margin = margin(t = 5)
+                               ),
+    
+    axis.text.y = element_text(size = 10, 
+                               margin = margin(r = 5)
+                               ),
+    
+    legend.position = "none",
+    )
+```
+
+```{r}
+saa_result_dist <- aug_data |>
+  ggplot(mapping = aes(x = project)) + 
+  geom_bar(mapping = aes(fill = saa_result),
+           position = "fill") + 
+  
+  scale_fill_manual(values = c("#3C3C68","#C03221","#627634"),
+                    name = "SAA result",
+                    guide = guide_legend(nrow = 1)) +
+  theme_custom + 
+  theme(legend.position = "bottom") + 
+  labs(title = "SAA result distribution",
+       subtitle = "SAA result ratio from the two projects",
+       x = "Project",
+       y = "Ratio",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)")
+
+```
+
+```{r}
+ggsave(filename = "../results/saa_result_dist.png",
+       width = 10,  
+       height = 5)   
+
+saa_result_dist
+```

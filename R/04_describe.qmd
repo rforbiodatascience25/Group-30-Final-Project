@@ -9,19 +9,17 @@ format: html
 library(tidyverse)
 ```
 
-# Loading the augmented data
+## Loading the augmented data
 
 ```{r}
 #| message: false
 
-saa_aug_data <- read_tsv("../data/03_aug_data.tsv")
+aug_data <- read_tsv("../data/03_aug_data.tsv")
 ```
 
-# Describing the data
+## Describing the data
 
-To get a better understanding of the data being worked with, some simple descriptive plots will be made.
-
-A general theme has been made:
+To ensure uniformity across the different plots a general theme has been made:
 
 ```{r}
   theme_custom <- theme_minimal(base_size = 14) +
@@ -40,20 +38,12 @@ A general theme has been made:
     )
 ```
 
-```{r}
-knitr::opts_chunk$set(
-  fig.path = "../results/",
-  fig.format = "png",
-  echo = TRUE
-)
-```
-
-## Distribution across projects
+### Distribution of observations between projects
 
 The data contains observations made in two projects. The distribution from each projects can be seen in the plot as well as the male/female ratio.
 
 ```{r 04_key_plot_1}
-project_distribution <- saa_aug_data |>
+project_distribution <- aug_data |>
   mutate(project = as.character(project)) |>
   ggplot(mapping = aes(x = project)) + 
   geom_bar(mapping = aes(fill = sex)) + 
@@ -68,29 +58,61 @@ project_distribution <- saa_aug_data |>
 project_distribution
 ```
 
-## Individual participants
+### Individual participants
 
 The data-set orignially contained more than 2000 observations. Some of the patients appear multiple times in the data set. The amount of different patients enrolled in the experiment is determined. Obs: we removed one patient during the cleaning because of a missing value interpretation.
 
 ```{r}
-patients_participants <- saa_aug_data |>
+patients_participants <- aug_data |>
   distinct(patient_number) |>
   summarize(Participants = n())
 patients_participants
 
 ```
 
-## Patient repeats
+### Result of the SAA
+
+All patients enrolled was diagnosed with PD previously to SAA analysis. The result of the SAA does not follow the PD diagnosis completely. The number of saa-positive patients at their latest visit.
+
+```{r}
+aug_data |>
+  arrange(desc(days_from_baseline)) |>
+  distinct(patient_number, .keep_all = TRUE) |>
+  filter(saa_result == "Positive") |>
+  summarize(Positive_individuals = n())
+  
+```
+
+### Saa-result from all observation, patient repeats accepted
+
+```{r}
+result_distribution <- aug_data |>
+  mutate(project = as.character(project)) |>
+  ggplot(mapping = aes(x = project)) + 
+  geom_bar(mapping = aes(fill = saa_result)) + 
+  scale_fill_manual(values = c("#94BFBE","#C03221","#627634"),
+                    name = "Result",
+                    guide = guide_legend(nrow = 1)) +
+  theme_custom + 
+  theme(legend.position = "bottom") + 
+  labs(title = "Result Distribution",
+       subtitle = "The distribution of saa-result",
+       x = "Project",
+       y = "Observations")
+result_distribution
+```
+
+### Patient repeats
 
 The distribution of each patient's latest experiment was plotted. Most of the data only contains information from the Baseline experiment. If the patients went for further experiments, most of them got the last assessment \~12 months (V04) after their Baseline.
 
 ```{r 04_key_plot_2}
-multiple_experiments <- saa_aug_data |>
+multiple_experiments <- aug_data |>
   arrange(desc(days_from_baseline)) |>
   distinct(patient_number, .keep_all = TRUE) |>
   ggplot(mapping = aes(x = clinical_event,
                        fill = clinical_event)) + 
-  geom_bar() + 
+  geom_bar(show.legend = FALSE) + 
   scale_fill_manual(values = c("#3C3C68","#627634","#545E75","#C03221", "#94BFBE","#7A1F15","#da9283","#474B24","#474B24","#474B24","#474B24")) +
   theme_custom + 
   labs(title = "Latest observation",
@@ -100,25 +122,12 @@ multiple_experiments <- saa_aug_data |>
 multiple_experiments
 ```
 
-## Result of the SAA
-
-All patients enrolled was diagnosed with PD previously to SAA analysis. The result of the SAA does not follow the PD diagnosis completely. 1363 individual patients are part of augmented data, but only 1160 were determined positive by SAA at their most recent observation.
-
-```{r}
-saa_aug_data |>
-  arrange(desc(days_from_baseline)) |>
-  distinct(patient_number, .keep_all = TRUE) |>
-  filter(saa_result == "Positive") |>
-  summarize(Positive_individuals = n())
-  
-```
-
-## Use of instrument
+### Use of instrument
 
 To analyse the samples of cerebrospinal fluid in the SAA, different equipment was used. In project 155 instrument 2, 4 and 6 were equally used. During project 237 these instruments are also used frequently in addition to instrument 5.
 
 ```{r 04_key_plot_3}
-instruments_used <- saa_aug_data |>
+instruments_used <- aug_data |>
   mutate(project = as.character(project)) |>
   mutate(instrument = as.character(instrument)) |>
   ggplot(mapping = aes(x = project)) + 
@@ -138,50 +147,26 @@ instruments_used
 
 ```
 
-## High and low ranges of key values
+### High and low ranges of key values
 
 To get a better understanding of the ranges of key values (fmax, auc, ttt) we look at a few examples at each end of the spectrum.
 
 ```{r}
-low_range <- function(df, column) {
-  df2 <- df |> 
-    filter(project == 155) |>
-    arrange({{column}}) |>
-    pull({{column}})
-  mean_low_155 <- mean(df2[1:10], na.rm = TRUE)
-  
-  df3 <- df |>
-    filter(project == 237) |>
-    arrange({{column}}) |>
-    pull({{column}})
-  mean_low_237 <- mean(df3[1:10], na.rm = TRUE)
-  return(list(mean_low_155, mean_low_237))
-}
+source("08_proj_func.R")
 
-low_range(saa_aug_data, fmax)
-low_range(saa_aug_data, auc)
-low_range(saa_aug_data, ttt)
+# The function returns 2 values: one from project 155 and one from 237:
+low_range(saa_aug_data, fmax, 50)
+low_range(saa_aug_data, auc, 50)
+low_range(saa_aug_data, ttt, 50)
 ```
 
 ```{r}
-high_range <- function(df, column) {
-  df2 <- df |> 
-    filter(project == 155) |>
-    arrange(desc({{column}})) |>
-    pull({{column}})
-  mean_high_155 <- mean(df2[1:10], na.rm = TRUE)
-  
-  df3 <- df |>
-    filter(project == 237) |>
-    arrange(desc({{column}})) |>
-    pull({{column}})
-  mean_high_237 <- mean(df3[1:10], na.rm = TRUE)
-  return(list(mean_high_155, mean_high_237))
-}
+source("08_proj_func.R")
 
-high_range(saa_aug_data, fmax)
-high_range(saa_aug_data, auc)
-high_range(saa_aug_data, ttt)
+# The function returns 2 values: one from project 155 and one from 237:
+high_range(saa_aug_data, fmax, 50)
+high_range(saa_aug_data, auc, 50)
+high_range(saa_aug_data, ttt, 50)
 ```
 
 ```{r}
@@ -190,9 +175,9 @@ high_range(saa_aug_data, ttt)
 
 library(patchwork)
 
-((instruments_used + project_distribution) / multiple_experiments) +
+((instruments_used + project_distribution) / multiple_experiments / result_distribution) +
   plot_layout(guides = "collect",
-              heights = c(5,5,7)) &
+              heights = c(5,5,7,5)) &
   theme(legend.position = "bottom")
 
 ```
