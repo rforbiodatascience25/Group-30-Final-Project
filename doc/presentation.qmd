@@ -124,19 +124,30 @@ Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s d
 
 ## Methods: Tidying
 
--   meget kort og præcis og kun for at give et overordnet billede
+:::: {.columns}
 
-<!-- -->
+::: {.column width="60%"}
 
--   graphical visualization of that we want to tidy it (krav til at det er tidy og hvorfor det gælder os)
+-   Tidy data makes it much easier to handle
 
-<!-- -->
+-   Requirements for tidy data
 
--   pivot longer og wider
+    -   Each column is one variable (Not the case initially)
 
--   Renaming (snake_case), deleting (argumenter for tingene hvorfor vi vælger at slette specifikke)
+    -   Each row is one observation
 
--   funktion til at lave til character
+    -   Each cell is one value
+
+![](images/pivot_example.png){fig-align="center" width="450"}
+
+:::
+
+::: {.column width="40%"}
+![](images/data_tidy_flow.png)
+
+:::
+
+::::
 
 ## Methods: Augmenting
 
