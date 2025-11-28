@@ -42,7 +42,7 @@ To ensure uniformity across the different plots a general theme has been made:
 
 The data contains observations made in two projects. The distribution from each projects can be seen in the plot as well as the male/female ratio.
 
-```{r 04_key_plot_1}
+```{r}
 project_distribution <- aug_data |>
   mutate(project = as.character(project)) |>
   ggplot(mapping = aes(x = project)) + 
@@ -55,6 +55,11 @@ project_distribution <- aug_data |>
        subtitle = "The distribution of observations and gender across project 155 and 237",
        x = "Project",
        y = "Observations")
+
+ggsave(filename = "../results/04_project_distribution.png",
+       width = 10,  
+       height = 5)
+
 project_distribution
 ```
 
@@ -99,6 +104,11 @@ result_distribution <- aug_data |>
        subtitle = "The distribution of saa-result",
        x = "Project",
        y = "Observations")
+
+ggsave(filename = "../results/04_result_distribution.png",
+       width = 10,  
+       height = 5)
+
 result_distribution
 ```
 
@@ -106,7 +116,7 @@ result_distribution
 
 The distribution of each patient's latest experiment was plotted. Most of the data only contains information from the Baseline experiment. If the patients went for further experiments, most of them got the last assessment \~12 months (V04) after their Baseline.
 
-```{r 04_key_plot_2}
+```{r}
 multiple_experiments <- aug_data |>
   arrange(desc(days_from_baseline)) |>
   distinct(patient_number, .keep_all = TRUE) |>
@@ -119,6 +129,11 @@ multiple_experiments <- aug_data |>
        subtitle = "The latest observation of each patient",
        x = "Latest Observation",
        y = "Participants")
+
+ggsave(filename = "../results/04_multiple_experiments.png",
+       width = 10,  
+       height = 5)
+
 multiple_experiments
 ```
 
@@ -126,7 +141,7 @@ multiple_experiments
 
 To analyse the samples of cerebrospinal fluid in the SAA, different equipment was used. In project 155 instrument 2, 4 and 6 were equally used. During project 237 these instruments are also used frequently in addition to instrument 5.
 
-```{r 04_key_plot_3}
+```{r}
 instruments_used <- aug_data |>
   mutate(project = as.character(project)) |>
   mutate(instrument = as.character(instrument)) |>
@@ -143,6 +158,11 @@ instruments_used <- aug_data |>
        subtitle = "The instrument used to analyze each observation",
        x = "Project",
        y = "Ratio")
+
+ggsave(filename = "../results/04_instruments_used.png",
+       width = 10,  
+       height = 5)
+
 instruments_used
 
 ```
@@ -155,18 +175,18 @@ To get a better understanding of the ranges of key values (fmax, auc, ttt) we lo
 source("08_proj_func.R")
 
 # The function returns 2 values: one from project 155 and one from 237:
-low_range(saa_aug_data, fmax, 50)
-low_range(saa_aug_data, auc, 50)
-low_range(saa_aug_data, ttt, 50)
+low_range(aug_data, fmax, 50)
+low_range(aug_data, auc, 50)
+low_range(aug_data, ttt, 50)
 ```
 
 ```{r}
 source("08_proj_func.R")
 
 # The function returns 2 values: one from project 155 and one from 237:
-high_range(saa_aug_data, fmax, 50)
-high_range(saa_aug_data, auc, 50)
-high_range(saa_aug_data, ttt, 50)
+high_range(aug_data, fmax, 50)
+high_range(aug_data, auc, 50)
+high_range(aug_data, ttt, 50)
 ```
 
 ```{r}
