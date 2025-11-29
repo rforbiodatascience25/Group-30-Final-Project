@@ -42,9 +42,9 @@ aug_data |>
        y = "Mean fmax (RFU)",
        shape = "Project",
        color = "SAA status")
-ggsave(filename = "../results/07_fmax_over_time.png")
-
-  
+ggsave(filename = "../results/07_fmax_over_time.png",
+       height = 5,
+       width = 10)
 ```
 
 ```{r}
@@ -58,5 +58,29 @@ aug_data |>
        y = "Mean fmax (RFU)",
        shape = "Project",
        color = "SAA status") +
-  theme_minimal() 
+  theme_minimal() +
+  ggsave(filename = "../results/07_fmax_over_time.png",
+       height = 5,
+       width = 10)
 ```
+
+```{r}
+aug_data |> 
+  filter(3 < count(patient_number)) |> 
+  sample_n(12, 
+           replace = FALSE) |> 
+    ggplot(aes(x = days_from_baseline, 
+               y = fmax_mean)) +
+  geom_point(aes(color = saa_custom,
+                 shape = as.factor(project))) +
+  geom_line(color = "gray") +
+  facet_wrap(~ patient_number) +
+  theme_minimal() +
+  scale_x_continuous(n.breaks = 3) +
+  labs(title = "Mean fmax over time for the 12 patients with the most visits",
+       x = "Days from baseline",
+       y = "Mean fmax (RFU)",
+       shape = "Project",
+       color = "SAA status")
+```
+
