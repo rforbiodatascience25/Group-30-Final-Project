@@ -32,7 +32,6 @@ tidy_data <- tidy_data |>
   mutate(days_from_baseline = as.numeric(rundate - min(rundate, 
                                                        na.rm = TRUE)
                                          )) |> 
-
   ungroup()
 ```
 
@@ -47,19 +46,12 @@ means <- tidy_data |>
   group_by(patient_number, clinical_event, days_from_baseline) |>
   
   summarise(
-    fmax_mean = mean(fmax, 
-                     na.rm = TRUE),
-    
-    ttt_mean  = mean(ttt,  
-                     na.rm = TRUE),
-    
-    auc_mean  = mean(auc,  
-                     na.rm = TRUE),
-    
+    fmax_mean = mean(fmax, na.rm = TRUE),
+    ttt_mean  = mean(ttt, na.rm = TRUE),
+    auc_mean  = mean(auc, na.rm = TRUE),
     .groups = "drop"
   )
 
-# Adding the means to the dataset
 aug_data <- tidy_data |>
   left_join(means,
             by = c("patient_number", 
@@ -109,7 +101,10 @@ To prepare replicate vectors for SAA rule all three fmax from each observation i
 source("08_proj_func.R")
 
 reps <- tidy_data |>
-  group_by(patient_number, project, clinical_event, days_from_baseline) |> 
+  group_by(patient_number, 
+           project, 
+           clinical_event, 
+           days_from_baseline) |> 
   
   summarise(
     fmax_reps = list(fmax),
