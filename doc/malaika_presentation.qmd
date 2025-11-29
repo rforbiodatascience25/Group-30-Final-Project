@@ -190,7 +190,7 @@ Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s d
 
 -   Low fmax (200–600 RFU) or huge, moderate, low
 
--   The MEDIAN!
+-   The median or variation (hard to know for sure)
 :::
 
 ::: {.column width="50%"}

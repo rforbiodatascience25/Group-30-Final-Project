@@ -3312,6 +3312,108 @@ date  (1): rundate
 </div>
 </div>
 </div>
+<p>There is maybe an extra criteria</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mismatched_saa <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">median =</span> <span class="fu">median</span>(fmax),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>            fmax,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">vari =</span> <span class="fu">max</span>(fmax)<span class="sc">-</span><span class="fu">min</span>(fmax),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mean</span>(fmax),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">.by =</span> patient_number) <span class="sc">|&gt;</span> </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(vari)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
+dplyr 1.1.0.
+ℹ Please use `reframe()` instead.
+ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
+  always returns an ungrouped data frame and adjust accordingly.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 21 × 5
+   patient_number median  fmax  vari `mean(fmax)`
+            &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;
+ 1           3753   5361  5361 17752        7908.
+ 2           3753   5361   306 17752        7908.
+ 3           3753   5361 18058 17752        7908.
+ 4          41749   5708  4885 30911       15463 
+ 5          41749   5708  5708 30911       15463 
+ 6          41749   5708 35796 30911       15463 
+ 7           3972   8037   290 36940       15186.
+ 8           3972   8037  8037 36940       15186.
+ 9           3972   8037 37230 36940       15186.
+10           4076   6933 75830 75521       27691.
+# ℹ 11 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>aug_data <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(saa_result <span class="sc">==</span> <span class="st">&quot;Inconclusive&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">median =</span> <span class="fu">median</span>(fmax),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            fmax,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">vari =</span> <span class="fu">max</span>(fmax)<span class="sc">-</span><span class="fu">min</span>(fmax),</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mean</span>(fmax),</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">.by =</span> patient_number) <span class="sc">|&gt;</span> </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(vari)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
+dplyr 1.1.0.
+ℹ Please use `reframe()` instead.
+ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
+  always returns an ungrouped data frame and adjust accordingly.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 146 × 5
+   patient_number median   fmax  vari `mean(fmax)`
+            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;
+ 1           3226 166603 165050  3106      166603 
+ 2           3226 166603 168156  3106      166603 
+ 3           3105   8061   8061  7852        5516.
+ 4           3105   8061   8170  7852        5516.
+ 5           3105   8061    318  7852        5516.
+ 6           3440   5380   5380 14388        6765.
+ 7           3440   5380    264 14388        6765.
+ 8           3440   5380  14652 14388        6765.
+ 9           3387   8866   8866 14443        7954.
+10           3387   8866    277 14443        7954.
+# ℹ 136 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>aug_data <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(saa_result <span class="sc">==</span> <span class="st">&quot;Negative&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">median =</span> <span class="fu">median</span>(fmax),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>            fmax,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">vari =</span> <span class="fu">max</span>(fmax)<span class="sc">-</span><span class="fu">min</span>(fmax),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mean</span>(fmax),</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">.by =</span> patient_number) <span class="sc">|&gt;</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(vari))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
+dplyr 1.1.0.
+ℹ Please use `reframe()` instead.
+ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
+  always returns an ungrouped data frame and adjust accordingly.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 954 × 5
+   patient_number median   fmax   vari `mean(fmax)`
+            &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
+ 1          42269    684    490 174478       29658.
+ 2          42269    684    456 174478       29658.
+ 3          42269    684 174934 174478       29658.
+ 4          42269    684    678 174478       29658.
+ 5          42269    684    690 174478       29658.
+ 6          42269    684    698 174478       29658.
+ 7         245300    672    666 171965       29304.
+ 8         245300    672    685 171965       29304.
+ 9         245300    672    678 171965       29304.
+10         245300    672    613 171965       29304.
+# ℹ 944 more rows</code></pre>
+</div>
+</div>
 </section>
 
 </main>

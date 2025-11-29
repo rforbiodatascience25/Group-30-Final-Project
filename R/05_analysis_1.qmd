@@ -176,9 +176,11 @@ There is maybe an extra criteria
 ```{r}
 mismatched_saa |> 
   summarize(median = median(fmax),
+            vari = max(fmax)-min(fmax),
+            mean = mean(fmax),
             .by = patient_number) |> 
   
-  arrange(median)
+  arrange(mean)
 ```
 
 ```{r}
@@ -186,8 +188,10 @@ aug_data |>
   filter(saa_result == "Inconclusive") |>
   ungroup() |>
   summarize(median = median(fmax),
+            vari = max(fmax)-min(fmax),
+            mean = mean(fmax),
             .by = patient_number) |> 
-  arrange(median)
+  arrange(desc(mean))
 ```
 
 ```{r}
@@ -195,6 +199,8 @@ aug_data |>
   filter(saa_result == "Negative") |>
   ungroup() |>
   summarize(median = median(fmax),
+            vari = max(fmax)-min(fmax),
+            mean = mean(fmax),
             .by = patient_number) |> 
-  arrange(desc(median))
+  arrange(desc(mean))
 ```
