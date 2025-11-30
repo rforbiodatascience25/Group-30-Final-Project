@@ -281,7 +281,7 @@ instruments_used <- aug_data |>
                     guide = guide_legend(nrow = 1)) +
   theme_custom + 
   theme(legend.position = "bottom") + 
-  labs(title = "Ratio used instruments 2 4 and 6 ",
+  labs(title = "Ratio used instruments 2, 4 and 6 ",
        subtitle = "The instrument used to analyze each observation",
        x = "Project",
        y = "Ratio")
