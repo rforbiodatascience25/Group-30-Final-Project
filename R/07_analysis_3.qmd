@@ -59,19 +59,9 @@ theme_custom <- theme_minimal(base_size = 14) +
     )
 ```
 
-## Analysis of Fmax
+## Goal of this analysis
 
-Seed Amplification Assays (SAA) detect α-synuclein aggregates in cerebrospinal fluid (CSF) and monitors fluorescence intensity over time. The point at which fluorescence reaches its maximum (Fmax) reflects the level of α-synuclein aggregation and is therefore a potential diagnostic indicator for Parkinson’s disease (PD).
-
-The two projects perform the assays under different variables:
-
--   **Project 155**: 150-hour assay, fluorescence measured every 29 minutes
-
--   **Project 237**: 24-hour assay, fluorescence measured every 14 minutes
-
-Variations in assay duration, cycle length, and reaction mixture composition mean that fluorescence values (Fmax) are not directly comparable across projects. Because assay duration, cycle frequency, and reaction mixture differ between projects, fluorescence values (Fmax) cannot be directly compared without normalizing and looking at variability and protocol-specific characteristics.
-
-The goal of this analysis is therefore to evaluate the consistency of the two assays, including whether instrument differences contribute to variability.
+The goal of this analysis is to evaluate the consistency of the two assays, including whether instrument differences contribute to variability.
 
 ### Comparison of Overall Fmax Levels
 
