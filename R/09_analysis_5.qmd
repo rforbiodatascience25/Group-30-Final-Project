@@ -81,31 +81,3 @@ ggsave(filename = "../results/saa_result_dist.png",
 
 saa_result_dist
 ```
-
-```{r}
-
-p_fmax_raw_rep_inst <- aug_data |> 
-  ggplot(aes(
-      x = fmax, 
-      color = factor(instrument),
-      fill = factor(instrument)
-  )) +
-  
-  geom_boxplot(alpha = 0.7) +
-  facet_grid(instrument ~ project) +
-  
-  scale_color_manual(values = my_cols) +
-  scale_fill_manual(values = my_cols) +
-  
-  labs(
-    title = "Raw Fmax Across Instruments and Replicates",
-    x = "Fmax [RFU]",
-    y = "Replicate Number",
-    caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"
-  ) +
-  
-  theme_custom +
-    scale_x_continuous(labels = scales::label_comma())
-
-p_fmax_raw_rep_inst
-```

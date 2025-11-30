@@ -174,17 +174,28 @@ Does one of the methods perform better than the other, and which is one more eff
 
 ## Descriptive
 
+::::: columns
+::: {.column width="50%"}
 -   Two projects: 155 (150h) and 237 (24h)
-
-![](../results/04_project_distribution.png){width="200"}
-
 -   1300 individuals, almost 1900 observations
+
+<br>
 
 -   2 functions, overview of high/low values
 
--   Frequency of instrument used
+<br> <br>
 
-![](../results/04_instruments_used.png){width="200"}
+-   Frequency of instrument used
+:::
+
+::: {.column width="50%"}
+![](../results/04_project_distribution.png){width="500"}
+
+<br>
+
+![](../results/04_instruments_used.png){width="500"}
+:::
+:::::
 
 # Results
 
@@ -198,7 +209,7 @@ Does one of the methods perform better than the other, and which is one more eff
 
 -   A non-mentioned criteria?
 
--   Low fmax (200–600 RFU) or huge, moderate, low
+-   Low fmax (200–600 RFU), huge, moderate
 
 -   Hard to know for sure
 :::
@@ -215,15 +226,14 @@ Does one of the methods perform better than the other, and which is one more eff
 ::::::
 
 ::: row
-![](../results/05_mismatched_saa_plot.png){width="3000"}
+![](../results/05_mismatched_saa_plot_log.png){width="3000"}
 :::
 ::::::::
 
 <!-- -->
 
 ## SAA results
-
--   ratio
+![](../results/06_sd_by_project.png){width="2000"}
 
 ## Overlap ting
 
@@ -248,6 +258,14 @@ Does one of the methods perform better than the other, and which is one more eff
 
 ## Patients over time
 
--   her
-
 # Last notes/conclusions
+
+**24-hour assay (237) vs 150-hour assay (155):**
+
+::: pf-box
+Does one of the methods perform better than the other, and which is one more efficient?
+:::
+
+-   Project **237:** Fast, accurate, clear separation, consistent
+
+-   Healthy controls for better assessment
