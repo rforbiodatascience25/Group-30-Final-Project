@@ -263,7 +263,7 @@ Does one of the methods perform better than the other, and which is one more eff
 
 -   Can the instruments explain some of these differences?
 
-![](../results/07_fmax_raw_rep_inst.png){width="3000"}
+![](../results/07_sd_by_instrument.png)
 :::
 
 ## Patients over time
