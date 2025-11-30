@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="presentation_files/libs/clipboard/clipboard.min.js"></script>
-<script src="presentation_files/libs/quarto-html/tabby.min.js"></script>
-<script src="presentation_files/libs/quarto-html/popper.min.js"></script>
-<script src="presentation_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="andreas_presentation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="andreas_presentation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="andreas_presentation_files/libs/quarto-html/popper.min.js"></script>
+<script src="andreas_presentation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="andreas_presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="andreas_presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="andreas_presentation_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Malaika Khiljee">
@@ -14,12 +14,12 @@
   <meta name="author" content="Isabella Christoffersen">
   <meta name="author" content="Andreas Nielsen">
   <meta name="dcterms.date" content="2025-12-02">
-  <title>α-Synuclein Aggregates in Parkinson’s Disease</title>
+  <title>a-Synuclein Aggregates in Parkinson’s Disease</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="andreas_presentation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="andreas_presentation_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -33,11 +33,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
-  <link href="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="presentation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="andreas_presentation_files/libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
+  <link href="andreas_presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="andreas_presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="andreas_presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="andreas_presentation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -132,7 +132,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">α-Synuclein Aggregates in Parkinson’s Disease</h1>
+  <h1 class="title">a-Synuclein Aggregates in Parkinson’s Disease</h1>
   <p class="subtitle">SAA Analysis from PPMI Projects 155 &amp; 237</p>
 
 <div class="quarto-title-authors">
@@ -178,7 +178,7 @@ Andreas Nielsen
 /* TIL TABELLER! */   
 
 .reveal .slides section table {
-  width: 100% !important;                   /* gør så at tabellen fylder hele vejen */
+  width: 100% !important;                   /* gør så at tabellen fylder hele slidet */
   border-collapse: separate !important;
   border-spacing: 0 !important;
   border: 1px solid #999 !important;         /* gør så at der er kant om tabel */
@@ -199,7 +199,7 @@ Andreas Nielsen
 
 /*afstand mellem tabeller */
 .reveal .slides section table + table {
-  margin-top: 1.7rem !important;
+  margin-top: 2rem !important;   /* justér som du vil */
 }
 
 /* venstrejusteret tabel */
@@ -243,11 +243,10 @@ Andreas Nielsen
 
 </style>
 </section>
-<section>
-<section id="introduction" class="title-slide slide level1 center">
-<h1>Introduction</h1>
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
 <ul>
-<li><p>Presynaptic neuronal protein α-Synuclein</p></li>
+<li><p>Presynaptic neuronal protein alpha-Synuclein</p></li>
 <li><p>Aggregation between nerve cells -&gt; inhibition of transmission</p></li>
 <li><p>2 Projects using SAA (α-synuclein seed amplification assays)</p></li>
 </ul>
@@ -275,29 +274,24 @@ Andreas Nielsen
 <li><p>Quality check</p></li>
 </ul>
 </section>
-<section id="tidying-and-augmenting" class="slide level2">
-<h2>Tidying and augmenting</h2>
+<section id="methods-tidying" class="slide level2">
+<h2>Methods: Tidying</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <ul>
-<li><p>Tidy data makes it much easier to handle. Requirements:</p>
+<li><p>Tidy data makes it much easier to handle</p></li>
+<li><p>Requirements for tidy data</p>
 <ul>
 <li><p>Each column is one variable (Not the case initially)</p></li>
 <li><p>Each row is one observation</p></li>
-<li><p>Each cell is one value</p></li>
+<li><p>Each cell is one value <br> <br> <br></p></li>
 </ul></li>
 </ul>
 <div class="quarto-figure quarto-figure-left">
 <figure>
-<p><img data-src="images/pivotlonger_example.png" class="quarto-figure quarto-figure-left" width="600"></p>
+<p><img data-src="images/pivotlonger_example.png" class="quarto-figure quarto-figure-left" width="650"></p>
 </figure>
 </div>
-<p><strong>Augmenting</strong></p>
-<ul>
-<li><p>Days from baseline: Calculated from rundates</p></li>
-<li><p>Mean of fmax for each visit</p></li>
-<li><p>Our own SAA_result</p></li>
-</ul>
 </div><div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-right">
 <figure>
@@ -306,22 +300,30 @@ Andreas Nielsen
 </div>
 </div></div>
 </section>
+<section id="methods-augmenting" class="slide level2">
+<h2>Methods: Augmenting</h2>
+<ul>
+<li><p>Days from baseline</p>
+<ul>
+<li>Calculated from rundates</li>
+</ul></li>
+<li><p>Mean of fmax for each visit</p></li>
+<li><p>Our own SAA_result</p></li>
+</ul>
+</section>
 <section id="descriptive" class="slide level2">
 <h2>Descriptive</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
 <li>Two projects: 155 (150h) and 237 (24h)</li>
+<li>1300 individuals, almost 1900 observations</li>
 </ul>
 <p><br></p>
 <ul>
-<li>1300 individuals, almost 1900 observations</li>
-</ul>
-<p><br> <br></p>
-<ul>
 <li>2 functions, overview of high/low values</li>
 </ul>
-<p><br> <br> <br></p>
+<p><br> <br></p>
 <ul>
 <li>Frequency of instrument used</li>
 </ul>
@@ -329,6 +331,11 @@ Andreas Nielsen
 <p><img data-src="../results/04_project_distribution.png" width="600"></p>
 <p><img data-src="../results/04_instruments_used.png" width="600"></p>
 </div></div>
+</section>
+<section>
+<section id="results" class="title-slide slide level1 center">
+<h1>Results</h1>
+
 </section>
 <section id="saa-quality-check" class="slide level2">
 <h2>SAA quality check</h2>
@@ -344,22 +351,20 @@ Andreas Nielsen
 </ul>
 </div><div class="column" style="width:50%;">
 <table class="caption-top">
-<thead>
-<tr class="header">
-<th><strong>Result</strong></th>
-<th><strong>Project 155</strong></th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
+<td><strong>Result</strong></td>
+<td><strong>Project 155</strong></td>
+</tr>
+<tr class="even">
 <td>Positive</td>
 <td>All replicates Fmax ≥ 5,000 RFU</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Negative</td>
 <td>0 or 1 replicate Fmax ≥ 5,000 RFU</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Inconclusive</td>
 <td>2 replicates Fmax ≥ 5,000 RFU</td>
 </tr>
@@ -380,23 +385,18 @@ Andreas Nielsen
 <section id="alternative-diagnostic-variables" class="slide level2">
 <h2>Alternative diagnostic variables</h2>
 <div class="columns">
-<div class="column">
-<p><img data-src="images/09_Fmax_mean_results_24h.png" width="425"></p>
-</div><div class="column">
-<p><img data-src="images/09_Fmax_mean_results_150h.png" width="424"></p>
-</div></div>
+<p>:::: column width=“50%” <img data-src="images/09_Fmax_mean_results_24h.png" width="425"></p>
+</div>
+<p>:::: column width=“50%” <img data-src="images/09_Fmax_mean_results_150h.png" width="424"> :::</p>
+<p>:::::</p>
 </section>
 <section id="inconsistencies-in-the-two-projects-replicates" class="slide level2">
 <h2>Inconsistencies in the two projects (replicates)</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Fmax standard deviation</a></li><li><a href="#tabset-1-2">Instrument standard deviation</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
 <ul>
 <li>Can standard deviations in replicates say something about whether one project is better than the other?</li>
 </ul>
-<p><img data-src="../results/07_sd_by_project.png" width="1800"></p>
-<table class="caption-top">
+
+<img data-src="../results/07_sd_by_project.png" width="2000" class="r-stretch"><table class="caption-top">
 <thead>
 <tr class="header">
 <th>Project</th>
@@ -420,23 +420,21 @@ Andreas Nielsen
 </tr>
 </tbody>
 </table>
-</div>
-<div id="tabset-1-2">
+</section>
+<section id="instruments" class="slide level2">
+<h2>Instruments</h2>
 <ul>
 <li>Can the instruments explain some of these differences?</li>
 </ul>
-<p><img data-src="../results/07_fmax_raw_rep_inst.png" width="3000"></p>
-</div>
-</div>
-</div>
-</section>
+
+<img data-src="../results/07_fmax_raw_rep_inst.png" width="3000" class="r-stretch"></section>
 <section id="patients-over-time" class="slide level2">
 <h2>Patients over time</h2>
 <p>Question: Does the signal become stronger further into disease progression?</p>
 <div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Attempt at linear model</a></li><li><a href="#tabset-2-2">Residual plot</a></li><li><a href="#tabset-2-3">Subset of patients</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Attempt at linear model</a></li><li><a href="#tabset-1-2">Residual plot</a></li><li><a href="#tabset-1-3">Subset of patients</a></li></ul>
 <div class="tab-content">
-<div id="tabset-2-1">
+<div id="tabset-1-1">
 <p><img data-src="../results/08_fmax_over_time_lm.png"></p>
 <ul>
 <li><p>Only for project 237 above</p>
@@ -448,10 +446,10 @@ Andreas Nielsen
 <li><p>Note: Days from baseline is a not actually a measure of disease progression…</p></li>
 </ul>
 </div>
-<div id="tabset-2-2">
+<div id="tabset-1-2">
 <p><img data-src="../results/08_fmax_over_time_resid.png"></p>
 </div>
-<div id="tabset-2-3">
+<div id="tabset-1-3">
 <p><img data-src="../results/08_fmax_over_time_top12.png"></p>
 <ul>
 <li><p>Patient variation, if any connection at all</p></li>
@@ -469,7 +467,7 @@ Andreas Nielsen
 </div>
 <ul>
 <li><p>Project <strong>237:</strong> Fast, accurate, clear separation, consistent</p></li>
-<li><p>Healthy controls for better assessment</p></li>
+<li><p>Healthy controls for better assessment :::::::</p></li>
 </ul>
 
 </section>
@@ -481,19 +479,19 @@ Andreas Nielsen
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="presentation_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="presentation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="presentation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="presentation_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="presentation_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="presentation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="presentation_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="andreas_presentation_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
