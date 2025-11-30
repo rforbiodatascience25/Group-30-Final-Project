@@ -58,7 +58,7 @@ theme_custom <- theme_minimal(base_size = 14) +
     )
 ```
 
-## Analysis of Fmax
+## Analysis of Fmax and SAA results
 
 Seed Amplification Assays (SAA) detect α-synuclein aggregates in cerebrospinal fluid (CSF) and monitors fluorescence intensity over time. The point at which fluorescence reaches its maximum (Fmax) reflects the level of α-synuclein aggregation and is therefore a potential diagnostic indicator for Parkinson’s disease (PD).
 
@@ -68,6 +68,40 @@ The two projects perform the assays under different variables:
 
 -   **Project 237**: 24-hour assay, fluorescence measured every 14 minutes
 
-Variations in assay duration, cycle length, and reaction mixture composition mean that fluorescence values (Fmax) are not directly comparable across projects. Because assay duration, cycle frequency, and reaction mixture differ between projects, fluorescence values (Fmax) cannot be directly compared without looking at protocol-specific characteristics.
+Variations in assay duration, cycle length, and reaction mixture composition mean that fluorescence values (Fmax) are not directly comparable across projects.
+
+Because assay duration, cycle frequency, and reaction mixture differ between projects, fluorescence values (Fmax) cannot be directly compared without looking at protocol-specific characteristics.
+
+We will look at the separation and overlap in fmax, when determining SAA result.
+
+## SAA result distribution
+
+We will look at how the ratio of negative, positive and inconclusive is
+
+```{r}
+saa_result_dist <- aug_data |>
+  ggplot(mapping = aes(x = project)) + 
+  geom_bar(mapping = aes(fill = saa_result),
+           position = "fill") + 
+  
+  scale_fill_manual(values = c("#da9283","#7A1F15","#94BFBE"),
+                    name = "SAA result",
+                    guide = guide_legend(nrow = 1)) +
+  theme_custom + 
+  theme(legend.position = "bottom") + 
+  labs(title = "SAA result distribution",
+       subtitle = "SAA result ratio from the two projects",
+       x = "Project",
+       y = "Ratio",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)")
+
+ggsave(filename = "../results/06_saa_result_dist.png",
+       width = 10,  
+       height = 5)   
+
+saa_result_dist
+```
+
+It seems to be very similar - not a very big difference in the ratio. Trying to see the separation:
 
 ANDREASES KOMMER HER
