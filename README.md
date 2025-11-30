@@ -10,7 +10,7 @@
 
 # **Link to presentation**
 
-[See presentation](https://teaching.healthtech.dtu.dk/22100/rstudio1/files/projects/Group-30-Final-Project/doc/presentation.html#/title-slide)
+[See presentation](https://raw.githack.com/rforbiodatascience25/Group-30-Final-Project/main/doc/presentation.html#/title-slide)
 
 # **Data retrieval**
 
