@@ -14,7 +14,7 @@ library(modelr)
 
 ```{r}
 #| message: false
-aug_data <- read_tsv("../data/03_dat_aug.tsv")
+aug_data <- read_tsv("../data/03_aug_data.tsv")
 ```
 
 ## Defining colors and theme
