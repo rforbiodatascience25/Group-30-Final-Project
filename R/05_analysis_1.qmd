@@ -85,7 +85,8 @@ aug_data |>
   labs(title = "Match versus mismacth",
        subtitle = "Comparison between PPMI's saa_result and custom made results column",
        x = "Match",
-       y = "Count")
+       y = "Count",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)")
 
 ggsave(filename = "../results/05_quality_check.png",
        width = 10,  
@@ -95,14 +96,15 @@ ggsave(filename = "../results/05_quality_check.png",
 To visualize the 7 mismatches:
 
 ```{r}
-mismatched_saa <- aug_data |>
-  filter(saa_result != saa_custom)
-```
-
-```{r}
-mismatched_saa_plot <- ggplot(mismatched_saa, aes(x = rep, 
-                           y = fmax, 
-                           group = patient_number)) +
+mismatches_saa_results |>
+  pivot_longer(
+    cols = starts_with("rep"),
+    names_to = "rep",
+    values_to = "fmax"
+  ) |>
+  ggplot(aes(x = rep,
+             y = fmax,
+             group = patient_number)) + 
   
   geom_line(color = "#C03221",
             alpha = 0.5) +
@@ -132,15 +134,20 @@ ggsave(filename = "../results/05_mismatched_saa_plot.png",
        width = 14.5,  
        height = 6.5)  
 
-mismatched_saa_plot
 ```
 
-log plot:
+A log2 plot:
 
 ```{r}
-mismatched_saa_plot_log <- ggplot(mismatched_saa, aes(x = rep, 
-                           y = log2(fmax), 
-                           group = patient_number)) +
+mismatches_saa_results |>
+  pivot_longer(
+    cols = starts_with("rep"),
+    names_to = "rep",
+    values_to = "fmax"
+  ) |>
+  ggplot(aes(x = rep,
+             y = log2(fmax),
+             group = patient_number)) + 
   
   geom_line(color = "#C03221",
             alpha = 0.5) +
@@ -170,13 +177,17 @@ ggsave(filename = "../results/05_mismatched_saa_plot_log.png",
        width = 14.5,  
        height = 6.5)  
 
-mismatched_saa_plot_log
 ```
 
 There is maybe an extra criteria
 
 ```{r}
-mismatched_saa |> 
+mismatches_saa_results |>
+  pivot_longer(
+    cols = starts_with("rep"),
+    names_to = "rep",
+    values_to = "fmax"
+  ) |>
   summarize(median = median(fmax),
             fmax,
             vari = max(fmax)-min(fmax),
