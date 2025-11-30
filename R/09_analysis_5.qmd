@@ -1,0 +1,141 @@
+---
+title: "09_analysis_5"
+format: html
+---
+
+## Loading libraries
+
+```{r}
+#| message: false
+library(tidyverse)
+```
+
+## Loading the data
+
+```{r}
+aug_data <- read_tsv("../data/03_aug_data.tsv")
+```
+
+## Setup and colours
+
+```{r}
+my_cols <- c("#3C3C68","#627634","#C03221","#545E75", "#94BFBE", "#7A1F15",
+             "#da9283" , "#474B24")
+
+theme_custom <- theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 13, margin = margin(b = 7)),
+    plot.subtitle = element_text(size = 10, margin = margin(b = 12)),
+    plot.caption = element_text(size = 8, margin = margin(t = 20)),
+      
+    axis.title.x = element_text(size = 10, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 10, margin = margin(r = 10)),
+
+    axis.text.x = element_text(size = 10, margin = margin(t = 5)),
+    axis.text.y = element_text(size = 10, margin = margin(r = 5)),
+    
+    legend.position = "none",
+    )
+```
+
+## Analysis of Fmax_mean as alternative test parameter
+
+In this section we will test the variable Fmax_mean as a valid predictor of test result status. Fmax_mean is a mean calculated from the three samples collected in every assay.
+
+## Test distinction by way of Fmax_mean
+
+First we select the 150h test group from the dataset
+
+```{r}
+df_150h_long <- aug_data |>   dplyr::filter(project == 155)
+```
+
+Then we plot the Fmax_mean grouped by their result status(positive/negative/inconclusive) and do a visual inspection and evaluate if the groups are distinguishable.
+
+```{r}
+ggplot(df_150h_long, aes(
+  x = saa_result,
+  y = fmax_mean,
+  fill = saa_result
+    )) +
+  geom_boxplot(outlier.alpha = 0.3) +
+  scale_color_manual(values = my_cols) +
+  scale_fill_manual(values = my_cols) +
+  labs(
+    title = "150h Metrics by SAA Status",
+        y = "Fmax mean",
+        x = NULL,
+        caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"     ) +
+  theme_custom
+    scale_x_continuous(labels = scales::label_comma())
+```
+
+```{r 09_key_plot_1}
+ggsave(filename = "../results/09_Fmax_mean_results_150h.png",        
+       width = 10,
+       height = 5)  
+```
+
+From the plot we see that that the positive and negative group is distinguishable so we conduct a t-test to evaluate if we can predict what group a measurement would belong to with confidence.
+
+First we filter for positive and negative and drop NA values.
+
+```{r}
+unpaired_df_155 <- df_150h_long %>%
+  filter(saa_result %in% c("Positive", "Negative")) %>%   drop_na(fmax_mean) %>%
+  select(patient_number, saa_result, fmax_mean)
+```
+
+Then we conduct the T-test
+
+```{r}
+t.test(fmax_mean ~ saa_result, data = unpaired_df_155)
+```
+
+Here the T-test shows a highly statistically significant difference between the groups.
+
+## We repeat the steps for the 24h test group
+
+```{r}
+df_24h_long <- aug_data |>   dplyr::filter(project == 237)
+```
+
+```{r}
+ggplot(df_24h_long, aes(
+  x = saa_result,
+  y = fmax_mean,
+  fill = saa_result
+  )) +
+  geom_boxplot(outlier.alpha = 0.3) +
+  scale_color_manual(values = my_cols) +
+  scale_fill_manual(values = my_cols) +
+  labs(     title = "24h Metrics by SAA Status",
+            y = "Fmax mean",
+            x = NULL,
+            caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"     ) +
+  theme_custom
+      scale_x_continuous(labels = scales::label_comma())   
+```
+
+```{r 09_key_plot_2}
+ggsave(filename = "../results/09_Fmax_mean_results_24h.png",        width = 10,          height = 5)  
+```
+
+```{r}
+unpaired_df_24 <- df_24h_long %>%
+  filter(saa_result %in% c("Positive", "Negative")) %>%
+  drop_na(fmax_mean) %>%
+  select(patient_number, saa_result, fmax_mean)  
+
+unpaired_df_24 %>%   count(saa_result) 
+```
+
+```{r}
+t.test(fmax_mean ~ saa_result, data = unpaired_df_24)
+```
+
+Here we also show the ability to visually distinguish between the groups and we show a highly statistically significant difference from the T-test.
+
+## Conclusion
+
+From these observations we have highlighted the use of Fmax_mean as an alternative diagnostic variable both for the tests done 24 and 150 hours after the sampling. Thus we can qualify both methods as viable testing methods for diagnostics. The data set includes 4 other variables that may also be suited for this(AUC, SLOPE, T50, TTT), the above process could simply be repeated for each one in order to evaluate them.
