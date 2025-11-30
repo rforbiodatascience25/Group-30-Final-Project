@@ -32,71 +32,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="malaika_presentation_files/libs/revealjs/dist/theme/quarto-8f3eebe07241f08526c91a7e9cbef8fd.css">
   <link href="malaika_presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -255,11 +190,11 @@ Andreas Nielsen
 
  /* skriftstørrelse på tabellerne */
 .reveal table {
-  font-size: 1.6rem;
+  font-size: 1.2rem;
 }
 
 .reveal table th {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 
 /*afstand mellem tabeller */
@@ -310,34 +245,93 @@ Andreas Nielsen
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
-<p>Intro, hvad er det her forsøg osv</p>
+<ul>
+<li><p>Presynaptic neuronal protein alpha-Synuclein</p></li>
+<li><p>Aggregation between nerve cells -&gt; inhibition of transmission</p></li>
+<li><p>2 Projects using SAA (α-synuclein seed amplification assays)</p></li>
+</ul>
 <p><br></p>
-<p><strong>Technical focus:</strong></p>
+<p><strong>General focus:</strong></p>
 <div class="pf-box">
-<p>Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s disease? We compare fluorescence data from two PPMI projects to assess diagnostic potential.</p>
+<p>Does one of the methods perform better than the other, and which is one more efficient?</p>
 </div>
+</section>
+<section id="materials-and-methods" class="slide level2">
+<h2>Materials and Methods</h2>
+<p><strong>Materials:</strong></p>
+<ul>
+<li><p>PPMI (Parkinson’s Progression Markers Initiative) database</p></li>
+<li><p>3 replicates of SAA (cerebrospinal fluid)</p></li>
+<li><p>Monitors the aggregation by measuring fluorescence intensity over time</p></li>
+<li><p>Sigmoidal curve: fmax, auc, ttt</p></li>
+<li><p>Set of critera for positive/negative/inconclusive</p></li>
+</ul>
+<p><br></p>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><p>Tidyverse to visualize the data</p></li>
+<li><p>Tools:</p></li>
+<li><p>Quality check</p></li>
+</ul>
 </section>
 <section id="methods-tidying" class="slide level2">
 <h2>Methods: Tidying</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
 <ul>
-<li><p>pivot longer og wider</p></li>
-<li><p>Renaming (snake_case), column types, deleting</p></li>
+<li><p>Tidy data makes it much easier to handle</p></li>
+<li><p>Requirements for tidy data</p>
+<ul>
+<li><p>Each column is one variable (Not the case initially)</p></li>
+<li><p>Each row is one observation</p></li>
+<li><p>Each cell is one value <br> <br> <br></p></li>
+</ul></li>
 </ul>
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="images/pivotlonger_example.png" class="quarto-figure quarto-figure-left" width="650"></p>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="images/tidy_data_flow.png" class="quarto-figure quarto-figure-right" width="300"></p>
+</figure>
+</div>
+</div></div>
 </section>
 <section id="methods-augmenting" class="slide level2">
 <h2>Methods: Augmenting</h2>
 <ul>
-<li><p>join</p></li>
-<li><p>days from baseline</p></li>
-<li><p>means</p></li>
+<li><p>Days from baseline</p>
+<ul>
+<li>Calculated from rundates</li>
+</ul></li>
+<li><p>Mean of fmax for each visit</p></li>
+<li><p>Our own SAA_result</p></li>
 </ul>
 </section>
 <section id="descriptive" class="slide level2">
 <h2>Descriptive</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li><p>function</p></li>
-<li><p>counts af forskellige ting (meget kort, som en overgang)</p></li>
+<li>Two projects: 155 (150h) and 237 (24h)</li>
+<li>1300 individuals, almost 1900 observations</li>
 </ul>
+<p><br></p>
+<ul>
+<li>2 functions, overview of high/low values</li>
+</ul>
+<p><br> <br></p>
+<ul>
+<li>Frequency of instrument used</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="../results/04_project_distribution.png" width="500"></p>
+<p><br></p>
+<p><img data-src="../results/04_instruments_used.png" width="500"></p>
+</div></div>
 </section>
 <section>
 <section id="results" class="title-slide slide level1 center">
@@ -346,126 +340,65 @@ Andreas Nielsen
 </section>
 <section id="saa-quality-check" class="slide level2">
 <h2>SAA quality check</h2>
+<div class="rows">
+<div class="row">
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>her</li>
+<li><p>SAA result and SAA custom quality check</p></li>
+<li><p>A non-mentioned criteria?</p></li>
+<li><p>Low fmax (200–600 RFU), huge, moderate</p></li>
+<li><p>Hard to know for sure</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td><strong>Result</strong></td>
+<td><strong>Project 155</strong></td>
+</tr>
+<tr class="even">
+<td>Positive</td>
+<td>All replicates Fmax ≥ 5,000 RFU</td>
+</tr>
+<tr class="odd">
+<td>Negative</td>
+<td>0 or 1 replicate Fmax ≥ 5,000 RFU</td>
+</tr>
+<tr class="even">
+<td>Inconclusive</td>
+<td>2 replicates Fmax ≥ 5,000 RFU</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="row">
+<p><img data-src="../results/05_mismatched_saa_plot_log.png" width="3000"></p>
+</div>
+</div>
+<!-- -->
+</section>
+<section id="saa-results" class="slide level2">
+<h2>SAA results</h2>
+
+<img data-src="../results/07_sd_by_project.png" width="2000" class="r-stretch"></section>
+<section id="overlap-ting" class="slide level2">
+<h2>Overlap ting</h2>
+<ul>
+<li></li>
 </ul>
 </section>
-<section id="inconsistencies-in-the-two-projects" class="slide level2">
-<h2>Inconsistencies in the two projects</h2>
-<p>(high/low range af instrumenter og plot af instrumenter antal)</p>
-</section>
-<section id="inconsistencies-in-the-two-projects-replications" class="slide level2">
-<h2>Inconsistencies in the two projects: Replications</h2>
-<div class="panel-tabset" style="color: black">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Variation</a></li><li><a href="#tabset-1-2">Standard deviation</a></li><li><a href="#tabset-1-3">Stats</a></li></ul>
-<div class="tab-content" style="color: black">
-<div id="tabset-1-1">
-<p><img data-src="../results/06_fmax_by_rep.png" width="2200"></p>
-</div>
-<div id="tabset-1-2">
-<p><img data-src="../results/06_sd_by_project.png" width="2200"></p>
-</div>
-<div id="tabset-1-3">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>repeats_fmax_stats <span class="ot">&lt;-</span> aug_data <span class="sc">|&gt;</span> </span>
-<span id="cb1-2"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">mean=</span><span class="fu">mean</span>(fmax), </span>
-<span id="cb1-4"><a href=""></a>            <span class="at">median=</span><span class="fu">median</span>(fmax),</span>
-<span id="cb1-5"><a href=""></a>            <span class="at">IQR =</span> <span class="fu">quantile</span>(fmax,.<span class="dv">75</span>)<span class="sc">-</span> <span class="fu">quantile</span>(fmax,.<span class="dv">25</span>),</span>
-<span id="cb1-6"><a href=""></a>            <span class="at">.by =</span> <span class="fu">c</span>(project, rep))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Summary statistics:</p>
-<table class="caption-top" style="width:100%;">
-<colgroup>
-<col style="width: 13%">
-<col style="width: 23%">
-<col style="width: 23%">
-<col style="width: 23%">
-<col style="width: 16%">
-</colgroup>
+<section id="inconsistencies-in-the-two-projects-replicates" class="slide level2">
+<h2>Inconsistencies in the two projects (replicates)</h2>
+<ul>
+<li>Can standard deviations in replicates say something about whether one project is better than the other?</li>
+</ul>
+
+<img data-src="../results/07_sd_by_project.png" width="2000" class="r-stretch"><table class="caption-top">
 <thead>
 <tr class="header">
 <th>Project</th>
-<th>Rep 1 - Median</th>
-<th>Rep 2 - Median</th>
-<th>Rep 3 - Median</th>
-<th>Variation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>155</strong></td>
-<td>72,926</td>
-<td>70,262</td>
-<td>69,721</td>
-<td>3,205</td>
-</tr>
-<tr class="even">
-<td><strong>237</strong></td>
-<td>142,138</td>
-<td>135,570</td>
-<td>137,200</td>
-<td>6,568</td>
-</tr>
-</tbody>
-</table>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Project</th>
-<th>Rep 1 - IQR</th>
-<th>Rep 2 - IQR</th>
-<th>Rep 3 - IQR</th>
-<th>Variation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>155</strong></td>
-<td>69,736</td>
-<td>69,404</td>
-<td>82,973</td>
-<td>13,569</td>
-</tr>
-<tr class="even">
-<td><strong>237</strong></td>
-<td>59,530</td>
-<td>63,910</td>
-<td>63,179</td>
-<td>4,380</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</section>
-<section id="inconsistencies-in-the-two-projects-instruments" class="slide level2">
-<h2>Inconsistencies in the two projects: Instruments</h2>
-<div class="panel-tabset" style="color: black">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Variation</a></li><li><a href="#tabset-2-2">Standard deviation</a></li><li><a href="#tabset-2-3">Stats</a></li></ul>
-<div class="tab-content" style="color: black">
-<div id="tabset-2-1">
-<p><img data-src="../results/06_fmax_raw_rep_inst.png" width="3200"></p>
-</div>
-<div id="tabset-2-2">
-<p><img data-src="../results/06_sd_by_instrument.png" width="3200"></p>
-</div>
-<div id="tabset-2-3">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>sd_instruments_stats <span class="ot">&lt;-</span> sd_saa_data <span class="sc">|&gt;</span> </span>
-<span id="cb2-2"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">mean=</span><span class="fu">mean</span>(fmax_sd), </span>
-<span id="cb2-4"><a href=""></a>            <span class="at">median=</span><span class="fu">median</span>(fmax_sd), </span>
-<span id="cb2-5"><a href=""></a>            <span class="at">IQR =</span> <span class="fu">quantile</span>(fmax_sd,.<span class="dv">75</span>)<span class="sc">-</span> <span class="fu">quantile</span>(fmax_sd,.<span class="dv">25</span>),</span>
-<span id="cb2-6"><a href=""></a>             <span class="at">.by =</span> <span class="fu">c</span>(project, instrument))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Instrument-level statistics:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Project</th>
-<th>Instr.</th>
 <th>Mean SD</th>
 <th>Median SD</th>
 <th>IQR</th>
@@ -474,69 +407,66 @@ Andreas Nielsen
 <tbody>
 <tr class="odd">
 <td><strong>155</strong></td>
-<td>2</td>
-<td>30,015</td>
-<td>28,999</td>
-<td>30,174</td>
+<td>24,066</td>
+<td>22,198</td>
+<td>26,131</td>
 </tr>
 <tr class="even">
 <td><strong>237</strong></td>
-<td>2</td>
-<td>8,384</td>
-<td>4,482</td>
-<td>4,953</td>
-</tr>
-<tr class="odd">
-<td><strong>155</strong></td>
-<td>4</td>
-<td>21,469</td>
-<td>20,743</td>
-<td>21,746</td>
-</tr>
-<tr class="even">
-<td><strong>237</strong></td>
-<td>4</td>
-<td>8,788</td>
-<td>4,594</td>
-<td>5,483</td>
-</tr>
-<tr class="odd">
-<td><strong>155</strong></td>
-<td>6</td>
-<td>20,190</td>
-<td>17,562</td>
-<td>24,950</td>
-</tr>
-<tr class="even">
-<td><strong>237</strong></td>
-<td>6</td>
-<td>13,107</td>
-<td>8,357</td>
-<td>6,809</td>
+<td>10,386</td>
+<td>5,662</td>
+<td>6,470</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
 </section>
-<section id="over-tid-patienter" class="slide level2">
-<h2>Over tid patienter</h2>
+<section id="instruments" class="slide level2">
+<h2>Instruments</h2>
 <ul>
-<li>her</li>
+<li>Can the instruments explain some of these differences?</li>
 </ul>
-</section></section>
-<section id="discussion" class="title-slide slide level1 center">
-<h1>Discussion</h1>
-<ul>
-<li>what project is best</li>
-</ul>
-</section>
 
-<section id="last-notes" class="title-slide slide level1 center">
-<h1>Last notes</h1>
+<img data-src="../results/07_fmax_raw_rep_inst.png" width="3000" class="r-stretch"></section>
+<section id="patients-over-time" class="slide level2">
+<h2>Patients over time</h2>
+<p>Question: Does the signal become stronger further into disease progression?</p>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Attempt at linear model</a></li><li><a href="#tabset-1-2">Residual plot</a></li><li><a href="#tabset-1-3">Subset of patients</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p><img data-src="../results/08_fmax_over_time_lm.png"></p>
 <ul>
-<li>healthy patients</li>
+<li><p>Only for project 237 above</p>
+<ul>
+<li><p>Not necessarily comparable fmax mean values</p></li>
+<li><p>Project 155 only had close to baseline measurements</p></li>
+</ul></li>
+<li><p>No connection</p></li>
+<li><p>Note: Days from baseline is a not actually a measure of disease progression…</p></li>
+</ul>
+</div>
+<div id="tabset-1-2">
+<p><img data-src="../results/08_fmax_over_time_resid.png"></p>
+</div>
+<div id="tabset-1-3">
+<p><img data-src="../results/08_fmax_over_time_top12.png"></p>
+<ul>
+<li><p>Patient variation, if any connection at all</p></li>
+<li><p>We also looked at more patients</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section></section>
+<section id="last-notesconclusions" class="title-slide slide level1 center">
+<h1>Last notes/conclusions</h1>
+<p><strong>24-hour assay (237) vs 150-hour assay (155):</strong></p>
+<div class="pf-box">
+<p>Does one of the methods perform better than the other, and which is one more efficient?</p>
+</div>
+<ul>
+<li><p>Project <strong>237:</strong> Fast, accurate, clear separation, consistent</p></li>
+<li><p>Healthy controls for better assessment</p></li>
 </ul>
 
 </section>
@@ -755,44 +685,6 @@ Andreas Nielsen
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

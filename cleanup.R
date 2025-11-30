@@ -10,3 +10,4 @@ for (f in html_files) {
   dest <- here("results", path_file(f))
   file_move(f, dest)
 }
+

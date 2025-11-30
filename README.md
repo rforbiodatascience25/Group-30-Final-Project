@@ -36,4 +36,14 @@ To access and download the biospecimen data used in this project, follow the ste
     3.  Click on "**Current Biospecimen Analysis Results**" to download the raw data file (CSV format).
 
 4.  **Store the Data**\
-    Place the downloaded `.csv` file into the `_raw` directory.
+    Make sure there is a folder called `_raw` in the folder `data`. Place the downloaded `.csv` file into the `_raw` directory.
+
+# Rendering the project
+
+After you have rendered the project (or any qmd file); (e.g. `quarto render 00_all.qmd`), you need to run the R-script cleanup.R in the terminal to make sure that the HTML files is in the right directory.
+
+Example (in terminal):
+
+`quarto render 00_all.qmd`
+
+`Rscript cleanup.R`

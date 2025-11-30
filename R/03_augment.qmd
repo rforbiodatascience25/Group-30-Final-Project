@@ -7,11 +7,9 @@ format: html
 #| message: false
 
 library(tidyverse)
-library(here)
-library(fs)
 ```
 
-# Loading the clean data
+## Loading the clean data
 
 ```{r}
 #| message: false
@@ -19,9 +17,9 @@ library(fs)
 tidy_data <- read_tsv("../data/02_dat_clean.tsv")
 ```
 
-# Augment Data
+## Augment Data
 
-## Finding days from baseline
+### Finding days from baseline
 
 Some patients were tested multiple times at different dates. We calculate the days from baseline and add a colum with this information.
 
@@ -31,12 +29,13 @@ It should be noted that for 2 patients (40771 and 40754) the rundate appears to 
 tidy_data <- tidy_data |> 
   mutate(rundate = as.Date(rundate)) |> 
   group_by(patient_number) |> 
-  mutate(days_from_baseline = as.numeric(rundate - min(rundate, na.rm = TRUE))) |> 
+  mutate(days_from_baseline = as.numeric(rundate - min(rundate, 
+                                                       na.rm = TRUE)
+                                         )) |> 
   ungroup()
-
 ```
 
-## Calculating means of Fmax, ttt and auc
+### Calculating means of Fmax, ttt and auc
 
 Instead of working with three replicates of a single observation, moving forward the mean of the variable will be used to represent the observation.
 
@@ -45,14 +44,14 @@ The means are calculated of Fmax, ttt and auc from a single patient (patient_num
 ```{r}
 means <- tidy_data |>
   group_by(patient_number, clinical_event, days_from_baseline) |>
+  
   summarise(
     fmax_mean = mean(fmax, na.rm = TRUE),
-    ttt_mean  = mean(ttt,  na.rm = TRUE),
-    auc_mean  = mean(auc,  na.rm = TRUE),
+    ttt_mean  = mean(ttt, na.rm = TRUE),
+    auc_mean  = mean(auc, na.rm = TRUE),
     .groups = "drop"
   )
 
-# Adding the means to the dataset
 aug_data <- tidy_data |>
   left_join(means,
             by = c("patient_number", 
@@ -61,11 +60,11 @@ aug_data <- tidy_data |>
 
 ```
 
-## Performing a quality check
+### Initiating a quality check
 
-When PPMI performed their study, they choose a criteria the Fmax value must meet, for the SAA-result to indicate PD. The indication of PD is stored in the saa_result column as either positive, negative or inconclusive. To ensure they correctly assigned the saa_results to the observations, a quality check is made.
+When PPMI performed their study, they choose a criteria the Fmax value must meet, for the SAA-result to indicate PD. To ensure they correctly assigned positive/negative/inconclusive, the saa_results to the observations, a quality check is made.
 
-As the two projects differ in method, they used different requirements for each. The requirements used can be seen in the table below:
+As the two projects differ in method, they used different requirements for each.
 
 |              |                                            |
 |--------------|--------------------------------------------|
@@ -96,11 +95,17 @@ As the two projects differ in method, they used different requirements for each.
 |              | -   Exactly 1 replicate has Fmax ≥ 45,000 RFU & 1 replicate has Fmax ≥ 3,000 RFU & \< 45,000 RFU & 1 replicate has Fmax \< 3,000 RFU |
 +--------------+--------------------------------------------------------------------------------------------------------------------------------------+
 
-Prepare replicate vectors for SAA rule
+To prepare replicate vectors for SAA rule all three fmax from each observation is gathered in a list.
 
 ```{r}
+source("09_proj_func.R")
+
 reps <- tidy_data |>
-  group_by(patient_number, project, clinical_event, days_from_baseline) |> 
+  group_by(patient_number, 
+           project, 
+           clinical_event, 
+           days_from_baseline) |> 
+  
   summarise(
     fmax_reps = list(fmax),
     .groups = "drop"
@@ -114,52 +119,16 @@ aug_data <- aug_data |>
                    "days_from_baseline"))
 ```
 
-We prepare to calculate the status from the fmax values by first creating two functions with the rules:
+The two rules have been made as functions,
+
+Applying the functions and subsequently removing the generated fmax_reps column:
 
 ```{r}
-saa_rule_155 <- function(x) {
-  x <- unlist(x)
-  n_pos <- sum(x >= 5000, na.rm = TRUE)
+source("09_proj_func.R")
 
-  case_when(
-    n_pos == 3 ~ "Positive",
-    n_pos <= 1 ~ "Negative",
-    n_pos == 2 ~ "Inconclusive",
-    TRUE ~ NA_character_
-  )
-}
-
-saa_rule_237 <- function(x) {
-  x <- unlist(x)
-
-  n_ge_45000 <- sum(x >= 45000, na.rm = TRUE)
-  n_ge_3000  <- sum(x >= 3000,  na.rm = TRUE)
-  n_between  <- sum(x >= 3000 & x < 45000, na.rm = TRUE)
-  n_lt_3000  <- sum(x < 3000, na.rm = TRUE)
-
-  # Positive
-  if (n_ge_45000 == 3) return("Positive")
-  if (n_between == 2 | n_between == 3) return("Positive")
-  if (n_ge_45000 == 2 & n_between == 1) return("Positive")
-
-  # Negative
-  if (n_ge_3000 <= 1) return("Negative")
-
-  # Inconclusive
-  if (length(x<3)) return("Inconclusive")
-  if (n_ge_45000 == 2 & n_lt_3000 == 1) return("Inconclusive")
-  if (n_ge_45000 == 1 & n_between == 1 & n_lt_3000 == 1) return("Inconclusive")
-
-  NA_character_
-}
-```
-
-\
-Applying the functions and subsequently removing the generated fmax_reps column.
-
-```{r}
 aug_data <- aug_data |> 
   rowwise() |> 
+  
   mutate(
     saa_custom = case_when(
       project == "155" ~ saa_rule_155(fmax_reps),
@@ -167,6 +136,7 @@ aug_data <- aug_data |>
       TRUE ~ NA_character_
     )
   ) |> 
+  
   ungroup()
 
 aug_data <- aug_data |>  
@@ -174,30 +144,8 @@ aug_data <- aug_data |>
 
 ```
 
-Declaring datatype in some columns
-
-```{r}
-aug_data <- aug_data |> 
-  mutate(across(c(project, 
-                  duration, 
-                  rep, 
-                  instrument), 
-                
-                as.character))
-```
-
-## Save the augmented data
+### Save the augmented data
 
 ```{r}
 write_tsv(aug_data, "../data/03_aug_data.tsv")
-```
-
-## Moving html files in the right place
-
-```{r}
-old_dir <- here("R", "02_augment.html")
-new_dir <- here("results", "02_augment.html")
-if (file_exists(old_dir)) {
-file_move(old_dir, new_dir)
-}
 ```

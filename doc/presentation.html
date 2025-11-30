@@ -190,11 +190,11 @@ Andreas Nielsen
 
  /* skriftstørrelse på tabellerne */
 .reveal table {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .reveal table th {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 
 /*afstand mellem tabeller */
@@ -245,50 +245,92 @@ Andreas Nielsen
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
-<p>Intro, hvad er det her forsøg osv</p>
+<ul>
+<li><p>Presynaptic neuronal protein alpha-Synuclein</p></li>
+<li><p>Aggregation between nerve cells -&gt; inhibition of transmission</p></li>
+<li><p>2 Projects using SAA (α-synuclein seed amplification assays)</p></li>
+</ul>
 <p><br></p>
-<p><strong>Technical focus:</strong></p>
+<p><strong>General focus:</strong></p>
 <div class="pf-box">
-<p>Can α-synuclein seed amplification assays (SAA) reliably detect Parkinson’s disease? We compare fluorescence data from two PPMI projects to assess diagnostic potential.</p>
+<p>Does one of the methods perform better than the other, and which is one more efficient?</p>
 </div>
 </section>
 <section id="materials-and-methods" class="slide level2">
 <h2>Materials and Methods</h2>
+<p><strong>Materials:</strong></p>
 <ul>
-<li><p>Materials: What data did you use and where did you get it from?</p></li>
-<li><p>Methods: Which modelling did you use? Think of the methods section as a recipe for how to go from raw to results =&gt; Flow chart?</p></li>
+<li><p>PPMI (Parkinson’s Progression Markers Initiative) database</p></li>
+<li><p>3 replicates of SAA (cerebrospinal fluid)</p></li>
+<li><p>Monitors the aggregation by measuring fluorescence intensity over time</p></li>
+<li><p>Sigmoidal curve: fmax, auc, ttt</p></li>
+<li><p>Set of critera for positive/negative/inconclusive</p></li>
+</ul>
+<p><br></p>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><p>Tidyverse to visualize the data</p></li>
+<li><p>Tools:</p></li>
+<li><p>Quality check</p></li>
 </ul>
 </section>
 <section id="methods-tidying" class="slide level2">
 <h2>Methods: Tidying</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
 <ul>
-<li>meget kort og præcis og kun for at give et overordnet billede</li>
-</ul>
-<!-- -->
+<li><p>Tidy data makes it much easier to handle</p></li>
+<li><p>Requirements for tidy data</p>
 <ul>
-<li>graphical visualization of that we want to tidy it (krav til at det er tidy og hvorfor det gælder os)</li>
+<li><p>Each column is one variable (Not the case initially)</p></li>
+<li><p>Each row is one observation</p></li>
+<li><p>Each cell is one value <br> <br> <br></p></li>
+</ul></li>
 </ul>
-<!-- -->
-<ul>
-<li><p>pivot longer og wider</p></li>
-<li><p>Renaming (snake_case), column types, deleting (argumenter for tingene hvorfor vi vælger at slette specifikke)</p></li>
-</ul>
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="images/pivotlonger_example.png" class="quarto-figure quarto-figure-left" width="650"></p>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="images/tidy_data_flow.png" class="quarto-figure quarto-figure-right" width="300"></p>
+</figure>
+</div>
+</div></div>
 </section>
 <section id="methods-augmenting" class="slide level2">
 <h2>Methods: Augmenting</h2>
 <ul>
-<li><p>meget kort og præcis og kun for at give et overordnet billede</p></li>
-<li><p>join</p></li>
-<li><p>days from baseline</p></li>
-<li><p>means</p></li>
+<li><p>Days from baseline</p>
+<ul>
+<li>Calculated from rundates</li>
+</ul></li>
+<li><p>Mean of fmax for each visit</p></li>
+<li><p>Our own SAA_result</p></li>
 </ul>
 </section>
 <section id="descriptive" class="slide level2">
 <h2>Descriptive</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li><p>function</p></li>
-<li><p>counts af forskellige ting (meget kort, som en overgang)</p></li>
+<li>Two projects: 155 (150h) and 237 (24h)</li>
+<li>1300 individuals, almost 1900 observations</li>
 </ul>
+<p><br></p>
+<ul>
+<li>2 functions, overview of high/low values</li>
+</ul>
+<p><br> <br></p>
+<ul>
+<li>Frequency of instrument used</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="../results/04_project_distribution.png" width="600"></p>
+<p><img data-src="../results/04_instruments_used.png" width="600"></p>
+</div></div>
 </section>
 <section>
 <section id="results" class="title-slide slide level1 center">
@@ -297,26 +339,62 @@ Andreas Nielsen
 </section>
 <section id="saa-quality-check" class="slide level2">
 <h2>SAA quality check</h2>
+<div class="rows">
+<div class="row">
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>her</li>
+<li><p>SAA result and SAA custom quality check</p></li>
+<li><p>A non-mentioned criteria?</p></li>
+<li><p>Low fmax (200–600 RFU), huge, moderate</p></li>
+<li><p>Hard to know for sure</p></li>
 </ul>
-</section></section>
-<section>
-<section id="inconsistencies-in-the-two-projects" class="title-slide slide level1 center">
-<h1>Inconsistencies in the two projects</h1>
-<p>Evaluate difference in precision and consistencies: Replicates</p>
+</div><div class="column" style="width:50%;">
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td><strong>Result</strong></td>
+<td><strong>Project 155</strong></td>
+</tr>
+<tr class="even">
+<td>Positive</td>
+<td>All replicates Fmax ≥ 5,000 RFU</td>
+</tr>
+<tr class="odd">
+<td>Negative</td>
+<td>0 or 1 replicate Fmax ≥ 5,000 RFU</td>
+</tr>
+<tr class="even">
+<td>Inconclusive</td>
+<td>2 replicates Fmax ≥ 5,000 RFU</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="row">
+<p><img data-src="../results/05_mismatched_saa_plot_log.png" width="3000"></p>
+</div>
+</div>
+<!-- -->
+</section>
+<section id="saa-results" class="slide level2">
+<h2>SAA results</h2>
+
+<img data-src="../results/06_saa_result_dist.png" class="r-stretch"></section>
+<section id="overlap-ting" class="slide level2">
+<h2>Overlap ting</h2>
+<ul>
+<li></li>
+</ul>
 </section>
 <section id="inconsistencies-in-the-two-projects-replicates" class="slide level2">
-<h2>Inconsistencies in the two projects: Replicates</h2>
-<div class="panel-tabset" style="color: black">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Variation</a></li><li><a href="#tabset-1-2">Standard deviation</a></li></ul>
-<div class="tab-content" style="color: black">
-<div id="tabset-1-1">
-<p><img data-src="../results/06_fmax_by_rep.png" width="2200"></p>
-</div>
-<div id="tabset-1-2">
-<p><img data-src="../results/06_sd_by_project.png" width="2000"></p>
-<table class="caption-top">
+<h2>Inconsistencies in the two projects (replicates)</h2>
+<ul>
+<li>Can standard deviations in replicates say something about whether one project is better than the other?</li>
+</ul>
+
+<img data-src="../results/07_sd_by_project.png" width="2000" class="r-stretch"><table class="caption-top">
 <thead>
 <tr class="header">
 <th>Project</th>
@@ -340,32 +418,56 @@ Andreas Nielsen
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
 </section>
-<section id="inconsistencies-in-the-two-projects-instruments" class="slide level2">
-<h2>Inconsistencies in the two projects: Instruments</h2>
+<section id="instruments" class="slide level2">
+<h2>Instruments</h2>
+<ul>
+<li>Can the instruments explain some of these differences?</li>
+</ul>
 
-<img data-src="../results/06_sd_by_instrument.png" width="3200" class="r-stretch"></section>
+<img data-src="../results/07_fmax_raw_rep_inst.png" width="3000" class="r-stretch"></section>
 <section id="patients-over-time" class="slide level2">
 <h2>Patients over time</h2>
+<p>Question: Does the signal become stronger further into disease progression?</p>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Attempt at linear model</a></li><li><a href="#tabset-1-2">Residual plot</a></li><li><a href="#tabset-1-3">Subset of patients</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p><img data-src="../results/08_fmax_over_time_lm.png"></p>
 <ul>
-<li>her</li>
+<li><p>Only for project 237 above</p>
+<ul>
+<li><p>Not necessarily comparable fmax mean values</p></li>
+<li><p>Project 155 only had close to baseline measurements</p></li>
+</ul></li>
+<li><p>No connection</p></li>
+<li><p>Note: Days from baseline is a not actually a measure of disease progression…</p></li>
 </ul>
+</div>
+<div id="tabset-1-2">
+<p><img data-src="../results/08_fmax_over_time_resid.png"></p>
+</div>
+<div id="tabset-1-3">
+<p><img data-src="../results/08_fmax_over_time_top12.png"></p>
+<ul>
+<li><p>Patient variation, if any connection at all</p></li>
+<li><p>We also looked at more patients</p></li>
+</ul>
+</div>
+</div>
+</div>
 </section></section>
-<section id="discussion" class="title-slide slide level1 center">
-<h1>Discussion</h1>
+<section id="last-notesconclusions" class="title-slide slide level1 center">
+<h1>Last notes/conclusions</h1>
+<p><strong>24-hour assay (237) vs 150-hour assay (155):</strong></p>
+<div class="pf-box">
+<p>Does one of the methods perform better than the other, and which is one more efficient?</p>
+</div>
 <ul>
-<li>what project is best</li>
+<li><p>Project <strong>237:</strong> Fast, accurate, clear separation, consistent</p></li>
+<li><p>Healthy controls for better assessment</p></li>
 </ul>
-</section>
-
-<section id="last-notes" class="title-slide slide level1 center">
-<h1>Last notes</h1>
-<ul>
-<li>healthy patients</li>
-</ul>
+<p>s</p>
 
 </section>
     </div>

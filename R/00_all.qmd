@@ -34,7 +34,17 @@ Please write quarto render r/00_all.qmd in the terminal to render all .qmd docum
 
 # 06_analysis_2
 
-```{r, child="06_analysis_2.qmd"}
+```{r, child="CopyOf06_analysis_2.qmd"}
+```
+
+# 07_analysis_3
+
+```{r, child="07_analysis_3.qmd"}
+```
+
+# 08_analysis_4
+
+```{r, child="08_analysis_4.qmd"}
 ```
 
 ```{r}

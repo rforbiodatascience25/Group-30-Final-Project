@@ -1,39 +1,233 @@
 ---
-title: "08_analysis_3"
-output-dir: "Group-30-Final-Project/results"
+title: "08_analysis_4"
+format: html
 ---
+
+# Load libraries and data
+
+```{r}
+#| warning: false
+library(tidyverse)
+library(readr)
+library(modelr)
+```
+
+```{r}
+#| message: false
+aug_data <- read_tsv("../data/03_dat_aug.tsv")
+```
+
+## Defining colors and theme
+
+```{r}
+my_cols <- c("#3C3C68","#C03221","#6D8E64","#94BFBE","#545E75",  "#7A1F15",
+             "#da9283" , "#474B24")
+
+theme_custom <- theme_minimal(base_size = 14) +
+  
+  theme(
+    plot.title = element_text(face = "bold", 
+                              size = 13, 
+                              margin = margin(b = 7)
+                              ),
+    
+    plot.subtitle = element_text(size = 10, 
+                                 margin = margin(b = 12)
+                                 ),
+    
+    plot.caption = element_text(size = 8, 
+                                margin = margin(t = 20)
+                                ),
+      
+    axis.title.x = element_text(size = 10, 
+                                margin = margin(t = 10)
+                                ),
+    
+    axis.title.y = element_text(size = 10, 
+                                margin = margin(r = 10)
+                                ),
+
+    axis.text.x = element_text(size = 10, 
+                               margin = margin(t = 5)
+                               ),
+    
+    axis.text.y = element_text(size = 10, 
+                               margin = margin(r = 5)
+                               ),
+        )
+```
 
 # Analysis
 
-```{r}
-#| message: false
+The purpose of this analysis is to see whether the test gets better at subsequent visits or rather: does the test become better further into disease progression? We investigate this by looking at mean fmax, which of course is not strictly related to positive tests, over the calculated days from baseline. This days from baseline of course does not correspond to overall disease progression but is a measure of time for each individual patient. However, we will still try to investigate it with modeling. First, an overall scatter plot.
 
-library(tidyverse)
+```{r}
+aug_data |> 
+  ggplot(aes(x = days_from_baseline, 
+               y = fmax_mean)) +
+  geom_point(aes(color = saa_result,
+                 shape = as.factor(project))) +
+  labs(title = "Mean fmax over time",
+       x = "Days from baseline",
+       y = "Mean fmax (RFU)",
+       shape = "Project",
+       color = "SAA status",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)") +
+  
+  scale_color_manual(values = my_cols) +
+  scale_fill_manual(values = my_cols) +
+  
+  theme_minimal() +
+  theme_custom
+
+  ggsave(filename = "../results/08_fmax_over_time.png",
+       height = 5,
+       width = 10)
 ```
 
-## Loading the augmented data
+As the fmax from the projects is not comparable, we will only look at one for the modelling. This will be project 155 as project 237 only have observations close to baseline.
+
+Below a linear model is fitted as well as a residual plot.
 
 ```{r}
-#| message: false
+sim1_mod <- lm(fmax_mean ~ days_from_baseline, 
+               data = filter(aug_data, project == 237))
 
-saa_aug_data <- read_tsv("../data/03_aug_data.tsv")
-```
-
-## Use of SAA to diagnose PD
-
-```{r}
-fmax_evolution <- saa_aug_data |>
-  select(project:sex,
-         saa_result,
-         fmax,
-         days_from_baseline,
-         fmax_mean)
+coef(sim1_mod)
 ```
 
 ```{r}
-fmax_evolution |>
-  distinct(patient_number,
-           days_from_baseline,
-           .keep_all = TRUE) |>
-  group_by(patient_number)
+grid <- aug_data|> 
+  filter(project == 237) |> 
+  data_grid(days_from_baseline)
+grid <- grid |> 
+  add_predictions(sim1_mod) 
+```
+
+```{r}
+aug_data |> 
+  filter(project == 237) |> 
+  ggplot(aes(x = days_from_baseline, 
+             y = fmax_mean)) +
+  geom_point(aes(color = saa_result)) +
+  geom_line(aes(y = pred), 
+            data = grid, 
+            colour = "red", 
+            size = 1) + 
+  
+  labs(title = "Mean fmax over time for project 237 with linear fit",
+       x = "Days from baseline",
+       y = "Mean fmax (RFU)",
+       shape = "Project",
+       color = "SAA status",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)") +
+  
+  scale_color_manual(values = my_cols) +
+  scale_fill_manual(values = my_cols) +
+  
+  theme_minimal() +
+  theme_custom
+
+ggsave(filename = "../results/08_fmax_over_time_lm.png",
+       height = 5,
+       width = 12)
+```
+
+```{r}
+resid <- filter(aug_data, project == 237) |> 
+  add_residuals(sim1_mod)
+
+ggplot(resid, aes(days_from_baseline, 
+                  resid)) + 
+  geom_ref_line(h = 0) +
+  geom_point(color = "#545E75") +
+  theme_minimal() +
+  
+  labs(title = "Residual plot for lm of fmax over time for project 237",
+       x = "Days from baseline",
+       y = "Resid",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)") +
+  
+  theme_custom +
+  scale_y_continuous(labels = scales::label_comma())
+
+ggsave(filename = "../results/08_fmax_over_time_resid.png",
+       height = 5,
+       width = 10)
+```
+
+This really tells us nothing. Fitting to a linear model does not make sense, as expected from the scatter plot, which showed no clear pattern.
+
+This may be because that days from baseline is a bad indicator for disease progression, so for this reason we want to look at the development for each patient. Only a few patients had multiple samples taken, so first we look at the 12 patients with the most patients.
+
+```{r}
+top_12 <- aug_data |> 
+  count(patient_number, sort = TRUE) |> 
+  head(12)
+
+aug_data |> 
+  filter(patient_number %in% top_12$patient_number) |> 
+    ggplot(aes(x = days_from_baseline, 
+               y = fmax_mean)) +
+  
+  geom_line(color = "gray") +
+  
+  geom_point(aes(color = saa_result,
+                 shape = as.factor(project))) +
+  
+  facet_wrap(~ patient_number) +
+  theme_minimal() +
+  
+  scale_color_manual(values = my_cols) +
+  scale_fill_manual(values = my_cols) +
+  
+  scale_x_continuous(n.breaks = 3) +
+  
+  labs(title = "Mean fmax over time for the 12 patients with the most visits",
+       x = "Days from baseline",
+       y = "Mean fmax (RFU)",
+       shape = "Project",
+       color = "SAA status",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)") +
+  
+  theme_custom
+
+ggsave(filename = "../results/08_fmax_over_time_top12.png",
+       height = 5,
+       width = 12)
+```
+
+This last bit of code allows looking at a random sample from the top 100 of patients with the most visits.
+
+```{r}
+top_100 <- aug_data |> 
+  count(patient_number, sort = TRUE) |> 
+  head(100)
+
+sample <- top_100 |> 
+  sample_n(20)
+
+aug_data |> 
+  filter(patient_number %in% sample$patient_number) |> 
+  ggplot(aes(x = days_from_baseline, 
+               y = fmax_mean)) +
+  
+  geom_line(color = "gray") +
+
+  geom_point(aes(color = saa_result,
+                 shape = as.factor(project))) +
+  theme_minimal() +
+  scale_x_continuous(n.breaks = 3) +
+  facet_wrap(~ patient_number) +
+  scale_color_manual(values = my_cols) +
+  scale_fill_manual(values = my_cols) +
+  
+  labs(title = "Mean fmax over time for random patients with the most visits",
+       x = "Days from baseline",
+       y = "Mean fmax (RFU)",
+       shape = "Project",
+       color = "SAA status",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)") +
+  
+  theme_custom
 ```

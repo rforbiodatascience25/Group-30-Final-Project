@@ -3,19 +3,20 @@ title: "05_analysis_1"
 format: html
 ---
 
-## Load libraries
-
 ```{r}
 #| message: false
 
 library(tidyverse)
 ```
 
-## Load the augmented data from file:
+## Loading the augmented data
 
 ```{r}
+#| message: false
 aug_data <- read_tsv("../data/03_aug_data.tsv")
 
+source("09_proj_func.R")
+aug_data <- char_type_col(aug_data)
 ```
 
 ```{r}
@@ -40,7 +41,7 @@ aug_data <- read_tsv("../data/03_aug_data.tsv")
 During the augmentation a new column was made using the same criteria published by PPMI used to create their saa_result column. We check for any variations between their positive/negative/inconclusive results and the new column.
 
 ```{r}
-aug_data |>
+mismatches_saa_results <- aug_data |>
   filter(saa_result != saa_custom) |>
   select(project,
          patient_number,
@@ -49,15 +50,17 @@ aug_data |>
          rep,
          fmax
          ) |>
+  
   pivot_wider(
     names_from = rep,
     values_from = fmax,
     names_prefix = "rep_"
     )
 
+mismatches_saa_results
 ```
 
-As seen above 9 patients have a negative saa_result, whereas when the column were recreated the results were inconclusive. When looking at the criteria given from PPMI the result should have been inconclusive we found.
+As seen above some patients have a negative saa_result, whereas when the column were recreated the results were inconclusive. When looking at the criteria given from PPMI the result should have been inconclusive we found.
 
 |              |                                            |
 |--------------|--------------------------------------------|
@@ -73,7 +76,9 @@ A visualization can be seen below:
 ```{r}
 aug_data |>
   mutate(match = saa_result == saa_custom) |>
-  ggplot(aes(x = match, fill = match)) +
+  ggplot(aes(x = match, 
+             fill = match)
+         ) +
   geom_bar() +
   scale_fill_manual(values = c("#da9283","#3C3C68")) +
   facet_wrap(~ project) +
@@ -81,6 +86,144 @@ aug_data |>
   labs(title = "Match versus mismacth",
        subtitle = "Comparison between PPMI's saa_result and custom made results column",
        x = "Match",
-       y = "Count")
+       y = "Count",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)")
 
+ggsave(filename = "../results/05_quality_check.png",
+       width = 10,  
+       height = 5)
+```
+
+To visualize the 7 mismatches:
+
+```{r}
+mismatches_saa_results |>
+  pivot_longer(
+    cols = starts_with("rep"),
+    names_to = "rep",
+    values_to = "fmax"
+  ) |>
+  ggplot(aes(x = rep,
+             y = fmax,
+             group = patient_number)) + 
+  
+  geom_line(color = "#C03221",
+            alpha = 0.5) +
+  
+  geom_point(size = 3, 
+             color = "#C03221") +
+  
+  geom_hline(yintercept = 5000, 
+             linetype = "dashed") +
+  
+  facet_wrap(~ patient_number, 
+             scales = "free_y",
+             ncol = 4) +
+  
+  theme_minimal() +
+  theme_custom +
+  
+  labs(
+    title = "Mismatch cases: 155 negative vs our inconclusive",
+    subtitle = "7 mismatches (Reported as negative, by definition inconclusive)",
+    x = "Replicate",
+    y = "Fmax (RFU)",
+    caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"
+  )
+
+ggsave(filename = "../results/05_mismatched_saa_plot.png",
+       width = 14.5,  
+       height = 6.5)  
+
+```
+
+A log2 plot:
+
+```{r}
+mismatches_saa_results |>
+  pivot_longer(
+    cols = starts_with("rep"),
+    names_to = "rep",
+    values_to = "fmax"
+  ) |>
+  ggplot(aes(x = rep,
+             y = log2(fmax),
+             group = patient_number)) + 
+  
+  geom_line(color = "#C03221",
+            alpha = 0.5) +
+  
+  geom_point(size = 3, 
+             color = "#C03221") +
+  
+  geom_hline(yintercept = log2(5000), 
+             linetype = "dashed") +
+  
+  facet_wrap(~ patient_number, 
+             scales = "free_y",
+             ncol = 4) +
+  
+  theme_minimal() +
+  theme_custom +
+  
+  labs(
+    title = "Mismatch cases: 155 negative vs our inconclusive (Log2)",
+    subtitle = "7 mismatches (Reported as negative, by definition inconclusive)",
+    x = "Replicate",
+    y = "log2 of Fmax (RFU)",
+    caption = "Source: PPMI (Parkinson's Progression Markers Initiative)"
+  )
+
+ggsave(filename = "../results/05_mismatched_saa_plot_log.png",
+       width = 14.5,  
+       height = 6.5)  
+
+```
+
+There is maybe an extra criteria
+
+```{r}
+#| warning: false
+
+mismatches_saa_results |>
+  pivot_longer(
+    cols = starts_with("rep"),
+    names_to = "rep",
+    values_to = "fmax"
+  ) |>
+  summarize(median = median(fmax),
+            fmax,
+            vari = max(fmax)-min(fmax),
+            mean = mean(fmax),
+            .by = patient_number) |> 
+  
+  arrange(fmax)
+```
+
+```{r}
+#| warning: false
+
+aug_data |>
+  filter(saa_result == "Inconclusive") |>
+  ungroup() |>
+  summarize(median = median(fmax),
+            fmax,
+            vari = max(fmax)-min(fmax),
+            mean = mean(fmax),
+            .by = patient_number) |> 
+  arrange(fmax)
+```
+
+```{r}
+#| warning: false
+
+aug_data |>
+  filter(saa_result == "Negative") |>
+  ungroup() |>
+  summarize(median = median(fmax),
+            fmax,
+            vari = max(fmax)-min(fmax),
+            mean = mean(fmax),
+            .by = patient_number) |> 
+  arrange(fmax)
 ```
