@@ -22,7 +22,7 @@ To access and download the biospecimen data used in this project, follow the ste
     <https://www.ppmi-info.org/access-data-specimens/download-data>\
 
 2.  **Log In to the Data Portal**\
-    Once your access request has been approved, log in to the PPMI data portal:
+    Once your access request has been approved (takes approx. a week), log in to the PPMI data portal:
 
     <https://ida.loni.usc.edu/login.jsp?project=PPMI>\
 
@@ -38,6 +38,12 @@ To access and download the biospecimen data used in this project, follow the ste
 4.  **Store the Data**\
     Make sure there is a folder called `_raw` in the folder `data`. Place the downloaded `.csv` file into the `_raw` directory.
 
+## Note for Leon and the External Examiner
+
+Access to the official PPMI biospecimen data requires an approved data request, which may take 1-2 weeks. To make it easier to review and reproduce our project, we have included a local copy of the dataset used in the analysis:
+
+**LINK TIL DOCS**
+
 # Rendering the project
 
 After you have rendered the project (or any qmd file); (e.g. `quarto render 00_all.qmd`), you need to run the R-script cleanup.R in the terminal to make sure that the HTML files is in the right directory.
@@ -47,3 +53,5 @@ Example (in terminal):
 `quarto render 00_all.qmd`
 
 `Rscript cleanup.R`
+
+# 
