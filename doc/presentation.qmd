@@ -19,6 +19,9 @@ format:
     scrollable: true
     transition: fade
     transition-speed: fast
+  
+  html: 
+    self-contained: true  # ingen _files-mapper
 ---
 
 ```{=html}
@@ -240,8 +243,8 @@ Does one of the methods perform better than the other, and which is one more eff
 ![](../results/06_saa_result_dist.png)
 
 ## Overlap ting
-
--   
+![](../results/06_fmax_mean_results_24h.png)
+![](../results/06_fmax_mean_results_150h.png)
 
 ## Inconsistencies in the two projects (replicates)
 

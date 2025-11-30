@@ -2,7 +2,7 @@
 title: "00_all"
 format: 
   html: 
-    self-contained: true  # indlejrer alle figurer, ingen _files-mapper
+    self-contained: true  # ingen _files-mapper
 ---
 
 Please write quarto render r/00_all.qmd in the terminal to render all .qmd documents and generates a html that contains the full project. Make sure quatro is installed for this: <https://quarto.org/docs/get-started/>
@@ -34,7 +34,7 @@ Please write quarto render r/00_all.qmd in the terminal to render all .qmd docum
 
 # 06_analysis_2
 
-```{r, child="CopyOf06_analysis_2.qmd"}
+```{r, child="06_analysis_2.qmd"}
 ```
 
 # 07_analysis_3
