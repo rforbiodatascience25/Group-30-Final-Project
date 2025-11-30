@@ -1,5 +1,5 @@
 ---
-title: "a-Synuclein Aggregates in Parkinson’s Disease"
+title: "α-Synuclein Aggregates in Parkinson’s Disease"
 
 subtitle: "SAA Analysis from PPMI Projects 155 & 237"
 
@@ -109,7 +109,7 @@ format:
 
 # Introduction
 
--   Presynaptic neuronal protein alpha-Synuclein
+-   Presynaptic neuronal protein α-Synuclein
 
 -   Aggregation between nerve cells -\> inhibition of transmission
 
