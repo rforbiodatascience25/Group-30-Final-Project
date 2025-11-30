@@ -66,12 +66,15 @@ When PPMI performed their study, they choose a criteria the Fmax value must meet
 
 As the two projects differ in method, they used different requirements for each.
 
-|              |                                            |
-|--------------|--------------------------------------------|
-| **Result**   | **Project 155 - Criteria of Fmax**         |
-| Positive     | All 3 replicates have Fmax ≥ 5,000 RFU     |
-| Negative     | 0 or 1 replicate has Fmax ≥ 5,000 RFU      |
-| Inconclusive | Exactly 2 replicates have Fmax ≥ 5,000 RFU |
++--------------+----------------------------------------------------------+
+| **Result**   | **Project 155 - Criteria of Fmax**                       |
++--------------+----------------------------------------------------------+
+| Positive     | All 3 replicates have Fmax ≥ 5,000 RFU                   |
++--------------+----------------------------------------------------------+
+| Negative     | 0 or 1 replicate has Fmax ≥ 5,000 RFU                    |
++--------------+----------------------------------------------------------+
+| Inconclusive | Exactly 2 replicates have Fmax ≥ 5,000 RFU               |
++--------------+----------------------------------------------------------+
 
 +--------------+--------------------------------------------------------------------------------------------------------------------------------------+
 | Result       | **Project 237 - Criteria of Fmax**                                                                                                   |
