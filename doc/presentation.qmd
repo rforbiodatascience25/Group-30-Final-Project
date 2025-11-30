@@ -41,7 +41,7 @@ format:
 /* TIL TABELLER! */   
 
 .reveal .slides section table {
-  width: 100% !important;                   /* gør så at tabellen fylder hele slidet */
+  width: 100% !important;                   /* gør så at tabellen fylder hele vejen */
   border-collapse: separate !important;
   border-spacing: 0 !important;
   border: 1px solid #999 !important;         /* gør så at der er kant om tabel */
@@ -62,7 +62,7 @@ format:
 
 /*afstand mellem tabeller */
 .reveal .slides section table + table {
-  margin-top: 2rem !important;   /* justér som du vil */
+  margin-top: 1.7rem !important;
 }
 
 /* venstrejusteret tabel */
@@ -147,37 +147,33 @@ Does one of the methods perform better than the other, and which is one more eff
 
 -   Quality check
 
-## Methods: Tidying
+## Tidying and augmenting
 
 ::::: columns
 ::: {.column width="60%"}
--   Tidy data makes it much easier to handle
-
--   Requirements for tidy data
+-   Tidy data makes it much easier to handle. Requirements:
 
     -   Each column is one variable (Not the case initially)
 
     -   Each row is one observation
 
-    -   Each cell is one value <br> <br> <br>
+    -   Each cell is one value
 
-![](images/pivotlonger_example.png){fig-align="left" width="650"}
+![](images/pivotlonger_example.png){fig-align="left" width="600"}
+
+**Augmenting**
+
+-   Days from baseline: Calculated from rundates
+
+-   Mean of fmax for each visit
+
+-   Our own SAA_result
 :::
 
 ::: {.column width="40%"}
 ![](images/tidy_data_flow.png){fig-align="right" width="300"}
 :::
 :::::
-
-## Methods: Augmenting
-
--   Days from baseline
-
-    -   Calculated from rundates
-
--   Mean of fmax for each visit
-
--   Our own SAA_result
 
 ## Descriptive
 
@@ -197,7 +193,6 @@ Does one of the methods perform better than the other, and which is one more eff
 
 ::: {.column width="50%"}
 ![](../results/04_project_distribution.png){width="600"}
-
 
 ![](../results/04_instruments_used.png){width="600"}
 :::
@@ -221,9 +216,8 @@ Does one of the methods perform better than the other, and which is one more eff
 :::
 
 ::: {.column width="50%"}
-|              |                                   |
-|--------------|-----------------------------------|
 | **Result**   | **Project 155**                   |
+|--------------|-----------------------------------|
 | Positive     | All replicates Fmax ≥ 5,000 RFU   |
 | Negative     | 0 or 1 replicate Fmax ≥ 5,000 RFU |
 | Inconclusive | 2 replicates Fmax ≥ 5,000 RFU     |
@@ -243,25 +237,29 @@ Does one of the methods perform better than the other, and which is one more eff
 ![](../results/06_saa_result_dist.png)
 
 ## Overlap ting
-![](../results/06_fmax_mean_results_24h.png)
-![](../results/06_fmax_mean_results_150h.png)
+
+![](../results/06_fmax_mean_results_24h.png) ![](../results/06_fmax_mean_results_150h.png)
 
 ## Inconsistencies in the two projects (replicates)
 
+::: panel-tabset
+### Fmax standard deviation
+
 -   Can standard deviations in replicates say something about whether one project is better than the other?
 
-![](../results/07_sd_by_project.png){width="2000"}
+![](../results/07_sd_by_project.png){width="1800"}
 
 | Project | Mean SD | Median SD | IQR    |
 |---------|---------|-----------|--------|
 | **155** | 24,066  | 22,198    | 26,131 |
 | **237** | 10,386  | 5,662     | 6,470  |
 
-## Instruments
+### Instrument standard deviation
 
 -   Can the instruments explain some of these differences?
 
 ![](../results/07_fmax_raw_rep_inst.png){width="3000"}
+:::
 
 ## Patients over time
 
@@ -306,4 +304,3 @@ Does one of the methods perform better than the other, and which is one more eff
 -   Project **237:** Fast, accurate, clear separation, consistent
 
 -   Healthy controls for better assessment
-

@@ -218,7 +218,7 @@ sd_saa_data |>
 
 ggsave(filename = "../results/07_sd_by_project.png",
        width = 12,  
-       height = 4.7)
+       height = 4.3)
 ```
 
 ```{r}
