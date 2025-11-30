@@ -266,7 +266,7 @@ Does one of the methods perform better than the other, and which is one more eff
 ![](../results/07_sd_by_instrument.png)
 :::
 
-## Patients over time
+## Mean fmax over time
 
 Question: Does the signal become stronger further into disease progression?
 
