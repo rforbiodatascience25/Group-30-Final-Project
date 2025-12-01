@@ -249,22 +249,18 @@ Does one of the methods perform better than the other, and which is one more eff
 ## Alternative diagnostic variables
 
 ::::: columns
-::: {.column width="40%" .wide-bullets}
+::: {.column .wide-bullets width="40%"}
+-   Fmax_mean <br><br><br>
 
--   Fmax_mean
-<br><br><br>
+-   Statistically significant difference in both 24h and 150h SAA <br><br><br>
 
--   Statistically significant difference in both 24h and 150h SAA
-<br><br><br>
-
--   AUC, SLOPE, T50 and TTT
-<br><br><br>
+-   AUC, SLOPE, T50 and TTT <br><br><br>
 :::
 
 ::: {.column width="60%"}
-![](images/09_Fmax_mean_results_24h.png){width="425"}
+![](../results/06_fmax_mean_results_24h.png){width="600"}
 
-![](images/09_Fmax_mean_results_150h.png){width="424"}
+![](../results/06_fmax_mean_results_150h.png){width="600"}
 :::
 :::::
 
