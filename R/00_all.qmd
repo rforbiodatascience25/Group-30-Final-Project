@@ -5,6 +5,8 @@ format:
     self-contained: true  # ingen _files-mapper
 ---
 
+# Group 30: SAA Analysis from PPMI Projects 155 & 237
+
 Please write quarto render R/00_all.qmd in the terminal to render all .qmd documents and generate a html that contains the full project. You can find the html file in the "results" folder.
 
 # 01_load
