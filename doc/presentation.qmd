@@ -196,9 +196,7 @@ Does one of the methods perform better than the other, and which is one more eff
 
 <br> <br>
 
--   2 functions, overview of high/low values
-
-<br> <br> <br>
+<br>
 
 -   Frequency of instrument used
 :::
