@@ -87,19 +87,63 @@ saa_result_dist <- aug_data |>
   scale_fill_manual(values = c("#da9283","#7A1F15","#94BFBE"),
                     name = "SAA result",
                     guide = guide_legend(nrow = 1)) +
+  
   theme_custom + 
   theme(legend.position = "bottom") + 
   labs(title = "SAA result distribution",
        subtitle = "SAA result ratio from the two projects",
        x = "Project",
-       y = "Ratio",
-       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)")
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)") +
+    
+    scale_y_continuous(name = "Percentage", 
+                       labels = scales::label_percent(accuracy = 1))
 
 ggsave(filename = "../results/06_saa_result_dist.png",
        width = 10,  
        height = 5)   
 
 saa_result_dist
+```
+
+(very hard to figure out how to do the percent labels) **stacked plot with percent labels:**
+
+```{r}
+saa_result_percent <- aug_data |> 
+  group_by(project) |> 
+  count(saa_result) |> 
+  mutate(pct = prop.table(n)) |> 
+  
+  ggplot(aes(x = project, 
+             y = pct, 
+             fill = saa_result, 
+             label = scales::percent(pct))) + 
+  
+  geom_col(position = position_stack(reverse = TRUE)) + 
+  
+  geom_label(position = position_stack(reverse = TRUE),
+            fill = "white",
+            alpha = 0.8, 
+            label.size = 0,
+            size = 3) + 
+  
+  scale_y_continuous(labels = scales::percent) +
+  
+  scale_fill_manual(values = c("#da9283","#7A1F15","#94BFBE"),
+                    name = "SAA result",
+                    guide = guide_legend(nrow = 1)) +
+  theme_custom + 
+  theme(legend.position = "bottom") + 
+  labs(title = "SAA result distribution",
+       subtitle = "SAA result percentages from project 155 & 237",
+       y = "Percent",
+       x = "Project",
+       caption = "Source: PPMI (Parkinson's Progression Markers Initiative)")
+  
+ggsave(filename = "../results/06_saa_result_percent.png",
+       width = 10,  
+       height = 5)   
+
+saa_result_percent
 ```
 
 It seems to be very similar - not a very big difference in the ratio. Trying to see the separation:
